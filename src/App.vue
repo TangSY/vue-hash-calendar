@@ -6,9 +6,7 @@
 */
 <template>
     <div class="body">
-        <div class="tips" v-show="isShowTips"></div>
-        <!--github入口-->
-        <github></github>
+
     </div>
 </template>
 
@@ -21,9 +19,7 @@
 
     export default {
         name: "demo",
-        components: {
-            Github
-        },
+        components: {},
         data() {
             return {
                 isShowTips: false,//是否显示下载提示
@@ -44,14 +40,5 @@
         font-size 14px
     }
 
-    .tips {
-        position fixed
-        bottom 30%
-        left 40%
-        padding 10px 15px
-        border-radius 5px
-        color #fff
-        background rgba(0, 0, 0, .8)
-        z-index 999
-    }
+
 </style>
