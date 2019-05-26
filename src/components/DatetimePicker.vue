@@ -2,6 +2,7 @@
 * @Description:    日期、时间选择器
 * @Author:         TSY
 * @CreateDate:     2019/5/17 16:22
+* @Email:          t@tsy6.com
 */
 <template>
     <div class="calendar" v-show="isShowDatetimePicker" @click="close">
@@ -94,7 +95,6 @@
             }
         },
         mounted() {
-            this.initDom();
             this.initTimeArray();
             this.today();
         },
@@ -309,7 +309,7 @@
             show() {
                 this.isShowDatetimePicker = true;
                 this.$nextTick(() => {
-                    this.calendarHeight = document.querySelector('.calendar_group_li').clientHeight;
+                    this.initDom();
                 })
             },
             close() {
@@ -410,7 +410,7 @@
 </script>
 
 <style lang="stylus" scoped>
-    @import "../../style/common.styl"
+    @import "../style/common.styl"
 
     .calendar {
         position fixed

@@ -1,4 +1,4 @@
-# vue-datetime-picker
+# vue-hash-calendar
 
 
 
