@@ -5,7 +5,7 @@
 * @CreateDate:     2019/5/26 22:53
 */
 <template>
-    <div class="calendar_body">
+    <div class="calendar_body" v-show="show">
         <div class="calendar_week">
             <div class="calendar_item" v-for="item in calendarWeek" :key="item">
                 <p class="calendar_day">{{ item }}</p>
@@ -30,6 +30,10 @@
 <script>
     export default {
         name: "Calendar",
+        props: {
+            defaultDate: null,
+            show: true
+        },
         data() {
             return {
                 yearOfCurrentShow: new Date().getFullYear(),//当前日历展示的年份
@@ -47,13 +51,7 @@
                 lastMonth: null,//上个月的月份
                 nextMonthYear: null,//下个月的年份
                 nextMonth: null,//下个月的月份
-                currentDay: new Date().getDate(),//默认选中的日期
-                isCurrentYearMonth: true,//日历显示的年月是否与选中的日期一致
-                checkedDate: {
-                    year: new Date().getFullYear(),
-                    month: new Date().getMonth(),
-                    day: new Date().getDate()
-                },//被选中的日期
+                checkedDate: {},//被选中的日期
                 startY: 0,//touchstart,Y轴坐标
                 startUp: 0,//滑动开始前，日历dom与顶部的偏移量
                 endUp: 0,//滑动结束后，日历dom与顶部的偏移量
@@ -62,15 +60,31 @@
             }
         },
         mounted() {
-            this.today();
-            this.initDom();
+
         },
         watch: {
+            defaultDate(val) {
+                if (!(val instanceof Date)) {
+                    throw new Error(`The calendar component's defaultDate must be date type!`);
+                    return
+                }
+                this.$set(this.checkedDate, 'day', val.getDate())
+                this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth());
+            },
             checkedDate: {
                 handler(val) {
-                    this.$emit('input', val);
+                    this.$emit('confirm', val);
                 },
                 deep: true
+            },
+            show: {
+                handler(val) {
+                    if (val) {
+                        this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month);
+                        this.initDom();
+                    }
+                },
+                immediate: true
             }
         },
         computed: {
@@ -89,19 +103,17 @@
                 })
             },
             today() {//今天
-                this.currentDay = new Date().getDate();
-                this.isCurrentYearMonth = true;
-
                 this.calculateCalendarOfThreeMonth();
             },
             //计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息
             calculateCalendarOfThreeMonth(year = new Date().getFullYear(), month = new Date().getMonth(), flag = 0) {
                 let day = this.checkedDate.day;
                 if (day > 30 || (day > 28 && month === 1)) {
-                    this.checkedDate.day = this.daysOfMonth(year)[month];
+                    this.$set(this.checkedDate, 'day', this.daysOfMonth(year)[month])
+
                 }
-                this.checkedDate.year = year;
-                this.checkedDate.month = month;
+                this.$set(this.checkedDate, 'year', year)
+                this.$set(this.checkedDate, 'month', month)
 
                 this.lastMonthYear = month === 0 ? year - 1 : year;//上个月的年份
                 this.lastMonth = month === 0 ? 11 : month - 1;//上个月的月份
@@ -184,9 +196,9 @@
             clickCalendarDay(date) {//点击日历上的日期
                 if (!date) return;
 
-                this.checkedDate.year = date.year;
-                this.checkedDate.month = date.month;
-                this.checkedDate.day = date.day;
+                this.$set(this.checkedDate, 'year', date.year)
+                this.$set(this.checkedDate, 'month', date.month)
+                this.$set(this.checkedDate, 'day', date.day)
 
                 if (date.month === this.lastMonth && date.year === this.lastMonthYear) {
                     this.getLastMonth();

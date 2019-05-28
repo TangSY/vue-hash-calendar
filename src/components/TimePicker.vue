@@ -5,7 +5,7 @@
 * @CreateDate:     2019/5/26 22:53
 */
 <template>
-    <div class="time_body">
+    <div class="time_body" v-show="show">
         <div class="time_group">
             <div class="time_content" :id="'time' + index" v-for="(item, index) in timeArray" :key="index"
                  @touchstart.stop.prevent="timeTouchStart"
@@ -22,6 +22,10 @@
 <script>
     export default {
         name: "TimePicker",
+        props: {
+            defaultTime: null,
+            show: false
+        },
         data() {
             return {
                 checkedDate: {
@@ -34,15 +38,32 @@
             }
         },
         mounted() {
-            this.initTimeArray();
+
         },
         computed: {},
         watch: {
+            defaultTime(val) {
+                if (!(val instanceof Date)) {
+                    throw new Error(`The calendar component's defaultTime must be date type!`);
+                    return
+                }
+                this.$set(this.checkedDate, 'hours', val.getHours())
+                this.$set(this.checkedDate, 'minutes', val.getMinutes())
+            },
             checkedDate: {
                 handler(val) {
-                    this.$emit('input', val);
+                    console.log(val,'time')
+                    this.$emit('confirm', val);
                 },
                 deep: true
+            },
+            show: {
+                handler(val) {
+                    if (val) {
+                        this.initTimeArray();
+                    }
+                },
+                immediate: true
             }
         },
         filters: {
@@ -119,10 +140,10 @@
                 }
                 if (index === 0) {
                     let hour = 2 - up / timeHeight;
-                    this.checkedDate.hours = hour;
+                    this.$set(this.checkedDate, 'hours', hour)
                 } else {
                     let minute = 2 - up / timeHeight;
-                    this.checkedDate.minutes = minute;
+                    this.$set(this.checkedDate, 'minutes', minute)
                 }
                 e.currentTarget.style.webkitTransition = 'transform 300ms';
                 e.currentTarget.style.webkitTransform = 'translate3d(0px,' + up + 'px,0px)';

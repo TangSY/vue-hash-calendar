@@ -10,16 +10,15 @@
             <div class="calendar_title">
                 <div class="calendar_title_date">
                     <span class="calendar_title_date_year" :class="{'calendar_title_date_active': isShowCalendar}"
-                          @click="showCalendar">{{ `${checkedDate.year}年${checkedDate.month + 1}月${checkedDate.day}日`
-                        }}</span>
+                          @click="showCalendar">{{ `${checkedDate.year}年${checkedDate.month + 1}月${checkedDate.day}日`}}</span>
                     <span class="calendar_title_date_time" :class="{'calendar_title_date_active': !isShowCalendar}"
                           @click="showTime">{{ `${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`
                         }}</span>
                 </div>
                 <div class="calendar_confirm" @click="confirm">确定</div>
             </div>
-            <calendar v-show="isShowCalendar" v-model="calendarDate"></calendar>
-            <time-picker v-show="!isShowCalendar" v-model="timeDate"></time-picker>
+            <calendar :show="isShowCalendar" :default-date="defaultDatetime" @confirm="dateConfirm"></calendar>
+            <time-picker :show="!isShowCalendar" :default-time="defaultDatetime" @confirm="timeConfirm"></time-picker>
         </div>
     </div>
 </template>
@@ -37,30 +36,24 @@
         data() {
             return {
                 checkedDate: {
-                    year: new Date().getFullYear(),
-                    month: new Date().getMonth(),
-                    day: new Date().getDate(),
                     hours: new Date().getHours(),
                     minutes: new Date().getMinutes()
                 },//被选中的日期
-                calendarDate: {},//日历组件中选中的日期
+                defaultDatetime: new Date(),
                 timeDate: {},//时间组件中选中的日期
                 isShowDatetimePicker: false,//是否显示日期控件
                 isShowCalendar: true,//是否显示日历选择控件
             }
         },
         mounted() {
-
+            this.defaultDatetime = new Date('2018-01-01 12:03');
+            this.checkedDate.year = this.defaultDatetime.getFullYear();
+            this.checkedDate.month = this.defaultDatetime.getMonth();
+            this.checkedDate.day = this.defaultDatetime.getDate();
+            this.checkedDate.hours = this.defaultDatetime.getHours();
+            this.checkedDate.minutes = this.defaultDatetime.getMinutes();
         },
         watch: {
-            calendarDate: {
-                handler(date) {
-                    this.checkedDate.year = date.year;
-                    this.checkedDate.month = date.month;
-                    this.checkedDate.day = date.day;
-                },
-                deep: true
-            },
             timeDate: {
                 handler(time) {
                     this.checkedDate.hours = time.hours;
@@ -69,7 +62,31 @@
                 deep: true
             }
         },
+        updated() {
+            console.log(this.checkedDate.day, 'update')
+        },
         methods: {
+            dateConfirm(date) {
+//                console.log(date,'date')
+                date.hours = this.checkedDate.hours;
+                date.minutes = this.checkedDate.minutes;
+                this.checkedDate = date;
+//                this.$set(this.checkedDate, 'year', date.year)
+//                this.$set(this.checkedDate, 'month', date.month)
+//                this.$set(this.checkedDate, 'day', date.day)
+//                console.log(this.checkedDate.day)
+            },
+            timeConfirm(date) {
+//                console.log(date,'date')
+                date.year = this.checkedDate.year;
+                date.month = this.checkedDate.month;
+                date.day = this.checkedDate.day;
+                this.checkedDate = date;
+//                this.$set(this.checkedDate, 'hours', date.hours)
+//                this.$set(this.checkedDate, 'minutes', date.minutes)
+//                this.$set(this.checkedDate, 'day', date.day)
+//                console.log(this.checkedDate.day)
+            },
             confirm() {//确认选择时间
                 this.$emit('confirm', new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} `));
                 this.close();
