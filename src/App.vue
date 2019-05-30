@@ -6,7 +6,12 @@
 */
 <template>
     <div class="body">
-        <datetime-picker ref="picker"></datetime-picker>
+        <datetime-picker
+                ref="picker"
+                :default-datetime="defaultDatetime"
+                format="YY/MM/DD hh:mm"
+                @confirm="dateConfirm"
+        ></datetime-picker>
     </div>
 </template>
 
@@ -20,13 +25,17 @@
         data() {
             return {
                 isShowTips: false,//是否显示下载提示
+                defaultDatetime: new Date()
             }
         },
         mounted() {
+            this.defaultDatetime = new Date('2018-01-01 12:04');
             this.$refs.picker.show();
         },
         methods: {
-
+            dateConfirm(date) {
+                console.log(date,'confirm')
+            }
         }
     }
 </script>

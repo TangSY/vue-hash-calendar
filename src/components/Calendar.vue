@@ -63,13 +63,15 @@
 
         },
         watch: {
-            defaultDate(val) {
-                if (!(val instanceof Date)) {
-                    throw new Error(`The calendar component's defaultDate must be date type!`);
-                    return
+            defaultDate: {
+                handler(val) {
+                    if (!(val instanceof Date)) {
+                        throw new Error(`The calendar component's defaultDate must be date type!`);
+                        return
+                    }
+                    this.$set(this.checkedDate, 'day', val.getDate())
+                    this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth());
                 }
-                this.$set(this.checkedDate, 'day', val.getDate())
-                this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth());
             },
             checkedDate: {
                 handler(val) {

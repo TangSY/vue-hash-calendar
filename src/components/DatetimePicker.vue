@@ -26,8 +26,13 @@
 <script>
     import Calendar from "./Calendar.vue";
     import TimePicker from "./TimePicker.vue";
+    import {formatDate} from "../utils/util"
 
     export default {
+        props: {
+            defaultDatetime: null,
+            format: null
+        },
         components: {
             TimePicker,
             Calendar
@@ -36,30 +41,25 @@
         data() {
             return {
                 checkedDate: {
+                    year: new Date().getFullYear(),
+                    month: new Date().getMonth(),
+                    day: new Date().getDate(),
                     hours: new Date().getHours(),
                     minutes: new Date().getMinutes()
                 },//被选中的日期
-                defaultDatetime: new Date(),
-                timeDate: {},//时间组件中选中的日期
                 isShowDatetimePicker: false,//是否显示日期控件
                 isShowCalendar: true,//是否显示日历选择控件
             }
         },
         mounted() {
-            this.defaultDatetime = new Date('2018-01-01 12:03');
-            this.checkedDate.year = this.defaultDatetime.getFullYear();
-            this.checkedDate.month = this.defaultDatetime.getMonth();
-            this.checkedDate.day = this.defaultDatetime.getDate();
-            this.checkedDate.hours = this.defaultDatetime.getHours();
-            this.checkedDate.minutes = this.defaultDatetime.getMinutes();
+
         },
         watch: {
-            timeDate: {
-                handler(time) {
-                    this.checkedDate.hours = time.hours;
-                    this.checkedDate.minutes = time.minutes;
-                },
-                deep: true
+            defaultDatetime(val) {
+                if (!(val instanceof Date)) {
+                    throw new Error(`The calendar component's defaultDate must be date type!`);
+                    return
+                }
             }
         },
         updated() {
@@ -67,7 +67,6 @@
         },
         methods: {
             dateConfirm(date) {
-//                console.log(date,'date')
                 date.hours = this.checkedDate.hours;
                 date.minutes = this.checkedDate.minutes;
                 this.checkedDate = date;
@@ -88,12 +87,15 @@
 //                console.log(this.checkedDate.day)
             },
             confirm() {//确认选择时间
-                this.$emit('confirm', new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} `));
+                let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`);
+                if (this.format) {
+                    date = formatDate(date, this.format);
+                }
+                this.$emit('confirm', date);
                 this.close();
             },
             show() {
                 this.isShowDatetimePicker = true;
-
             },
             close() {
                 this.isShowDatetimePicker = false;

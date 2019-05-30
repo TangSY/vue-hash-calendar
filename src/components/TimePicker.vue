@@ -52,7 +52,6 @@
             },
             checkedDate: {
                 handler(val) {
-                    console.log(val,'time')
                     this.$emit('confirm', val);
                 },
                 deep: true
