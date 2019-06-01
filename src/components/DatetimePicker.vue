@@ -12,12 +12,12 @@
                     <span class="calendar_title_date_year" :class="{'calendar_title_date_active': isShowCalendar}"
                           @click="showCalendar">{{ `${checkedDate.year}年${checkedDate.month + 1}月${checkedDate.day}日`}}</span>
                     <span class="calendar_title_date_time" :class="{'calendar_title_date_active': !isShowCalendar}"
-                          @click="showTime">{{ `${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`
-                        }}</span>
+                          @click="showTime">{{ `${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`}}</span>
                 </div>
                 <div class="calendar_confirm" @click="confirm">确定</div>
             </div>
-            <calendar :show="isShowCalendar" :default-date="defaultDatetime" @confirm="dateConfirm"></calendar>
+            <calendar :show="isShowCalendar" :default-date="defaultDatetime" :week-start="weekStart"
+                      @confirm="dateConfirm"></calendar>
             <time-picker :show="!isShowCalendar" :default-time="defaultDatetime" @confirm="timeConfirm"></time-picker>
         </div>
     </div>
@@ -30,8 +30,15 @@
 
     export default {
         props: {
-            defaultDatetime: null,
-            format: null
+            defaultDatetime: {
+                type: Date,
+                default: new Date()
+            },
+            format: null,
+            weekStart: {
+                type: String,
+                default: 'Sunday'
+            }
         },
         components: {
             TimePicker,
@@ -63,7 +70,7 @@
             }
         },
         updated() {
-            console.log(this.checkedDate.day, 'update')
+//            console.log(this.checkedDate.day, 'update')
         },
         methods: {
             dateConfirm(date) {

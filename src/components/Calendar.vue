@@ -12,11 +12,14 @@
             </div>
         </div>
         <div class="calendar_group" :style="{'height': calendarGroupHeight}">
-            <ul :style="{'webkitTransform': calendarGroupTransform}" @touchstart="touchStart" @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
+            <ul :style="{'webkitTransform': calendarGroupTransform}" @touchstart="touchStart"
+                @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonth" :key="i">
                     <div class="calendar_item" v-for="(date, j) in item" :key="i + j"
                          @click="clickCalendarDay(date)">
-                        <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)" class="calendar_day calendar_first_today" :class="{'calendar_day_checked': isCheckedDay(date)}">{{ date.month + 1 }}<span>月</span></p>
+                        <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
+                           class="calendar_day calendar_first_today"
+                           :class="{'calendar_day_checked': isCheckedDay(date)}">{{ date.month + 1 }}<span>月</span></p>
                         <p v-else class="calendar_day"
                            :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i)}">
                             {{ date.day }}</p>
@@ -31,8 +34,15 @@
     export default {
         name: "Calendar",
         props: {
-            defaultDate: null,
-            show: true
+            defaultDate: {
+                type: Date,
+                default: new Date()
+            },
+            show: true,
+            weekStart: {
+                type: String,
+                default: 'Sunday'
+            }
         },
         data() {
             return {
@@ -41,6 +51,7 @@
                 yearOfToday: new Date().getFullYear(),//今天所在的年份
                 monthOfToday: new Date().getMonth(),//今天所在的月份
                 dayOfToday: new Date().getDate(),//今天所在的日期
+                weekArray: ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'],//星期数组
                 calendarWeek: ['日', '一', '二', '三', '四', '五', '六'],//日历对应的星期
                 calendarOfMonth: [],//月份对应的日历表
                 calendarDaysTotalLength: 42,//日历表展示的总天数  6行7列
@@ -57,12 +68,18 @@
                 endUp: 0,//滑动结束后，日历dom与顶部的偏移量
                 calendarHeight: 0,//单个日历DOM高度
                 calendarDom: null,//日历容器DOM
+                weekStartIndex: 0,//日历第一天星期名称的index
             }
         },
         mounted() {
-
+            this.weekStartIndex = this.weekArray.indexOf(this.weekStart.toLowerCase());
+            let newCalendarWeek = this.calendarWeek.slice(this.weekStartIndex, this.calendarWeek.length).concat(this.calendarWeek.slice(0, this.weekStartIndex));
+            this.calendarWeek = newCalendarWeek;
         },
         watch: {
+            weekStartIndex() {
+                this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month);
+            },
             defaultDate: {
                 handler(val) {
                     if (!(val instanceof Date)) {
@@ -71,7 +88,8 @@
                     }
                     this.$set(this.checkedDate, 'day', val.getDate())
                     this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth());
-                }
+                },
+                immediate: true
             },
             checkedDate: {
                 handler(val) {
@@ -150,17 +168,20 @@
                 let nextMonthYear = month === 11 ? year + 1 : year;//下个月的年份
                 let nextMonth = month === 11 ? 0 : month + 1;//下个月的月份
 
-                //如果当月第一天不是星期天，则在前面补齐上个月的日期
+                //如果当月第一天不是指定的开始星期名称，则在前面补齐上个月的日期
                 let dayOfWeek = this.getDayOfWeek(year, month);
-                if (dayOfWeek > 0) {
-                    let lastMonthDays = this.daysOfMonth(year)[lastMonth];//上个月的总天数
-                    for (let i = 0; i < dayOfWeek; i++) {
-                        calendarOfCurrentMonth.push({
-                            year: lastMonthYear,
-                            month: lastMonth,
-                            day: lastMonthDays - (dayOfWeek - 1 - i)
-                        });
-                    }
+                let lastMonthDays = this.daysOfMonth(year)[lastMonth];//上个月的总天数
+                if (dayOfWeek < this.weekStartIndex) {
+                    dayOfWeek = 7 - this.weekStartIndex + dayOfWeek
+                } else {
+                    dayOfWeek -= this.weekStartIndex
+                }
+                for (let i = 0; i < dayOfWeek; i++) {
+                    calendarOfCurrentMonth.push({
+                        year: lastMonthYear,
+                        month: lastMonth,
+                        day: lastMonthDays - (dayOfWeek - 1 - i)
+                    });
                 }
 
                 //当月日期

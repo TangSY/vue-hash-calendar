@@ -10,6 +10,7 @@
                 ref="picker"
                 :default-datetime="defaultDatetime"
                 format="YY/MM/DD hh:mm"
+                week-start="sunday"
                 @confirm="dateConfirm"
         ></datetime-picker>
     </div>
@@ -29,7 +30,7 @@
             }
         },
         mounted() {
-            this.defaultDatetime = new Date('2018-01-01 12:04');
+//            this.defaultDatetime = new Date('2018-01-01 12:04');
             this.$refs.picker.show();
         },
         methods: {
