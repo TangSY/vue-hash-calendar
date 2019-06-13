@@ -1,6 +1,6 @@
 /**
 * @Description:    日历组件
-* @Author:         TSY 
+* @Author:         TSY
 * @Email:          t@tsy6.com
 * @CreateDate:     2019/5/26 22:53
 */
@@ -11,10 +11,11 @@
                 <p class="calendar_day">{{ item }}</p>
             </div>
         </div>
-        <div class="calendar_group" :style="{'height': calendarGroupHeight}">
-            <ul :style="{'webkitTransform': calendarGroupTransform}" @touchstart="touchStart"
+        <div class="calendar_group" :style="{'height': calendarGroupHeight}" ref="calendar">
+            <ul :style="{'transform': `translate3d(0, ${-translateX*100}%, 0)`}" @touchstart="touchStart"
                 @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
-                <li class="calendar_group_li" v-for="(item, i) in calendarOfMonth" :key="i">
+                <li class="calendar_group_li" v-for="(item, i) in calendarOfMonth" :key="i"
+                    :style="{transform: `translate3d(0, ${(i-1+translateX + (isTouching ? touch.y : 0))*100}%, 0)`,transitionDuration: isTouching ? '0s' : '.3s',}">
                     <div class="calendar_item" v-for="(date, j) in item" :key="i + j"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
@@ -31,6 +32,8 @@
 </template>
 
 <script>
+    let touchStartPosition;
+    let touchEndPosition;
     export default {
         name: "Calendar",
         props: {
@@ -55,20 +58,19 @@
                 calendarWeek: ['日', '一', '二', '三', '四', '五', '六'],//日历对应的星期
                 calendarOfMonth: [],//月份对应的日历表
                 calendarDaysTotalLength: 42,//日历表展示的总天数  6行7列
-                calendarIndex: 0,//记录日历当前滑动到的index
-                calendarMoveMaxIndex: 0,//记录日历向上滑动的最大index
-                calendarMoveMinIndex: 0,//记录日历向下滑动的最大index
                 lastMonthYear: null,//上个月的年份
                 lastMonth: null,//上个月的月份
                 nextMonthYear: null,//下个月的年份
                 nextMonth: null,//下个月的月份
                 checkedDate: {},//被选中的日期
-                startY: 0,//touchstart,Y轴坐标
-                startUp: 0,//滑动开始前，日历dom与顶部的偏移量
-                endUp: 0,//滑动结束后，日历dom与顶部的偏移量
-                calendarHeight: 0,//单个日历DOM高度
-                calendarDom: null,//日历容器DOM
                 weekStartIndex: 0,//日历第一天星期名称的index
+                translateX: 0,
+                touch: {
+                    x: 0,
+                    y: 0,
+                },
+                isTouching: false,
+                calendarGroupHeight: '0px',
             }
         },
         mounted() {
@@ -107,33 +109,25 @@
                 immediate: true
             }
         },
-        computed: {
-            calendarGroupTransform() {
-                return `translate(0px,-${this.calendarHeight}px)`
-            },
-            calendarGroupHeight() {
-                return `${this.calendarHeight}px`
-            }
-        },
+        computed: {},
         methods: {
             initDom() {//初始化日历dom
                 this.$nextTick(() => {
-                    this.calendarHeight = document.querySelector('.calendar_group_li').clientHeight;
-                    this.calendarDom = document.querySelector('.calendar_group ul');
+                    this.calendarGroupHeight = `${document.querySelector('.calendar_item').clientHeight * 6}px`;
                 })
             },
             today() {//今天
                 this.calculateCalendarOfThreeMonth();
             },
             //计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息
-            calculateCalendarOfThreeMonth(year = new Date().getFullYear(), month = new Date().getMonth(), flag = 0) {
+            calculateCalendarOfThreeMonth(year = new Date().getFullYear(), month = new Date().getMonth()) {
                 let day = this.checkedDate.day;
                 if (day > 30 || (day > 28 && month === 1)) {
                     this.$set(this.checkedDate, 'day', this.daysOfMonth(year)[month])
 
                 }
-                this.$set(this.checkedDate, 'year', year)
-                this.$set(this.checkedDate, 'month', month)
+                this.$set(this.checkedDate, 'year', year);
+                this.$set(this.checkedDate, 'month', month);
 
                 this.lastMonthYear = month === 0 ? year - 1 : year;//上个月的年份
                 this.lastMonth = month === 0 ? 11 : month - 1;//上个月的月份
@@ -144,21 +138,8 @@
                 let secondMonth = this.calculateCalendarOfMonth(year, month);
                 let thirdMonth = this.calculateCalendarOfMonth(this.nextMonthYear, this.nextMonth);
 
-                if (flag === -1) {
-                    if (this.calendarOfMonth.length - this.calendarMoveMaxIndex + this.calendarMoveMinIndex === 3) return;
-                    this.$nextTick(() => {
-                        let up = this.startUp;
-                        this.calendarDom.style.webkitTransition = 'transform 0ms';
-                        this.calendarDom.style.webkitTransform = 'translate(0px,' + up + 'px)';
-                        this.calendarOfMonth.unshift(firstMonth);
-                    })
-                } else if (flag === 1) {
-                    if (this.calendarOfMonth.length - this.calendarMoveMaxIndex + this.calendarMoveMinIndex === 3) return;
-                    this.calendarOfMonth.push(thirdMonth);
-                } else {
-                    this.calendarOfMonth = [];
-                    this.calendarOfMonth.push(firstMonth, secondMonth, thirdMonth);
-                }
+                this.calendarOfMonth = [];
+                this.calendarOfMonth.push(firstMonth, secondMonth, thirdMonth);
             },
             calculateCalendarOfMonth(year = new Date().getFullYear(), month = new Date().getMonth()) {//计算每个月的日历
                 let calendarOfCurrentMonth = [];
@@ -225,15 +206,9 @@
 
                 if (date.month === this.lastMonth && date.year === this.lastMonthYear) {
                     this.getLastMonth();
-                    let up = this.startUp + this.calendarHeight;
-                    this.calendarDom.style.webkitTransition = 'transform 300ms';
-                    this.calendarDom.style.webkitTransform = 'translate(0px,' + up + 'px)';
                 }
                 if (date.month === this.nextMonth && date.year === this.nextMonthYear) {
                     this.getNextMonth();
-                    let up = this.startUp - this.calendarHeight;
-                    this.calendarDom.style.webkitTransition = 'transform 300ms';
-                    this.calendarDom.style.webkitTransform = 'translate(0px,' + up + 'px)';
                 }
             },
             isToday(date) {//该日期是否为今天
@@ -246,66 +221,49 @@
                 let dateOfCurrentShow = this.calendarOfMonth[index][15];//本月中间的日期一定为本月
                 return date.year !== dateOfCurrentShow.year || date.month !== dateOfCurrentShow.month
             },
-            touchStart(e) {//监听手指开始滑动事件
-                this.startY = e.changedTouches[0].pageY;
-                let transform = e.currentTarget.style.webkitTransform;
-                if (transform) {
-                    this.startUp = parseFloat(e.currentTarget.style.webkitTransform.split(' ')[1].split('px')[0]);
-                }
+            touchStart(event) {//监听手指开始滑动事件
+                touchStartPosition = event.touches[0].clientX;
+                touchEndPosition = event.touches[0].clientY;
+                this.touch = {
+                    x: 0,
+                    y: 0,
+                };
+                this.isTouching = true;
             },
-            touchMove(e) {//监听手指移动事件
-                this.moveEndY = e.changedTouches[0].pageY;
-                let Y = this.moveEndY - this.startY;
-
-                e.currentTarget.style.webkitTransform = 'translate(0px,' + (Y + this.startUp) + 'px)';
+            touchMove(event) {//监听手指移动事件
+                this.touch = {
+                    x: (event.touches[0].clientX - touchStartPosition) / this.$refs.calendar.offsetWidth,
+                    y: (event.touches[0].clientY - touchEndPosition) / this.$refs.calendar.offsetHeight,
+                };
             },
             touchEnd(e) {//监听touch结束事件
-                let transform = e.currentTarget.style.webkitTransform;
-                if (transform) {
-                    this.endUp = parseFloat(e.currentTarget.style.webkitTransform.split(' ')[1].split('px')[0]);
-                }
-                let distance = Math.abs(this.endUp - this.startUp),
-                    halfWinWith = this.calendarHeight / 2,
-                    up = this.startUp;
-                if (this.endUp <= this.startUp) {
-                    // 向上滑动 未过临界值
-                    if (distance <= halfWinWith) {
-                        up = this.startUp;
-                    } else {
-                        up = this.startUp - this.calendarHeight;
+                this.isTouching = false;
+                if (Math.abs(this.touch.y) > Math.abs(this.touch.x) && Math.abs(this.touch.y * this.$refs.calendar.offsetWidth) > 20) {
+                    if (this.touch.y > 0) {
+                        this.getLastMonth();
+                    } else if (this.touch.y < 0) {
                         this.getNextMonth();
                     }
                 } else {
-                    // 向下滑动 未过临界值
-                    if (distance <= halfWinWith) {
-                        up = this.startUp;
-                    } else {
-                        up = this.startUp + this.calendarHeight;
-                        this.getLastMonth();
-                    }
+                    this.touch = {
+                        x: 0,
+                        y: 0,
+                    };
                 }
-                e.currentTarget.style.webkitTransition = 'transform 300ms';
-                e.currentTarget.style.webkitTransform = 'translate(0px,' + up + 'px)';
             },
             getLastMonth() {//获取上个月日历
-                this.calendarIndex--;
-                if (this.calendarIndex < this.calendarMoveMinIndex) {
-                    this.calendarMoveMinIndex = this.calendarIndex;
-                }
+                this.translateX += 1;
 
                 this.yearOfCurrentShow = this.lastMonthYear;
                 this.monthOfCurrentShow = this.lastMonth;
-                this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow, -1);
+                this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             },
             getNextMonth() {//获取下个月日历
-                this.calendarIndex++;
-                if (this.calendarIndex > this.calendarMoveMaxIndex) {
-                    this.calendarMoveMaxIndex = this.calendarIndex;
-                }
+                this.translateX -= 1;
 
                 this.yearOfCurrentShow = this.nextMonthYear;
                 this.monthOfCurrentShow = this.nextMonth;
-                this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow, 1);
+                this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             }
         }
     }
@@ -332,15 +290,30 @@
     }
 
     .calendar_group {
-        margin-top px2vw(80px)
+        position absolute
+        top px2vw(80px)
+        left 0
+        bottom 0
+        right 0
         overflow hidden
     }
 
+    .calendar_group ul {
+        height 100%
+    }
+
     .calendar_group_li {
+        position absolute
+        top 0
+        left 0
+        bottom 0
+        right 0
+        height 100%
         width 100%
         flexAlign()
         flex-wrap wrap
         background white
+        will-change transform
     }
 
     .calendar_item {

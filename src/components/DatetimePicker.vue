@@ -138,7 +138,7 @@
         width 100%
         left 0
         bottom 0
-        flexAlign()
+        display flex
         padding-bottom px2vw(26px)
         flex-wrap wrap
         background white
