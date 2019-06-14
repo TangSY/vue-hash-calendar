@@ -8,7 +8,7 @@
     <div class="body">
         <datetime-picker
                 ref="picker"
-                model="dialog"
+                model="inline"
                 :default-datetime="defaultDatetime"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"

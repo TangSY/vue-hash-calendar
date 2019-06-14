@@ -14,7 +14,7 @@
                     <span class="calendar_title_date_time" :class="{'calendar_title_date_active': !isShowCalendar}"
                           @click="showTime">{{ `${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`}}</span>
                 </div>
-                <div class="calendar_confirm" @click="confirm">确定</div>
+                <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
             <calendar :show="isShowCalendar" :default-date="defaultDatetime" :week-start="weekStart"
                       @confirm="dateConfirm"></calendar>
@@ -73,6 +73,13 @@
                     throw new Error(`The calendar component's defaultDate must be date type!`);
                     return
                 }
+            },
+            checkedDate: {
+                handler(date) {
+                    if (this.model !== 'inline') return;
+                    this.confirm();
+                },
+                deep: true
             }
         },
         updated() {
@@ -105,7 +112,9 @@
                     date = formatDate(date, this.format);
                 }
                 this.$emit('confirm', date);
-                this.close();
+                if (this.model === 'dialog') {
+                    this.close();
+                }
             },
             show() {
                 this.isShowDatetimePicker = true;
