@@ -42,19 +42,23 @@
         },
         computed: {},
         watch: {
-            defaultTime(val) {
-                if (!(val instanceof Date)) {
-                    throw new Error(`The calendar component's defaultTime must be date type!`);
-                    return
-                }
-                this.$set(this.checkedDate, 'hours', val.getHours())
-                this.$set(this.checkedDate, 'minutes', val.getMinutes())
+            defaultTime: {
+                handler(val) {
+                    if (!(val instanceof Date)) {
+                        throw new Error(`The calendar component's defaultTime must be date type!`);
+                        return
+                    }
+                    this.$set(this.checkedDate, 'hours', val.getHours())
+                    this.$set(this.checkedDate, 'minutes', val.getMinutes())
+                },
+                immediate: true
             },
             checkedDate: {
                 handler(val) {
                     this.$emit('confirm', val);
                 },
-                deep: true
+                deep: true,
+                immediate: true
             },
             show: {
                 handler(val) {
@@ -168,6 +172,7 @@
         align-items flex-start
         justify-content center
         height px2vw(360px)
+        margin-top px2vw(100px)
         overflow hidden
     }
 

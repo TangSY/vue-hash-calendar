@@ -8,11 +8,12 @@
     <div class="body">
         <datetime-picker
                 ref="picker"
+                model="dialog"
                 :default-datetime="defaultDatetime"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"
-                @confirm="dateConfirm"
-        ></datetime-picker>
+                @confirm="dateConfirm">
+        </datetime-picker>
     </div>
 </template>
 
@@ -26,7 +27,7 @@
         data() {
             return {
                 isShowTips: false,//是否显示下载提示
-                defaultDatetime: new Date()
+                defaultDatetime: new Date('2018-01-01 12:04')
             }
         },
         mounted() {

@@ -5,7 +5,7 @@
 * @Email:          t@tsy6.com
 */
 <template>
-    <div class="calendar" v-show="isShowDatetimePicker" @click="close">
+    <div class="calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker" @click="close">
         <div class="calendar_content" @click.stop>
             <div class="calendar_title">
                 <div class="calendar_title_date">
@@ -38,6 +38,10 @@
             weekStart: {
                 type: String,
                 default: 'Sunday'
+            },
+            model: {
+                type: String,
+                default: 'dialog'
             }
         },
         components: {
@@ -59,7 +63,9 @@
             }
         },
         mounted() {
-
+            if (this.model === 'inline') {
+                this.isShowDatetimePicker = true;
+            }
         },
         watch: {
             defaultDatetime(val) {
@@ -131,6 +137,15 @@
         left 0
         background rgba(0, 0, 0, .6)
         z-index 999
+    }
+
+    .calendar_inline {
+        position relative
+        width 100%
+        height auto
+        background none
+        height px2vw(650px)
+        z-index 1
     }
 
     .calendar_content {

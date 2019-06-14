@@ -12,11 +12,11 @@
             </div>
         </div>
         <div class="calendar_group" :style="{'height': calendarGroupHeight}" ref="calendar">
-            <ul :style="{'transform': `translate3d(0, ${-translateX*100}%, 0)`}" @touchstart="touchStart"
+            <ul :style="{'transform': `translate3d(0, ${-translateIndex*100}%, 0)`}" @touchstart="touchStart"
                 @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonth" :key="i"
-                    :style="{transform: `translate3d(0, ${(i-1+translateX + (isTouching ? touch.y : 0))*100}%, 0)`,transitionDuration: isTouching ? '0s' : '.3s',}">
-                    <div class="calendar_item" v-for="(date, j) in item" :key="i + j"
+                    :style="{transform: `translate3d(0, ${(i-1+translateIndex + (isTouching ? touch.y : 0))*100}%, 0)`,transitionDuration: isTouching ? '0s' : '.3s',}">
+                    <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
                            class="calendar_day calendar_first_today"
@@ -32,8 +32,6 @@
 </template>
 
 <script>
-    let touchStartPosition;
-    let touchEndPosition;
     export default {
         name: "Calendar",
         props: {
@@ -64,13 +62,15 @@
                 nextMonth: null,//下个月的月份
                 checkedDate: {},//被选中的日期
                 weekStartIndex: 0,//日历第一天星期名称的index
-                translateX: 0,
+                translateIndex: 0,//用于计算上下偏移的距离
                 touch: {
                     x: 0,
                     y: 0,
-                },
-                isTouching: false,
+                },//本次touch事件，横向，纵向滑动的距离
+                isTouching: false,//是否正在滑动
                 calendarGroupHeight: '0px',
+                touchStartPositionX: null,//开始滑动x轴的值
+                touchStartPositionY: null,//开始滑动时y轴的值
             }
         },
         mounted() {
@@ -97,7 +97,8 @@
                 handler(val) {
                     this.$emit('confirm', val);
                 },
-                deep: true
+                deep: true,
+                immediate: true
             },
             show: {
                 handler(val) {
@@ -113,7 +114,7 @@
         methods: {
             initDom() {//初始化日历dom
                 this.$nextTick(() => {
-                    this.calendarGroupHeight = `${document.querySelector('.calendar_item').clientHeight * 6}px`;
+                    this.calendarGroupHeight = `${this.$refs.calendarItem[0].offsetHeight * 6}px`;
                 })
             },
             today() {//今天
@@ -222,8 +223,8 @@
                 return date.year !== dateOfCurrentShow.year || date.month !== dateOfCurrentShow.month
             },
             touchStart(event) {//监听手指开始滑动事件
-                touchStartPosition = event.touches[0].clientX;
-                touchEndPosition = event.touches[0].clientY;
+                this.touchStartPositionX = event.touches[0].clientX;
+                this.touchStartPositionY = event.touches[0].clientY;
                 this.touch = {
                     x: 0,
                     y: 0,
@@ -232,8 +233,8 @@
             },
             touchMove(event) {//监听手指移动事件
                 this.touch = {
-                    x: (event.touches[0].clientX - touchStartPosition) / this.$refs.calendar.offsetWidth,
-                    y: (event.touches[0].clientY - touchEndPosition) / this.$refs.calendar.offsetHeight,
+                    x: (event.touches[0].clientX - this.touchStartPositionX) / this.$refs.calendar.offsetWidth,
+                    y: (event.touches[0].clientY - this.touchStartPositionY) / this.$refs.calendar.offsetHeight,
                 };
             },
             touchEnd(e) {//监听touch结束事件
@@ -252,14 +253,14 @@
                 }
             },
             getLastMonth() {//获取上个月日历
-                this.translateX += 1;
+                this.translateIndex += 1;
 
                 this.yearOfCurrentShow = this.lastMonthYear;
                 this.monthOfCurrentShow = this.lastMonth;
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             },
             getNextMonth() {//获取下个月日历
-                this.translateX -= 1;
+                this.translateIndex -= 1;
 
                 this.yearOfCurrentShow = this.nextMonthYear;
                 this.monthOfCurrentShow = this.nextMonth;
