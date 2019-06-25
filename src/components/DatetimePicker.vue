@@ -9,16 +9,17 @@
         <div class="calendar_content" @click.stop>
             <div class="calendar_title">
                 <div class="calendar_title_date">
-                    <span class="calendar_title_date_year" :class="{'calendar_title_date_active': isShowCalendar}"
+                    <span v-if="pickerType !== 'time'" class="calendar_title_date_year" :class="{'calendar_title_date_active': isShowCalendar}"
                           @click="showCalendar">{{ `${checkedDate.year}年${checkedDate.month + 1}月${checkedDate.day}日`}}</span>
-                    <span class="calendar_title_date_time" :class="{'calendar_title_date_active': !isShowCalendar}"
+                    <span v-if="pickerType !== 'date'" class="calendar_title_date_time" :class="{'calendar_title_date_active': !isShowCalendar}"
                           @click="showTime">{{ `${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`}}</span>
                 </div>
+                <div v-if="showTodayButton" class="calendar_confirm" @click="today">今天</div>
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
-            <calendar :show="isShowCalendar" :default-date="defaultDatetime" :week-start="weekStart"
+            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime" :week-start="weekStart"
                       @confirm="dateConfirm"></calendar>
-            <time-picker :show="!isShowCalendar" :default-time="defaultDatetime" @confirm="timeConfirm"></time-picker>
+            <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime" @confirm="timeConfirm"></time-picker>
         </div>
     </div>
 </template>
@@ -30,12 +31,20 @@
 
     export default {
         props: {
-            defaultDatetime: {
+            pickerType: {//选择器类型 datetime：日期+时间   date：日期   time：时间
+                type: String,
+                default: 'datetime'
+            },
+            showTodayButton: {//是否显示返回今日按钮
+                type: Boolean,
+                default: true
+            },
+            defaultDatetime: {//默认时间
                 type: Date,
                 default: new Date()
             },
-            format: null,
-            weekStart: {
+            format: null,//确认选择之后，返回的日期格式
+            weekStart: {//设置每周以星期几开始
                 type: String,
                 default: 'Sunday'
             },
@@ -74,6 +83,14 @@
                     return
                 }
             },
+            pickerType: {
+                handler(val) {
+                    if (val === 'time') {
+                        this.showTime();
+                    }
+                },
+                immediate: true
+            },
             checkedDate: {
                 handler(date) {
                     if (this.model !== 'inline') return;
@@ -86,6 +103,9 @@
 //            console.log(this.checkedDate.day, 'update')
         },
         methods: {
+            today() {
+                this.$refs.calendar.today();
+            },
             dateConfirm(date) {
                 date.hours = this.checkedDate.hours;
                 date.minutes = this.checkedDate.minutes;

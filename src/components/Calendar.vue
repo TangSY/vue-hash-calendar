@@ -118,6 +118,12 @@
                 })
             },
             today() {//今天
+                this.calendarDom.style.webkitTransition = 'transform 300ms';
+                this.calendarDom.style.webkitTransform = 'translate(0px,-' + this.calendarHeight + 'px)';
+                this.$set(this.checkedDate, 'day', new Date().getDate());
+                this.calendarIndex = 0;
+                this.calendarMoveMaxIndex = 0;
+                this.calendarMinMaxIndex = 0;
                 this.calculateCalendarOfThreeMonth();
             },
             //计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息

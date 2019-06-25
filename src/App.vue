@@ -12,6 +12,8 @@
                 :default-datetime="defaultDatetime"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"
+                picker-type="datetime"
+                :show-today-button="true"
                 @confirm="dateConfirm">
         </datetime-picker>
     </div>
