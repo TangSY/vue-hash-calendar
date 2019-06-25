@@ -1,8 +1,8 @@
-#按照惯例，先上效果图
+# 按照惯例，先上效果图
 
 ![效果图](https://upload-images.jianshu.io/upload_images/7412714-9cd4bb7083337299.gif?imageMogr2/auto-orient/strip)
 
-#vue-hash-calendar
+# vue-hash-calendar
 
 * 基于 vue 2.X 开发的日历组件
 * 支持手势滑动操作
@@ -16,9 +16,9 @@
 
 * 🎉 觉得好用可以给一个 star 哦~~ 🎉
 
-#github地址：[https://github.com/TangSY/vue-hash-calendar](https://github.com/TangSY/vue-hash-calendar) 
+## github地址：[https://github.com/TangSY/vue-hash-calendar](https://github.com/TangSY/vue-hash-calendar) 
 
-#API
+# API
 
 | 属性          | 说明                                                                                                   |  默认  | 是否必传 |
 | :------------ | :----------------------------------------------------------------------------------------------------- | :----: | :------: |
@@ -30,23 +30,23 @@
 | showTodayButton    | 是否显示返回今日按钮                                                          |   true    |    否    |
 | confirm | 确认选择的回调事件。当model为inline的时候没有该事件                                                            |  ---  |    否    |
 
-#Other
+## Other
 
 * 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者github提交issue。
 
 
 
-#Project setup
+## Project setup
 ```
 npm install
 ```
 
-#Compiles and hot-reloads for development
+## Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-#Compiles and minifies for production
+## Compiles and minifies for production
 ```
 npm run build
 ```
