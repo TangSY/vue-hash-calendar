@@ -118,8 +118,8 @@
                 })
             },
             today() {//今天
-                this.calendarDom.style.webkitTransition = 'transform 300ms';
-                this.calendarDom.style.webkitTransform = 'translate(0px,-' + this.calendarHeight + 'px)';
+                this.$refs.calendar.style.webkitTransition = 'transform 300ms';
+                this.$refs.calendar.style.webkitTransform = 'translate(0px,-' + this.calendarHeight + 'px)';
                 this.$set(this.checkedDate, 'day', new Date().getDate());
                 this.calendarIndex = 0;
                 this.calendarMoveMaxIndex = 0;
