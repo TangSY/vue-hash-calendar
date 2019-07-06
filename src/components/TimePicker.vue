@@ -177,7 +177,7 @@
     }
 
     .time_content {
-        margin 0 px2vw(40px)
+        padding 0 px2vw(40px)
     }
 
     .time_item {
