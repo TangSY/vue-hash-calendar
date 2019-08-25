@@ -1,6 +1,6 @@
 # 按照惯例，先上效果图
 
-![效果图](https://upload-images.jianshu.io/upload_images/7412714-9cd4bb7083337299.gif?imageMogr2/auto-orient/strip)
+![calendar.gif](https://upload-images.jianshu.io/upload_images/7412714-6f2e4db490e33038.gif?imageMogr2/auto-orient/strip)
 
 # vue-hash-calendar
 
