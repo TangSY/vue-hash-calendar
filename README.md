@@ -7,6 +7,8 @@
 * 基于 vue 2.X 开发的日历组件
 * 支持手势滑动操作
 * 原生 js 开发，没引入第三方库
+* 上下滑动 切换 周/月 模式
+* 左右滑动 切换 上一月/下一页
 
 # Demo
 
@@ -23,16 +25,16 @@
 | 属性          | 说明                                                                                                   |  默认  | 是否必传 |
 | :------------ | :----------------------------------------------------------------------------------------------------- | :----: | :------: |
 | model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   dialog   |    否    |
-| defaultDatetime| 指定默认时间。数据类型为Date                                                      |   当前时间   |    否    |
-| format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY年MM月第DD天，当前时间hh时mm分”                                      |  YY/MM/DD hh:mm   |    否    |
+| defaultDatetime| 指定默认时间。数据类型为 Date                                                      |   当前时间   |    否    |
+| format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”                                      |  YY/MM/DD hh:mm   |    否    |
 | weekStart      | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']            | sunday |    否    |
 | pickerType  | 选择器类型 datetime：日期+时间   date：日期   time：时间                                                               | datetime |    否    |
 | showTodayButton    | 是否显示返回今日按钮                                                          |   true    |    否    |
-| confirm | 确认选择的回调事件。当model为inline的时候没有该事件                                                            |  ---  |    否    |
+| confirm | 确认选择的回调事件。当 model 为 inline 的时候没有该事件                                                            |  ---  |    否    |
 
 ## Other
 
-* 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者github提交issue。
+* 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者 github 提交 issue。
 
 
 
