@@ -74,6 +74,11 @@
                 touchStartPositionY: null,//开始滑动时y轴的值
                 isShowWeek: false,//当前日历是否以星期方式展示
                 calendarY: 0,//日历相对于Y轴的位置
+                selectedDayIndex: 0,
+                lastWeek: [],
+                nextWeek: [],
+                isLastWeekInCurrentMonth: false,
+                isNextWeekInCurrentMonth: false,
             }
         },
         mounted() {
@@ -263,16 +268,26 @@
                 this.isTouching = false;
                 if (Math.abs(this.touch.x) > Math.abs(this.touch.y) && Math.abs(this.touch.x) > 0.3) {
                     if (this.touch.x > 0) {
-                        this.getLastMonth();
+                        if (this.isShowWeek) {
+                            this.getLastMonth(this.isLastWeekInCurrentMonth);
+                            this.getLastWeek();
+                        } else {
+                            this.getLastMonth();
+                        }
                     } else if (this.touch.x < 0) {
-                        this.getNextMonth();
+                        if (this.isShowWeek) {
+                            this.getNextMonth(this.isNextWeekInCurrentMonth);
+                            this.getNextWeek();
+                        } else {
+                            this.getNextMonth();
+                        }
                     }
                 }
                 if (Math.abs(this.touch.y) > Math.abs(this.touch.x) && Math.abs(this.touch.y * this.$refs.calendar.offsetHeight) > 50) {
                     if (this.touch.y > 0 && this.isShowWeek) {
-                        this.showMonth()
+                        this.showMonth();
                     } else if (this.touch.y < 0 && !this.isShowWeek) {
-                        this.showWeek()
+                        this.showWeek();
                     }
                 } else {
                     this.touch = {
@@ -305,21 +320,80 @@
                 this.calendarGroupHeight = this.$refs.calendarItem[0].offsetHeight
 
 
-                let lastWeek = [], nextWeek = [];
+                let currentWeek = [];
+                let sliceStart = lastLine * 7;
+                let sliceEnd = sliceStart + 7;
+                this.isLastWeekInCurrentMonth = false;
+                currentWeek = this.calendarOfMonth[1].slice(sliceStart, sliceEnd);
+                for (let i in currentWeek) {
+                    if (currentWeek[i].day === this.checkedDate.day) {
+                        this.selectedDayIndex = i;
+                    }
+                }
+                console.log(currentWeek, 'currentWeek');
+                let firstDayOfCurrentWeek = currentWeek[0];
+                let lastDayOfCurrentWeek = currentWeek[6];
+                if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month === this.checkedDate.month) {
+                        this.lastWeek = this.calendarOfMonth[0].slice(21, 28);
+                } else {
+                    if (firstDayOfCurrentWeek.day === 1) {
+                        this.lastWeek = this.calendarOfMonth[0].slice(28, 35);
+                    } else {
+                        this.lastWeek = this.calendarOfMonth[1].slice(sliceStart - 7, sliceEnd - 7);
+                        if (this.lastWeek[0].day < this.lastWeek[6].day) {
+                            this.isLastWeekInCurrentMonth = true;
+                        }
+                    }
+                }
 
+                this.isNextWeekInCurrentMonth = false;
+                if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month !== this.checkedDate.month) {
+                    this.nextWeek = this.calendarOfMonth[2].slice(7, 14);
+                } else {
+                    if(lastDayOfCurrentWeek.day === this.daysOfMonth(lastDayOfCurrentWeek.year)[lastDayOfCurrentWeek.month]) {
+                        this.nextWeek = this.calendarOfMonth[2].slice(0, 7);
+                    } else {
+                        this.nextWeek = this.calendarOfMonth[1].slice(sliceStart + 7, sliceEnd + 7);
+                        if (this.nextWeek[0].day < this.nextWeek[6].day) {
+                            this.isNextWeekInCurrentMonth = true;
+                        }
+                    }
+                }
+                this.calendarOfMonthShow[0].splice(sliceStart, 7, ...this.lastWeek);
+                this.calendarOfMonthShow[2].splice(sliceStart, 7, ...this.nextWeek);
+                console.log(this.checkedDate.day, 'checkedDate.day')
+                console.log(this.lastWeek, 'lastWeek')
+                console.log(this.nextWeek, 'nextWeek')
+                console.log(this.selectedDayIndex, 'selectedDayIndex')
+                console.log(this.calendarOfMonthShow[0], 'this.calendarOfMonthShow[0]')
             },
-            getLastMonth() {//获取上个月日历
+            getLastWeek() {
+                this.checkedDate = this.lastWeek[ this.selectedDayIndex];
+                this.isTouching = true;
+                this.showWeek();
+//                this.isTouching = false;
+            },
+            getNextWeek() {
+                this.checkedDate = this.nextWeek[ this.selectedDayIndex];
+                this.isTouching = true;
+                this.showWeek();
+            },
+            getLastMonth(isLastWeekInCurrentMonth) {//获取上个月日历
                 this.translateIndex += 1;
 
-                this.yearOfCurrentShow = this.lastMonthYear;
-                this.monthOfCurrentShow = this.lastMonth;
+                if (!isLastWeekInCurrentMonth) {
+                    this.yearOfCurrentShow = this.lastMonthYear;
+                    this.monthOfCurrentShow = this.lastMonth;
+                }
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             },
-            getNextMonth() {//获取下个月日历
+            getNextMonth(isNextWeekInCurrentMonth) {//获取下个月日历
                 this.translateIndex -= 1;
 
-                this.yearOfCurrentShow = this.nextMonthYear;
-                this.monthOfCurrentShow = this.nextMonth;
+                if (!isNextWeekInCurrentMonth) {
+                    this.yearOfCurrentShow = this.nextMonthYear;
+                    this.monthOfCurrentShow = this.nextMonth;
+                }
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             }
         }
