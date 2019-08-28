@@ -330,7 +330,7 @@
                         this.selectedDayIndex = i;
                     }
                 }
-                console.log(currentWeek, 'currentWeek');
+
                 let firstDayOfCurrentWeek = currentWeek[0];
                 let lastDayOfCurrentWeek = currentWeek[6];
                 if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month === this.checkedDate.month) {
@@ -340,7 +340,7 @@
                         this.lastWeek = this.calendarOfMonth[0].slice(28, 35);
                     } else {
                         this.lastWeek = this.calendarOfMonth[1].slice(sliceStart - 7, sliceEnd - 7);
-                        if (this.lastWeek[0].day < this.lastWeek[6].day) {
+                        if (this.lastWeek[this.selectedDayIndex].month === this.checkedDate.month) {
                             this.isLastWeekInCurrentMonth = true;
                         }
                     }
@@ -354,28 +354,20 @@
                         this.nextWeek = this.calendarOfMonth[2].slice(0, 7);
                     } else {
                         this.nextWeek = this.calendarOfMonth[1].slice(sliceStart + 7, sliceEnd + 7);
-                        if (this.nextWeek[0].day < this.nextWeek[6].day) {
+                        if (this.nextWeek[this.selectedDayIndex].month === this.checkedDate.month) {
                             this.isNextWeekInCurrentMonth = true;
                         }
                     }
                 }
                 this.calendarOfMonthShow[0].splice(sliceStart, 7, ...this.lastWeek);
                 this.calendarOfMonthShow[2].splice(sliceStart, 7, ...this.nextWeek);
-                console.log(this.checkedDate.day, 'checkedDate.day')
-                console.log(this.lastWeek, 'lastWeek')
-                console.log(this.nextWeek, 'nextWeek')
-                console.log(this.selectedDayIndex, 'selectedDayIndex')
-                console.log(this.calendarOfMonthShow[0], 'this.calendarOfMonthShow[0]')
             },
             getLastWeek() {
                 this.checkedDate = this.lastWeek[ this.selectedDayIndex];
-                this.isTouching = true;
                 this.showWeek();
-//                this.isTouching = false;
             },
             getNextWeek() {
                 this.checkedDate = this.nextWeek[ this.selectedDayIndex];
-                this.isTouching = true;
                 this.showWeek();
             },
             getLastMonth(isLastWeekInCurrentMonth) {//获取上个月日历
