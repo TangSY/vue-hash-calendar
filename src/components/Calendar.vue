@@ -15,7 +15,7 @@
             <ul :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}" @touchstart="touchStart"
                 @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonthShow" :key="i"
-                    :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: isTouching ? '0s' : '.3s',}">
+                    :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
@@ -64,6 +64,7 @@
                 checkedDate: {},//被选中的日期
                 weekStartIndex: 0,//日历第一天星期名称的index
                 translateIndex: 0,//用于计算上下偏移的距离
+                transitionDuration: 0.3,//动画持续时间
                 touch: {
                     x: 0,
                     y: 0,
@@ -74,11 +75,11 @@
                 touchStartPositionY: null,//开始滑动时y轴的值
                 isShowWeek: false,//当前日历是否以星期方式展示
                 calendarY: 0,//日历相对于Y轴的位置
-                selectedDayIndex: 0,
-                lastWeek: [],
-                nextWeek: [],
-                isLastWeekInCurrentMonth: false,
-                isNextWeekInCurrentMonth: false,
+                selectedDayIndex: 0,//当前选中的日期，在这一周的第几天
+                lastWeek: [],//上一周的数据
+                nextWeek: [],//下一周的数据
+                isLastWeekInCurrentMonth: false,//上一周的数据是否在本月
+                isNextWeekInCurrentMonth: false,//下一周的数据是否在本月
             }
         },
         mounted() {
@@ -126,12 +127,15 @@
                 })
             },
             today() {//今天
-                this.$refs.calendar.style.webkitTransition = 'transform .3s';
                 this.$set(this.checkedDate, 'day', new Date().getDate());
                 this.calculateCalendarOfThreeMonth();
 
+
                 if (this.isShowWeek) {
-                    this.showWeek();
+                    setTimeout(() => {
+                        this.isTouching = true;
+                        this.showWeek();
+                    }, this.transitionDuration * 1000)
                 }
             },
             //计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息
@@ -268,18 +272,22 @@
                 this.isTouching = false;
                 if (Math.abs(this.touch.x) > Math.abs(this.touch.y) && Math.abs(this.touch.x) > 0.3) {
                     if (this.touch.x > 0) {
+                        this.getLastMonth();
+
                         if (this.isShowWeek) {
-                            this.getLastMonth(this.isLastWeekInCurrentMonth);
-                            this.getLastWeek();
-                        } else {
-                            this.getLastMonth();
+                            setTimeout(() => {
+                                this.isTouching = true;
+                                this.getLastWeek();
+                            }, this.transitionDuration * 1000)
                         }
                     } else if (this.touch.x < 0) {
+                        this.getNextMonth();
+
                         if (this.isShowWeek) {
-                            this.getNextMonth(this.isNextWeekInCurrentMonth);
-                            this.getNextWeek();
-                        } else {
-                            this.getNextMonth();
+                            setTimeout(() => {
+                                this.isTouching = true;
+                                this.getNextWeek();
+                            }, this.transitionDuration * 1000)
                         }
                     }
                 }
@@ -334,7 +342,7 @@
                 let firstDayOfCurrentWeek = currentWeek[0];
                 let lastDayOfCurrentWeek = currentWeek[6];
                 if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month === this.checkedDate.month) {
-                        this.lastWeek = this.calendarOfMonth[0].slice(21, 28);
+                    this.lastWeek = this.calendarOfMonth[0].slice(21, 28);
                 } else {
                     if (firstDayOfCurrentWeek.day === 1) {
                         this.lastWeek = this.calendarOfMonth[0].slice(28, 35);
@@ -350,7 +358,7 @@
                 if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month !== this.checkedDate.month) {
                     this.nextWeek = this.calendarOfMonth[2].slice(7, 14);
                 } else {
-                    if(lastDayOfCurrentWeek.day === this.daysOfMonth(lastDayOfCurrentWeek.year)[lastDayOfCurrentWeek.month]) {
+                    if (lastDayOfCurrentWeek.day === this.daysOfMonth(lastDayOfCurrentWeek.year)[lastDayOfCurrentWeek.month]) {
                         this.nextWeek = this.calendarOfMonth[2].slice(0, 7);
                     } else {
                         this.nextWeek = this.calendarOfMonth[1].slice(sliceStart + 7, sliceEnd + 7);
@@ -362,27 +370,27 @@
                 this.calendarOfMonthShow[0].splice(sliceStart, 7, ...this.lastWeek);
                 this.calendarOfMonthShow[2].splice(sliceStart, 7, ...this.nextWeek);
             },
-            getLastWeek() {
-                this.checkedDate = this.lastWeek[ this.selectedDayIndex];
+            getLastWeek() {//显示上一周
+                this.checkedDate = this.lastWeek[this.selectedDayIndex];
                 this.showWeek();
             },
-            getNextWeek() {
-                this.checkedDate = this.nextWeek[ this.selectedDayIndex];
+            getNextWeek() {//显示下一周
+                this.checkedDate = this.nextWeek[this.selectedDayIndex];
                 this.showWeek();
             },
-            getLastMonth(isLastWeekInCurrentMonth) {//获取上个月日历
+            getLastMonth() {//获取上个月日历
                 this.translateIndex += 1;
 
-                if (!isLastWeekInCurrentMonth) {
+                if (!this.isLastWeekInCurrentMonth) {
                     this.yearOfCurrentShow = this.lastMonthYear;
                     this.monthOfCurrentShow = this.lastMonth;
                 }
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             },
-            getNextMonth(isNextWeekInCurrentMonth) {//获取下个月日历
+            getNextMonth() {//获取下个月日历
                 this.translateIndex -= 1;
 
-                if (!isNextWeekInCurrentMonth) {
+                if (!this.isNextWeekInCurrentMonth) {
                     this.yearOfCurrentShow = this.nextMonthYear;
                     this.monthOfCurrentShow = this.nextMonth;
                 }
@@ -420,7 +428,7 @@
         right 0
         overflow hidden
         transition height .3s
-        -webkit-transition height .3s /* Safari */
+        -webkit-transition height .3s
     }
 
     .calendar_group ul {
