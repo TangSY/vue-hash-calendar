@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "vconsole": "^3.3.4",
     "vue": "^2.5.17",
     "vue-ba": "^1.2.5"
   },
