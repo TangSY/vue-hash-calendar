@@ -1,5 +1,7 @@
 import Vue from 'vue'
 import App from './App.vue'
+import vconsole from 'vconsole'
+    new vconsole()
 
 Vue.config.productionTip = false
 

@@ -246,16 +246,22 @@
                 return date.year !== dateOfCurrentShow.year || date.month !== dateOfCurrentShow.month
             },
             touchStart(event) {//监听手指开始滑动事件
+                console.log('开始滑动')
                 this.touchStartPositionX = event.touches[0].clientX;
                 this.touchStartPositionY = event.touches[0].clientY;
+                console.log(this.touchStartPositionX, 'touchStartPositionX')
+                console.log(this.touchStartPositionY, 'touchStartPositionY')
                 this.touch = {
                     x: 0
                 };
                 this.isTouching = true;
             },
             touchMove(event) {//监听手指移动事件
+                console.log('滑动中')
                 let moveX = event.touches[0].clientX - this.touchStartPositionX;
                 let moveY = event.touches[0].clientY - this.touchStartPositionY;
+                console.log(moveX, 'moveX')
+                console.log(moveY, 'moveY')
                 if (Math.abs(moveX) > Math.abs(moveY)) {
                     this.touch = {
                         x: moveX / this.$refs.calendar.offsetWidth,
@@ -269,22 +275,25 @@
                 }
             },
             touchEnd(e) {//监听touch结束事件
+                console.log('滑动结束')
                 this.isTouching = false;
                 if (Math.abs(this.touch.x) > Math.abs(this.touch.y) && Math.abs(this.touch.x) > 0.3) {
                     if (this.touch.x > 0) {
                         this.getLastMonth();
-
+                        console.log('获取上个月')
                         if (this.isShowWeek) {
                             setTimeout(() => {
+                                console.log('获取上周')
                                 this.isTouching = true;
                                 this.getLastWeek();
                             }, this.transitionDuration * 1000)
                         }
                     } else if (this.touch.x < 0) {
                         this.getNextMonth();
-
+                        console.log('获取下个月')
                         if (this.isShowWeek) {
                             setTimeout(() => {
+                                console.log('获取下周')
                                 this.isTouching = true;
                                 this.getNextWeek();
                             }, this.transitionDuration * 1000)
