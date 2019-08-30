@@ -16,16 +16,21 @@
                 :show-today-button="true"
                 @confirm="dateConfirm">
         </datetime-picker>
+        <!--github入口-->
+        <github></github>
     </div>
 </template>
 
 <script>
 
     import DatetimePicker from "./components/DatetimePicker.vue";
+    import Github from "./Github.vue";
 
     export default {
         name: "demo",
-        components: {DatetimePicker},
+        components: {
+            Github,
+            DatetimePicker},
         data() {
             return {
                 isShowTips: false,//是否显示下载提示
