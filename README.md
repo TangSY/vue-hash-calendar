@@ -1,6 +1,6 @@
 # 按照惯例，先上效果图
 
-![calendar.gif](https://upload-images.jianshu.io/upload_images/7412714-6f2e4db490e33038.gif?imageMogr2/auto-orient/strip)
+![calendar.gif](https://upload-images.jianshu.io/upload_images/7412714-9691d27241e3b1ed.gif?imageMogr2/auto-orient/strip)
 
 # vue-hash-calendar
 
@@ -8,7 +8,8 @@
 * 支持手势滑动操作
 * 原生 js 开发，没引入第三方库
 * 上下滑动 切换 周/月 模式
-* 左右滑动 切换 上一月/下一页
+>【周模式中】 左右滑动可切换 上一周/下一周
+ 【月模式中】 左右滑动可切换 上一月/下一月
 
 # Demo
 
