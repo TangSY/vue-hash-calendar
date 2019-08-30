@@ -11,9 +11,9 @@
                 <p class="calendar_day">{{ item }}</p>
             </div>
         </div>
-        <div class="calendar_group" :style="{'height': `${calendarGroupHeight}px`}" ref="calendar">
-            <ul :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}" @touchstart.stop.prevent="touchStart"
-                @touchmove.stop.prevent="touchMove" @touchend.stop.prevent="touchEnd">
+        <div class="calendar_group" :style="{'height': `${calendarGroupHeight}px`}" ref="calendar" @touchstart="touchStart"
+             @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
+            <ul :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}">
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonthShow" :key="i"
                     :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
@@ -85,7 +85,8 @@
         mounted() {
             this.weekStartIndex = this.weekArray.indexOf(this.weekStart.toLowerCase());
             let newCalendarWeek = this.calendarWeek.slice(this.weekStartIndex, this.calendarWeek.length).concat(this.calendarWeek.slice(0, this.weekStartIndex));
-            this.calendarWeek = newCalendarWeek;
+            this.calendarWeek = [...this.calendarWeek.slice(this.weekStartIndex, this.calendarWeek.length), ...this.calendarWeek.slice(0, this.weekStartIndex)];
+            console.log(this.calendarWeek)
         },
         watch: {
             weekStartIndex() {
@@ -330,7 +331,6 @@
                 }
                 let indexOfLine = Math.ceil((dayIndexOfMonth + 1) / 7);
                 let lastLine = indexOfLine - 1;
-                let nextLine = indexOfLine + 1;
                 this.calendarY = -this.$refs.calendarItem[0].offsetHeight * lastLine + 4;
 
                 this.isShowWeek = true;
