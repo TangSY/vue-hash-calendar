@@ -12,8 +12,8 @@
             </div>
         </div>
         <div class="calendar_group" :style="{'height': `${calendarGroupHeight}px`}" ref="calendar">
-            <ul :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}" @touchstart="touchStart"
-                @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
+            <ul :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}" @touchstart.stop.prevent="touchStart"
+                @touchmove.stop.prevent="touchMove" @touchend.stop.prevent="touchEnd">
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonthShow" :key="i"
                     :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
