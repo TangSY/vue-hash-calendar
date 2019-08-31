@@ -37,7 +37,9 @@
         props: {
             defaultDate: {
                 type: Date,
-                default: new Date()
+                default() {
+                    return new Date()
+                }
             },
             show: true,
             weekStart: {
@@ -459,7 +461,7 @@
         border-radius 50%
         fontSize(28px)
         flexContent()
-        margin-bottom px2vw(5px)
+        margin-bottom px2vw(8px)
     }
 
     .calendar_first_today {

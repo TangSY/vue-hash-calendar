@@ -1,10 +1,17 @@
 {
-  "name": "multiple-list-demo",
-  "version": "0.1.0",
-  "private": true,
+  "name": "vue-hash-calendar",
+  "version": "1.0.1",
+  "author": "HashTang",
+  "homePage": "https://www.hxkj.vip",
+  "license": "MIT",
+  "description": "vue 周 月 时间选择器",
+  "main": "lib/vue-hash-calendar.umd.min.js",
+  "keyword": "vue-hash-calendar calendar date-picker datetime-picker time-picker week-picker",
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "lib": "vue-cli-service build --target lib --name vue-hash-calendar --dest lib packages/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

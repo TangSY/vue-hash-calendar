@@ -41,7 +41,9 @@
             },
             defaultDatetime: {//默认时间
                 type: Date,
-                default: new Date()
+                default() {
+                    return new Date()
+                }
             },
             format: null,//确认选择之后，返回的日期格式
             weekStart: {//设置每周以星期几开始
@@ -57,7 +59,7 @@
             TimePicker,
             Calendar
         },
-        name: "DatetimePicker",
+        name: "VueHashCalendar",
         data() {
             return {
                 checkedDate: {
@@ -99,9 +101,6 @@
                 deep: true
             }
         },
-        updated() {
-//            console.log(this.checkedDate.day, 'update')
-        },
         methods: {
             today() {
                 this.$refs.calendar.today();
@@ -110,21 +109,12 @@
                 date.hours = this.checkedDate.hours;
                 date.minutes = this.checkedDate.minutes;
                 this.checkedDate = date;
-//                this.$set(this.checkedDate, 'year', date.year)
-//                this.$set(this.checkedDate, 'month', date.month)
-//                this.$set(this.checkedDate, 'day', date.day)
-//                console.log(this.checkedDate.day)
             },
             timeConfirm(date) {
-//                console.log(date,'date')
                 date.year = this.checkedDate.year;
                 date.month = this.checkedDate.month;
                 date.day = this.checkedDate.day;
                 this.checkedDate = date;
-//                this.$set(this.checkedDate, 'hours', date.hours)
-//                this.$set(this.checkedDate, 'minutes', date.minutes)
-//                this.$set(this.checkedDate, 'day', date.day)
-//                console.log(this.checkedDate.day)
             },
             confirm() {//确认选择时间
                 let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`);
