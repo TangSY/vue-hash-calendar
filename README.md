@@ -1,6 +1,6 @@
 # 按照惯例，先上效果图
 
-![calendar.gif](https://upload-images.jianshu.io/upload_images/7412714-9691d27241e3b1ed.gif?imageMogr2/auto-orient/strip)
+![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif)
 
 # vue-hash-calendar
 
@@ -10,10 +10,27 @@
 * 上下滑动 切换 周/月 模式
 >【周模式中】 左右滑动可切换 上一周/下一周
  【月模式中】 左右滑动可切换 上一月/下一月
+ 
+ #安装使用说明
+  ```
+npm i vue-hash-calendar
+```
+
+  ```
+// 在入口文件中（main.js），导入组件库
+import vueHashCalendar from 'vue-hash-calendar'
+// 注册组件库
+Vue.use(vueHashCalendar)
+```
+
+  ```
+  // 在VUE文件中引入组件
+   <vue-hash-calendar></vue-hash-calendar>
+```
 
 # Demo
 
-![demo_qrcode.png](https://upload-images.jianshu.io/upload_images/7412714-48c92886b2127daf.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![demo_qrcode.png](https://www.hxkj.vip/demo/calendar/demo.webp)
 
 或者请用浏览器的手机模式查看：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/calendar/)
 
