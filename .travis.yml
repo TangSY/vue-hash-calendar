@@ -30,15 +30,22 @@ jobs:
        - cd ../
        - cp -f npm_package/package.json ./
        - npm run lib
+       - git init
+       - git config user.name "TangSY"
+       - git config user.email "337828932@qq.com"
        - git add .
-       - git commit -m "travis"
-       - git push origin master
+       - git commit -m "Travis CI Auto Builder"
+       - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master # GH_TOKEN 是在 Travis 中配置 github token 的名称
        - echo "NPM Building Finished."
 
      deploy:
        provider: npm
        email: t@tsy6.com
-       api_key: "$NPM_TOKEN"
+       api_key: "$NPM_TOKEN"   # NPM_TOKEN 是在 Travis 中配置的 npm token 的名称
        skip_cleanup: true
        on:
          all_branches: true
+
+env:
+    global:
+        - GH_REF: github.com/TangSY/vue-hash-calendar.git #github仓库地址

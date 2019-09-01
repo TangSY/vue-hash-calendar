@@ -18,6 +18,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "test": "exited with 0",
     "lib": "vue-cli-service build --target lib --name vue-hash-calendar --dest lib packages/index.js",
     "lint": "vue-cli-service lint"
   },
