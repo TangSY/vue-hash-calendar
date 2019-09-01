@@ -25,10 +25,14 @@ jobs:
      script:
        - echo "NPM Deploying Started ..."
        - npm run build
-       - cp -f npm_package/package.json ./
-       - git add .
-       - git commit -m "travis覆盖package.json"
+       - cd npm_package/
        - npm version patch
+       - cd ../
+       - cp -f npm_package/package.json ./
+       - npm run lib
+       - git add .
+       - git commit -m "travis"
+       - git push master
        - echo "NPM Building Finished."
 
      deploy:
