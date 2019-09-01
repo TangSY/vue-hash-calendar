@@ -32,7 +32,7 @@ jobs:
        - npm run lib
        - git add .
        - git commit -m "travis"
-       - git push master
+       - git push origin master
        - echo "NPM Building Finished."
 
      deploy:
