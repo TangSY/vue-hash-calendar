@@ -52,7 +52,7 @@
             },
             model: {
                 type: String,
-                default: 'dialog'
+                default: 'inline'
             }
         },
         components: {

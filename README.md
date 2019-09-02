@@ -21,6 +21,8 @@ npm i vue-hash-calendar
   ```
 // 在入口文件中（main.js），导入组件库
 import vueHashCalendar from 'vue-hash-calendar'
+// 引入组件CSS样式
+import 'vue-hash-calendar/lib/vue-hash-calendar.css'
 // 注册组件库
 Vue.use(vueHashCalendar)
 ```
@@ -53,6 +55,14 @@ Vue.use(vueHashCalendar)
 | confirm | 确认选择的回调事件。当 model 为 inline 的时候没有该事件                                                            |  ---  |    否    |
 
 ## Other
+
+* 在 dialog 模式中，如何显示日历组件？
+```
+<vue-hash-calendar ref="picker"></vue-hash-calendar>
+
+//调用内置 show 方法
+this.$refs.picker.show();
+```
 
 * 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者 github 提交 issue。
 
