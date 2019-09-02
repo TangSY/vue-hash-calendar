@@ -1,4 +1,8 @@
 [![Build Status](https://travis-ci.org/TangSY/vue-hash-calendar.svg?branch=master)](https://travis-ci.org/TangSY/vue-hash-calendar)
+![version](https://img.shields.io/npm/v/vue-hash-calendar.svg)
+![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg)
+![license](https://img.shields.io/badge/license-MIT-blue.svg)
+[![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 
 # 按照惯例，先上效果图
 
