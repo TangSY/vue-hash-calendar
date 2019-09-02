@@ -24,7 +24,6 @@ jobs:
       script:
         - echo "NPM Deploying Started ..."
         - cd ../
-        - ls
         - rm -rf vue-hash-calendar/
         - git clone https://github.com/TangSY/vue-hash-calendar.git
         - cd vue-hash-calendar
@@ -36,6 +35,8 @@ jobs:
         - cd ../build_package/
         - npm version patch
         - cd ../
+        - npm install
+        - npm run lib
         - cp -f npm_package/package.json ./
         - echo "NPM Building Finished."
 
