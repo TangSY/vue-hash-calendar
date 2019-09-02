@@ -54,7 +54,7 @@ jobs:
         - git status
         - git checkout master
         - git merge newbranch
-        - git push "https://${GH_TOKEN}@${GH_REF}" master:master # GH_TOKEN 是在 Travis 中配置 github token 的名称
+#        - git push "https://${GH_TOKEN}@${GH_REF}" master:master # GH_TOKEN 是在 Travis 中配置 github token 的名称
         - git branch -D newbranch
         - git branch
 
