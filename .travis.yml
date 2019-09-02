@@ -24,7 +24,7 @@ jobs:
       script:
         - echo "NPM Deploying Started ..."
         - cd ../
-        - ls l
+        - ls
         - rm -rf vue-hash-calendar/
         - git clone https://github.com/TangSY/vue-hash-calendar.git
         - cd vue-hash-calendar
