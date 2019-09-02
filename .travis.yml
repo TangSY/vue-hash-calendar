@@ -1,56 +1,56 @@
-language : node_js
+language: node_js
 node_js:
- - "10"
- - "9"
+  - "10"
+  - "9"
 install:
-- npm install
+  - npm install
 os:
- - linux
+  - linux
 
 stages:
- - test
- - name: deploy
+  - test
+  - name: deploy
 
 jobs:
- include:
-   - stage: test
-     script:
-       - node --version
-       - npm --version
-       - echo "Testing Started ..."
-       - npm test
-       - echo "Testing Finished."
+  include:
+    - stage: test
+      script:
+        - node --version
+        - npm --version
+        - echo "Testing Started ..."
+        - npm test
+        - echo "Testing Finished."
 
-   - stage: deploy
-     script:
-       - echo "NPM Deploying Started ..."
-       - cd npm_package/
-       - npm version patch
-       - cd ../build_package/
-       - npm version patch
-       - cd ../
-       - cp -f npm_package/package.json ./
-       - ls
-       - npm run lib
-       - echo "NPM Building Finished."
+    - stage: deploy
+      script:
+        - echo "NPM Deploying Started ..."
+        - cd npm_package/
+        - npm version patch
+        - cd ../build_package/
+        - npm version patch
+        - cd ../
+        - cp -f npm_package/package.json ./
+        - ls
+        - npm run lib
+        - echo "NPM Building Finished."
 
-     deploy:
-       provider: npm
-       email: t@tsy6.com
-       api_key: "$NPM_TOKEN"   # NPM_TOKEN 是在 Travis 中配置的 npm token 的名称
-       skip_cleanup: true
-       on:
-         all_branches: true
+      deploy:
+        provider: npm
+        email: t@tsy6.com
+        api_key: "$NPM_TOKEN"   # NPM_TOKEN 是在 Travis 中配置的 npm token 的名称
+        skip_cleanup: true
+        on:
+          all_branches: true
 
-after_script:
-  - cp -f build_package/package.json ./
-  - git init
-  - git config user.name "TangSY"
-  - git config user.email "337828932@qq.com"
-  - git add .
-  - git commit -m "Travis CI Auto Builder"
-  - git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:master # GH_TOKEN 是在 Travis 中配置 github token 的名称
+      after_script:
+        - cp -f build_package/package.json ./
+        - git init
+        - git config user.name "TangSY"
+        - git config user.email "t@tsy6.com"
+        - git add .
+        - git commit -m "Travis CI Auto Builder"
+        - git push "https://${GH_TOKEN}@${GH_REF}" master:master # GH_TOKEN 是在 Travis 中配置 github token 的名称
 
 env:
-    global:
-        - GH_REF: github.com/TangSY/vue-hash-calendar.git #github仓库地址
+  global:
+    - GH_REF: github.com/TangSY/vue-hash-calendar.git #github仓库地址
