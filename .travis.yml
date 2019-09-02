@@ -48,4 +48,4 @@ jobs:
 
 env:
     global:
-        - GH_REF: github.com/TangSY/vue-hash-calendar.git #github仓库地址
+        - GH_REF: github.com/TangSY/TangSY.github.io.git #github仓库地址
