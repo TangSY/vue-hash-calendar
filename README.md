@@ -46,7 +46,7 @@ Vue.use(vueHashCalendar)
 
 | 属性          | 说明                                                                                                   |  默认  | 是否必传 |
 | :------------ | :----------------------------------------------------------------------------------------------------- | :----: | :------: |
-| model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   dialog   |    否    |
+| model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   inline   |    否    |
 | defaultDatetime| 指定默认时间。数据类型为 Date                                                      |   当前时间   |    否    |
 | format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”                                      |  YY/MM/DD hh:mm   |    否    |
 | weekStart      | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']            | sunday |    否    |
