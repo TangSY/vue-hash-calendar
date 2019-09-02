@@ -54,6 +54,10 @@ jobs:
         - git status
         - git push "https://${GH_TOKEN}@${GH_REF}" travis_build:travis_build # GH_TOKEN 是在 Travis 中配置 github token 的名称
 
+branches:
+  only:
+    - master
+
 env:
   global:
     - GH_REF: github.com/TangSY/vue-hash-calendar.git #github仓库地址
