@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/TangSY/vue-hash-calendar.svg?branch=master)](https://travis-ci.org/TangSY/vue-hash-calendar)
+
 # 按照惯例，先上效果图
 
 ![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif)
