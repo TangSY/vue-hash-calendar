@@ -24,6 +24,11 @@ jobs:
     - stage: deploy
       script:
         - echo "NPM Deploying Started ..."
+        - cd ../
+        - ls l
+        - rm -rf vue-hash-calendar/
+        - git clone https://github.com/TangSY/vue-hash-calendar.git
+        - cd vue-hash-calendar
         - git branch
         - git checkout travis_build
         - git merge master
