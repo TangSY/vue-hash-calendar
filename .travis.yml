@@ -24,6 +24,9 @@ jobs:
     - stage: deploy
       script:
         - echo "NPM Deploying Started ..."
+        - git branch newbranch
+        - git branch
+        - git checkout newbranch
         - cd npm_package/
         - npm version patch
         - cd ../build_package/
@@ -48,7 +51,12 @@ jobs:
         - git config user.email "t@tsy6.com"
         - git add .
         - git commit -m "Travis CI Auto Builder"
-        - git push "https://${GH_TOKEN}@${GH_REF}" # GH_TOKEN 是在 Travis 中配置 github token 的名称
+        - git status
+        - git checkout master
+        - git merge newbranch
+        - git push "https://${GH_TOKEN}@${GH_REF}" master:master # GH_TOKEN 是在 Travis 中配置 github token 的名称
+        - git branch -D newbranch
+        - git branch
 
 env:
   global:
