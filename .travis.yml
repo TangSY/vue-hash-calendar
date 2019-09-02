@@ -36,7 +36,6 @@ jobs:
         - cd ../build_package/
         - npm version patch
         - cd ../
-        - npm install
         - cp -f npm_package/package.json ./
         - echo "NPM Building Finished."
 
