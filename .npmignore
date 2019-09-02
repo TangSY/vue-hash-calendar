@@ -4,7 +4,6 @@ build_package
 npm_package
 examples
 public
-lib
 /dist
 .svn
 .gitignore
