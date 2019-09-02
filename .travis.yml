@@ -24,7 +24,6 @@ jobs:
    - stage: deploy
      script:
        - echo "NPM Deploying Started ..."
-       - npm run build
        - cd npm_package/
        - npm version patch
        - cd ../build_package/
