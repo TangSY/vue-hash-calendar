@@ -30,7 +30,6 @@ jobs:
         - npm version patch
         - cd ../
         - cp -f npm_package/package.json ./
-        - ls
         - npm run lib
         - echo "NPM Building Finished."
 
@@ -44,8 +43,8 @@ jobs:
 
       after_script:
         - cp -f build_package/package.json ./
-        - git init
-        - git config user.name "TangSY"
+        - ls
+        - git config user.name "Travis"
         - git config user.email "t@tsy6.com"
         - git add .
         - git commit -m "Travis CI Auto Builder"
