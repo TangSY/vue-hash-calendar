@@ -1,8 +1,14 @@
 .DS_Store
 node_modules
+build_package
 npm_package
+examples
+public
+lib
 /dist
 .svn
+.gitignore
+.travis.yml
 branches
 tags
 trunk

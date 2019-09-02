@@ -38,7 +38,6 @@ jobs:
         - cd ../
         - npm install
         - cp -f npm_package/package.json ./
-        - npm run lib
         - echo "NPM Building Finished."
 
       deploy:
