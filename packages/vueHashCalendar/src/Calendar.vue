@@ -45,6 +45,11 @@
             weekStart: {
                 type: String,
                 default: 'Sunday'
+            },
+            //是否展示周视图
+            isShowWeekView: {
+                type: Boolean,
+                default: false
             }
         },
         data() {
@@ -86,7 +91,6 @@
         },
         mounted() {
             this.weekStartIndex = this.weekArray.indexOf(this.weekStart.toLowerCase());
-            let newCalendarWeek = this.calendarWeek.slice(this.weekStartIndex, this.calendarWeek.length).concat(this.calendarWeek.slice(0, this.weekStartIndex));
             this.calendarWeek = [...this.calendarWeek.slice(this.weekStartIndex, this.calendarWeek.length), ...this.calendarWeek.slice(0, this.weekStartIndex)];
         },
         watch: {
@@ -116,6 +120,17 @@
                     if (val) {
                         this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month);
                         this.initDom();
+                    }
+                },
+                immediate: true
+            },
+            isShowWeekView: {
+                handler(val) {
+                    if (val) {
+                        console.log(4444)
+                        this.$nextTick(() => {
+                            this.showWeek();
+                        })
                     }
                 },
                 immediate: true

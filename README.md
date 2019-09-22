@@ -56,7 +56,8 @@ Vue.use(vueHashCalendar)
 | weekStart      | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']            | sunday |    否    |
 | pickerType  | 选择器类型 datetime：日期+时间   date：日期   time：时间                                                               | datetime |    否    |
 | showTodayButton    | 是否显示返回今日按钮                                                          |   true    |    否    |
-| confirm | 确认选择的回调事件。当 model 为 inline 的时候没有该事件                                                            |  ---  |    否    |
+| isShowWeekView    | 是否以周视图展示组件                                                          |   false    |    否    |
+| confirm | 时间日期改变的回调事件。                                                            |  ---  |    否    |
 
 ## Other
 

@@ -18,7 +18,7 @@
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime" :week-start="weekStart"
-                      @confirm="dateConfirm"></calendar>
+                      :is-show-week-view="isShowWeekView" @confirm="dateConfirm"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime" @confirm="timeConfirm"></time-picker>
         </div>
     </div>
@@ -53,6 +53,11 @@
             model: {
                 type: String,
                 default: 'inline'
+            },
+            //是否展示周视图
+            isShowWeekView: {
+                type: Boolean,
+                default: false
             }
         },
         components: {
@@ -94,9 +99,12 @@
                 immediate: true
             },
             checkedDate: {
-                handler(date) {
-                    if (this.model !== 'inline') return;
-                    this.confirm();
+                handler() {
+                    let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`);
+                    if (this.format) {
+                        date = formatDate(date, this.format);
+                    }
+                    this.$emit('confirm', date);
                 },
                 deep: true
             }
