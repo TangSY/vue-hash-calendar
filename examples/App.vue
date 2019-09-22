@@ -10,6 +10,7 @@
                 ref="picker"
                 model="dialog"
                 :default-datetime="defaultDatetime"
+                :is-show-week-view="false"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"
                 picker-type="datetime"
