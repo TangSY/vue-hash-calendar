@@ -11,6 +11,7 @@
                 model="dialog"
                 :default-datetime="defaultDatetime"
                 :is-show-week-view="false"
+                :mark-date="markDate"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"
                 picker-type="datetime"
@@ -27,12 +28,12 @@
 
     export default {
         name: "demo",
-        components: {
-            Github},
+        components: { Github },
         data() {
             return {
                 isShowTips: false,//是否显示下载提示
-                defaultDatetime: new Date()
+                defaultDatetime: new Date(),
+                markDate: ['2019/09/26', '2019/09/19', '2019/09/09', '2019/09/16', '2019/09/12']
             }
         },
         mounted() {

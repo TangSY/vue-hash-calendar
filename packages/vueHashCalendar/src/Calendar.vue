@@ -19,11 +19,12 @@
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
-                           class="calendar_day calendar_first_today"
+                           class="calendar_day calendar_first_today" ref="calendarDay"
                            :class="{'calendar_day_checked': isCheckedDay(date)}">{{ date.month + 1 }}<span>月</span></p>
-                        <p v-else class="calendar_day"
+                        <p v-else class="calendar_day" ref="calendarDay"
                            :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i)}">
                             {{ date.day }}</p>
+                        <div v-if="isMarkDate(date)" class="calendar_dot"></div>
                     </div>
                 </li>
             </ul>
@@ -50,6 +51,11 @@
             isShowWeekView: {
                 type: Boolean,
                 default: false
+            },
+            //日期下面的标记
+            markDate: {
+                type: Array,
+                default: ()=>[]
             }
         },
         data() {
@@ -77,7 +83,8 @@
                     y: 0,
                 },//本次touch事件，横向，纵向滑动的距离
                 isTouching: false,//是否正在滑动
-                calendarGroupHeight: '0px',
+                calendarGroupHeight: 0,
+                calendarItemHeight: 0,
                 touchStartPositionX: null,//开始滑动x轴的值
                 touchStartPositionY: null,//开始滑动时y轴的值
                 isShowWeek: false,//当前日历是否以星期方式展示
@@ -140,7 +147,9 @@
         methods: {
             initDom() {//初始化日历dom
                 this.$nextTick(() => {
-                    this.calendarGroupHeight = this.$refs.calendarItem[0].offsetHeight * 6;
+                    this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + 10;
+                    console.log(this.calendarItemHeight)
+                    this.calendarGroupHeight = this.calendarItemHeight * 6;
                 })
             },
             today() {//今天
@@ -322,7 +331,7 @@
             showMonth() {//日历以月份方式展示
                 this.calendarY = 0;
                 this.isShowWeek = false;
-                this.calendarGroupHeight = this.$refs.calendarItem[0].offsetHeight * 6;
+                this.calendarGroupHeight = this.calendarItemHeight * 6;
                 this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month);
             },
             showWeek() {//日历以星期方式展示
@@ -336,10 +345,10 @@
                 }
                 let indexOfLine = Math.ceil((dayIndexOfMonth + 1) / 7);
                 let lastLine = indexOfLine - 1;
-                this.calendarY = -this.$refs.calendarItem[0].offsetHeight * lastLine + 4;
+                this.calendarY = -(this.calendarItemHeight * lastLine) + lastLine * 5;
 
                 this.isShowWeek = true;
-                this.calendarGroupHeight = this.$refs.calendarItem[0].offsetHeight
+                this.calendarGroupHeight = this.calendarItemHeight
 
 
                 let currentWeek = [];
@@ -409,6 +418,14 @@
                     this.monthOfCurrentShow = this.nextMonth;
                 }
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
+            },
+            isMarkDate(date) {//当前日期是否需要标记
+                let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
+
+                return this.markDate.includes(dateString);
+            },
+            fillNumber(val) {//小于10，在前面补0
+                return val > 9 ? val : '0' + val
             }
         }
     }
@@ -436,7 +453,7 @@
 
     .calendar_group {
         position absolute
-        top px2vw(80px)
+        top px2vw(70px)
         left 0
         bottom 0
         right 0
@@ -471,8 +488,8 @@
     }
 
     .calendar_day {
-        width px2vw(70px)
-        height px2vw(70px)
+        width px2vw(60px)
+        height px2vw(60px)
         border-radius 50%
         fontSize(28px)
         flexContent()
@@ -499,5 +516,12 @@
     .calendar_day_checked {
         background main-color
         color white
+    }
+
+    .calendar_dot {
+        background main-color
+        width 5px
+        height 5px
+        border-radius 50%
     }
 </style>
