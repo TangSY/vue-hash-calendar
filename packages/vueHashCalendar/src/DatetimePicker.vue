@@ -18,7 +18,7 @@
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime" :week-start="weekStart"
-                      :is-show-week-view="isShowWeekView" @confirm="dateConfirm"></calendar>
+                      :is-show-week-view="isShowWeekView" :mark-date="markDate" @confirm="dateConfirm"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime" @confirm="timeConfirm"></time-picker>
         </div>
     </div>
@@ -58,6 +58,11 @@
             isShowWeekView: {
                 type: Boolean,
                 default: false
+            },
+            //日期下面的标记
+            markDate: {
+                type: Array,
+                default: ()=>[]
             }
         },
         components: {
@@ -89,6 +94,18 @@
                     throw new Error(`The calendar component's defaultDate must be date type!`);
                     return
                 }
+            },
+            markDate: {
+                handler(val) {
+                    val.forEach((item)=>{
+                        if(!(/(([0-9]{3}[1-9]|[0-9]{2}[1-9][0-9]{1}|[0-9]{1}[1-9][0-9]{2}|[1-9][0-9]{3})\/(((0[13578]|1[02])\/(0[1-9]|[12][0-9]|3[01]))|((0[469]|11)\/(0[1-9]|[12][0-9]|30))|(02\/(0[1-9]|[1][0-9]|2[0-8]))))|((([0-9]{2})(0[48]|[2468][048]|[13579][26])|((0[48]|[2468][048]|[3579][26])00))\/02\/29)$/.test(item))) {
+                            throw new Error(`The calendar component's markDate(${item}) format must be 'yyyy-mm-dd' and in the date range!`);
+                            return
+                        }
+                    })
+                },
+                deep: true,
+                immediate: true
             },
             pickerType: {
                 handler(val) {
@@ -171,7 +188,7 @@
         width 100%
         height auto
         background none
-        height px2vw(650px)
+        height px2vw(710px)
         z-index 1
     }
 
@@ -184,7 +201,7 @@
         padding-bottom px2vw(26px)
         flex-wrap wrap
         background white
-        height px2vw(650px)
+        height px2vw(710px)
         overflow hidden
     }
 
