@@ -58,7 +58,10 @@ Vue.use(vueHashCalendar)
 | showTodayButton    | 是否显示返回今日按钮                                                          |   true    |    否    |
 | isShowWeekView    | 是否以周视图展示组件                                                          |   false    |    否    |
 | markDate | 需要被标记的日期。                                                            |  []  |    否    |
-| confirm | 时间日期改变的回调事件。                                                            |  ---  |    否    |
+
+# 事件
+
+| confirm | 时间日期改变的回调事件。                                                            
 
 ## Other
 
