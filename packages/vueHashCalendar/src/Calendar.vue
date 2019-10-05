@@ -6,7 +6,7 @@
 */
 <template>
     <div class="calendar_body" v-show="show">
-        <div class="calendar_week">
+        <div class="calendar_week" ref="weekTitle">
             <div class="calendar_item" v-for="item in calendarWeek" :key="item">
                 <p class="calendar_day">{{ item }}</p>
             </div>
@@ -24,7 +24,7 @@
                         <p v-else class="calendar_day" ref="calendarDay"
                            :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i)}">
                             {{ date.day }}</p>
-                        <div v-if="isMarkDate(date)" class="calendar_dot"></div>
+                        <div v-if="isMarkDate(date, i)" class="calendar_dot"></div>
                     </div>
                 </li>
             </ul>
@@ -84,6 +84,7 @@
                 },//本次touch事件，横向，纵向滑动的距离
                 isTouching: false,//是否正在滑动
                 calendarGroupHeight: 0,
+                calendarWeekTitleHeight: 0,
                 calendarItemHeight: 0,
                 touchStartPositionX: null,//开始滑动x轴的值
                 touchStartPositionY: null,//开始滑动时y轴的值
@@ -141,6 +142,9 @@
                     }
                 },
                 immediate: true
+            },
+            calendarGroupHeight(val) {
+                this.$emit('height', val + this.calendarWeekTitleHeight)
             }
         },
         computed: {},
@@ -148,6 +152,11 @@
             initDom() {//初始化日历dom
                 this.$nextTick(() => {
                     this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + 10;
+                    this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight;
+                    let calendarItemGroup = this.$refs.calendarItem;
+                    calendarItemGroup.forEach((item)=>{
+                        item.style.height = `${this.calendarItemHeight}px`;
+                    })
                     console.log(this.calendarItemHeight)
                     this.calendarGroupHeight = this.calendarItemHeight * 6;
                 })
@@ -332,6 +341,10 @@
                 this.calendarY = 0;
                 this.isShowWeek = false;
                 this.calendarGroupHeight = this.calendarItemHeight * 6;
+
+                this.isLastWeekInCurrentMonth = false;
+                this.isNextWeekInCurrentMonth = false;
+
                 this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month);
             },
             showWeek() {//日历以星期方式展示
@@ -345,7 +358,7 @@
                 }
                 let indexOfLine = Math.ceil((dayIndexOfMonth + 1) / 7);
                 let lastLine = indexOfLine - 1;
-                this.calendarY = -(this.calendarItemHeight * lastLine) + lastLine * 5;
+                this.calendarY = -(this.calendarItemHeight * lastLine)
 
                 this.isShowWeek = true;
                 this.calendarGroupHeight = this.calendarItemHeight
@@ -419,10 +432,10 @@
                 }
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             },
-            isMarkDate(date) {//当前日期是否需要标记
+            isMarkDate(date, index) {//当前日期是否需要标记
                 let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
 
-                return this.markDate.includes(dateString);
+                return this.markDate.includes(dateString) && !this.isNotCurrentMonthDay(date, index);
             },
             fillNumber(val) {//小于10，在前面补0
                 return val > 9 ? val : '0' + val

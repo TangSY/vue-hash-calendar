@@ -6,8 +6,8 @@
 */
 <template>
     <div class="calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker" @click="close">
-        <div class="calendar_content" @click.stop>
-            <div class="calendar_title">
+        <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`}" @click.stop>
+            <div class="calendar_title" ref="calendarTitle">
                 <div class="calendar_title_date">
                     <span v-if="pickerType !== 'time'" class="calendar_title_date_year" :class="{'calendar_title_date_active': isShowCalendar}"
                           @click="showCalendar">{{ `${checkedDate.year}年${checkedDate.month + 1}月${checkedDate.day}日`}}</span>
@@ -18,7 +18,7 @@
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime" :week-start="weekStart"
-                      :is-show-week-view="isShowWeekView" :mark-date="markDate" @confirm="dateConfirm"></calendar>
+                      :is-show-week-view="isShowWeekView" :mark-date="markDate" @height="heightChange" @confirm="dateConfirm"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime" @confirm="timeConfirm"></time-picker>
         </div>
     </div>
@@ -81,12 +81,19 @@
                 },//被选中的日期
                 isShowDatetimePicker: false,//是否显示日期控件
                 isShowCalendar: true,//是否显示日历选择控件
+                calendarContentHeight: 0,//日历组件高度
+                calendarTitleHeight: 0,//日历组件标题高度
+                firstTimes: true,//第一次触发
             }
         },
         mounted() {
             if (this.model === 'inline') {
                 this.isShowDatetimePicker = true;
             }
+
+            this.$nextTick(()=>{
+                this.calendarTitleHeight = this.$refs.calendarTitle.offsetHeight;
+            })
         },
         watch: {
             defaultDatetime(val) {
@@ -165,6 +172,12 @@
             },
             showTime() {//显示时间选择控件
                 this.isShowCalendar = false;
+            },
+            heightChange(height) {//高度变化
+                if (!this.firstTimes && this.model === 'dialog') return;
+
+                this.calendarContentHeight = height + this.calendarTitleHeight;
+                this.firstTimes = false;
             }
         }
     }
