@@ -11,7 +11,8 @@
                 <p class="calendar_day">{{ item }}</p>
             </div>
         </div>
-        <div class="calendar_group" :style="{'height': `${calendarGroupHeight}px`}" ref="calendar" @touchstart="touchStart"
+        <div class="calendar_group" :style="{'height': `${calendarGroupHeight}px`}" ref="calendar"
+             @touchstart="touchStart"
              @touchmove.stop.prevent="touchMove" @touchend="touchEnd">
             <ul :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}">
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonthShow" :key="i"
@@ -24,7 +25,7 @@
                         <p v-else class="calendar_day" ref="calendarDay"
                            :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i)}">
                             {{ date.day }}</p>
-                        <div v-if="isMarkDate(date, i)" class="calendar_dot"></div>
+                        <div :style="{'background': markDateColor(date)}" class="calendar_dot"></div>
                     </div>
                 </li>
             </ul>
@@ -42,7 +43,10 @@
                     return new Date()
                 }
             },
-            show: true,
+            show: {
+                type: Boolean,
+                default: false
+            },
             weekStart: {
                 type: String,
                 default: 'Sunday'
@@ -55,7 +59,7 @@
             //日期下面的标记
             markDate: {
                 type: Array,
-                default: ()=>[]
+                default: () => []
             }
         },
         data() {
@@ -95,6 +99,7 @@
                 nextWeek: [],//下一周的数据
                 isLastWeekInCurrentMonth: false,//上一周的数据是否在本月
                 isNextWeekInCurrentMonth: false,//下一周的数据是否在本月
+                markDateColorObj: [],// 所有被标记的日期所对应的颜色
             }
         },
         mounted() {
@@ -132,10 +137,21 @@
                 },
                 immediate: true
             },
+            markDate: {
+                handler(val) {
+                    if (val) {
+                        val.forEach(item => {
+                            item.date.forEach(date => {
+                                this.markDateColorObj[date] = item.color;
+                            })
+                        })
+                    }
+                },
+                immediate: true
+            },
             isShowWeekView: {
                 handler(val) {
                     if (val) {
-                        console.log(4444)
                         this.$nextTick(() => {
                             this.showWeek();
                         })
@@ -153,11 +169,12 @@
                 this.$nextTick(() => {
                     this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + 10;
                     this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight;
+
                     let calendarItemGroup = this.$refs.calendarItem;
-                    calendarItemGroup.forEach((item)=>{
+                    calendarItemGroup.forEach((item) => {
                         item.style.height = `${this.calendarItemHeight}px`;
                     })
-                    console.log(this.calendarItemHeight)
+
                     this.calendarGroupHeight = this.calendarItemHeight * 6;
                 })
             },
@@ -432,10 +449,10 @@
                 }
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             },
-            isMarkDate(date, index) {//当前日期是否需要标记
+            markDateColor(date) {//当前日期是否需要标记
                 let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
 
-                return this.markDate.includes(dateString) && !this.isNotCurrentMonthDay(date, index);
+                return this.markDateColorObj[dateString];
             },
             fillNumber(val) {//小于10，在前面补0
                 return val > 9 ? val : '0' + val
@@ -532,7 +549,6 @@
     }
 
     .calendar_dot {
-        background main-color
         width 5px
         height 5px
         border-radius 50%

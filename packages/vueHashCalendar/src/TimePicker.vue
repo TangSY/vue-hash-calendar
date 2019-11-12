@@ -115,11 +115,15 @@
                 if (transform) {
                     endUp = parseFloat(e.currentTarget.style.webkitTransform.split(' ')[1].split('px')[0]);
                 }
-                let timeHeight = document.querySelector('.time_item').clientHeight,
-                    distance = Math.abs(endUp - this.timeStartUp),
+
+                let timeHeight = getComputedStyle(document.querySelector('.time_item')).height || '';
+                timeHeight = parseFloat(timeHeight.split('px')[0]);
+
+                let distance = Math.abs(endUp - this.timeStartUp),
                     upCount = Math.floor(distance / timeHeight) || 1,
                     halfWinWith = timeHeight / 2,
                     up = this.timeStartUp;
+
                 if (endUp <= this.timeStartUp) {
                     // 向上滑动 未过临界值
                     if (distance <= halfWinWith) {
@@ -142,10 +146,10 @@
                     }
                 }
                 if (index === 0) {
-                    let hour = 2 - up / timeHeight;
+                    let hour = 2 - Math.round(parseInt(up) / parseInt(timeHeight));
                     this.$set(this.checkedDate, 'hours', hour)
                 } else {
-                    let minute = 2 - up / timeHeight;
+                    let minute = 2 - Math.round(parseInt(up) / parseInt(timeHeight));
                     this.$set(this.checkedDate, 'minutes', minute)
                 }
                 e.currentTarget.style.webkitTransition = 'transform 300ms';

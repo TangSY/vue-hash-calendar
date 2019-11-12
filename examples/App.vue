@@ -6,9 +6,11 @@
 */
 <template>
     <div class="body">
+        <button @click="showCalendarDialog">显示</button>
         <vue-hash-calendar
                 ref="picker"
                 model="dialog"
+                :visible.sync="isShowCalendar"
                 :default-datetime="defaultDatetime"
                 :is-show-week-view="false"
                 :mark-date="markDate"
@@ -31,16 +33,25 @@
         components: { Github },
         data() {
             return {
+                isShowCalendar: true,//是否显示弹窗
                 isShowTips: false,//是否显示下载提示
                 defaultDatetime: new Date(),
-                markDate: ['2019/06/30', '2019/10/05', '2019/10/19', '2019/10/09', '2019/10/16', '2019/10/12']
+                markDate: [
+                    '2019/11/24','2019/11/22',
+                    {color: 'red',date: ['0', '2019/02/25', '2019/03/25', '2019/04/25', '2019/05/25', '2019/06/25', '2019/07/25', '2019/08/25', '2019/09/25', '2019/10/25', '2019/11/25', '2019/12/25']},
+                    {color: 'blue',date: ['2019/01/20', '2019/02/20', '2019/03/20', '2019/04/20', '2019/05/20', '2019/06/20', '2019/07/20', '2019/08/20', '2019/09/20', '2019/10/20', '2019/11/20', '2019/12/20']},
+                    {color: 'pink',date: ['2019/01/12', '2019/02/12', '2019/03/12', '2019/04/12', '2019/05/12', '2019/06/12', '2019/07/12', '2019/08/12', '2019/09/12', '2019/10/12', '2019/11/12', '2019/12/12']},
+                    {color: '#000000',date: ['2019/01/29', '2019/02/29', '2019/03/29', '2019/04/29', '2019/05/29', '2019/06/29', '2019/07/29', '2019/08/29', '2019/09/29', '2019/10/29', '2019/11/29', '2019/12/29']}
+                ], //对象数组形式的标记日期，可以自定义标记颜色
             }
         },
         mounted() {
 //            this.defaultDatetime = new Date('2018-01-01 12:04');
-            this.$refs.picker.show();
         },
         methods: {
+            showCalendarDialog() {// 显示日历
+                this.isShowCalendar = true;
+            },
             dateConfirm(date) {
                 console.log(date,'confirm')
             }
