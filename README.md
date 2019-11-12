@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/TangSY/vue-hash-calendar.svg?branch=master)](https://travis-ci.org/TangSY/vue-hash-calendar)
-![version](https://img.shields.io/npm/v/vue-hash-calendar.svg)
-![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg)
+[![version](https://img.shields.io/npm/v/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
+[![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 
@@ -50,6 +50,7 @@ Vue.use(vueHashCalendar)
 
 | 属性          | 说明                                                                                                   |  默认  | 是否必传 |
 | :------------ | :----------------------------------------------------------------------------------------------------- | :----: | :------: |
+| visible      | 控制日历组件的显示或隐藏,需使用 `.sycn` 修饰符                    |   false   |    否    |
 | model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   inline   |    否    |
 | defaultDatetime| 指定默认时间。数据类型为 Date                                                      |   当前时间   |    否    |
 | format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”                                      |  YY/MM/DD hh:mm   |    否    |
@@ -57,7 +58,7 @@ Vue.use(vueHashCalendar)
 | pickerType  | 选择器类型 datetime：日期+时间   date：日期   time：时间                                                               | datetime |    否    |
 | showTodayButton    | 是否显示返回今日按钮                                                          |   true    |    否    |
 | isShowWeekView    | 是否以周视图展示组件                                                          |   false    |    否    |
-| markDate | 需要被标记的日期。                                                            |  []  |    否    |
+| markDate | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20']                                                      |  []  |    否    |
 
 # 事件
 
@@ -67,12 +68,12 @@ Vue.use(vueHashCalendar)
 
 ## Other
 
-* 在 dialog 模式中，如何显示日历组件？
+* 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
 ```
-<vue-hash-calendar ref="picker"></vue-hash-calendar>
+<vue-hash-calendar :visible.sync="isShowCalendar"></vue-hash-calendar>
 
-//调用内置 show 方法
-this.$refs.picker.show();
+//设置为true
+this.isShowCalendar = true;
 ```
 
 * 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者 github 提交 issue。

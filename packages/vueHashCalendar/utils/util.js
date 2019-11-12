@@ -105,7 +105,6 @@ export let setDocumentTitle = function (title) {
  */
 export let formatDate = function (time, format = 'YY-MM-DD hh:mm:ss') {
     let date = time ? new Date(time) : new Date();
-
     let year = date.getFullYear(),
         month = date.getMonth() + 1,//月份是从0开始的
         day = date.getDate(),
