@@ -175,6 +175,7 @@
                         item.style.height = `${this.calendarItemHeight}px`;
                     })
 
+                    this.showMonth();
                     this.calendarGroupHeight = this.calendarItemHeight * 6;
                 })
             },
@@ -370,9 +371,12 @@
                     daysArr.push(item.day);
                 })
                 let dayIndexOfMonth = daysArr.indexOf(this.checkedDate.day);
+                // 当day为月底的天数时，有可能在daysArr的前面也存在上一个月对应的日期，所以需要取lastIndexOf
                 if (this.checkedDate.day > 15) {
                     dayIndexOfMonth = daysArr.lastIndexOf(this.checkedDate.day);
                 }
+
+                // 计算当前日期在第几行
                 let indexOfLine = Math.ceil((dayIndexOfMonth + 1) / 7);
                 let lastLine = indexOfLine - 1;
                 this.calendarY = -(this.calendarItemHeight * lastLine)
