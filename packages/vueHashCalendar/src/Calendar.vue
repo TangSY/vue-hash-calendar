@@ -37,6 +37,10 @@
     export default {
         name: "Calendar",
         props: {
+            scrollChangeDate: {// 滑动的时候，是否触发改变日期
+                type: Boolean,
+                default: true
+            },
             defaultDate: {
                 type: Date,
                 default() {
@@ -64,6 +68,7 @@
         },
         data() {
             return {
+                currentChangeIsScroll: false,// 改变当前日期的方式是否为滑动事件
                 yearOfCurrentShow: new Date().getFullYear(),//当前日历展示的年份
                 monthOfCurrentShow: new Date().getMonth(),//当前日历展示的月份
                 yearOfToday: new Date().getFullYear(),//今天所在的年份
@@ -193,14 +198,6 @@
             },
             //计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息
             calculateCalendarOfThreeMonth(year = new Date().getFullYear(), month = new Date().getMonth()) {
-                let day = this.checkedDate.day;
-                if (day > 30 || (day > 28 && month === 1)) {
-                    this.$set(this.checkedDate, 'day', this.daysOfMonth(year)[month])
-
-                }
-                this.$set(this.checkedDate, 'year', year);
-                this.$set(this.checkedDate, 'month', month);
-
                 this.lastMonthYear = month === 0 ? year - 1 : year;//上个月的年份
                 this.lastMonth = month === 0 ? 11 : month - 1;//上个月的月份
                 this.nextMonthYear = month === 11 ? year + 1 : year;//下个月的年份
@@ -213,6 +210,21 @@
                 this.calendarOfMonth = [];
                 this.calendarOfMonth.push(firstMonth, secondMonth, thirdMonth);
                 this.calendarOfMonthShow = JSON.parse(JSON.stringify(this.calendarOfMonth))
+
+
+                if (!this.scrollChangeDate && this.currentChangeIsScroll) {
+                    this.currentChangeIsScroll = false;
+                    return
+                }
+
+                // 改变日期选择的日期
+                let day = this.checkedDate.day;
+                if (day > 30 || (day > 28 && month === 1)) {
+                    this.$set(this.checkedDate, 'day', this.daysOfMonth(year)[month])
+
+                }
+                this.$set(this.checkedDate, 'year', year);
+                this.$set(this.checkedDate, 'month', month);
             },
             calculateCalendarOfMonth(year = new Date().getFullYear(), month = new Date().getMonth()) {//计算每个月的日历
                 let calendarOfCurrentMonth = [];
@@ -324,6 +336,7 @@
             touchEnd(e) {//监听touch结束事件
                 this.isTouching = false;
                 if (Math.abs(this.touch.x) > Math.abs(this.touch.y) && Math.abs(this.touch.x) > 0.2) {
+                    this.currentChangeIsScroll = true;
                     if (this.touch.x > 0) {
                         this.getLastMonth();
                         if (this.isShowWeek) {

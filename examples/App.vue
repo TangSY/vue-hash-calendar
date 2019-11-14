@@ -10,6 +10,7 @@
         <vue-hash-calendar
                 ref="picker"
                 model="dialog"
+                :scroll-change-date="false"
                 :visible.sync="isShowCalendar"
                 :default-datetime="defaultDatetime"
                 :is-show-week-view="false"
