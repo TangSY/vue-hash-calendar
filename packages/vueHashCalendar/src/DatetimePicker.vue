@@ -21,7 +21,7 @@
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
-                      :week-start="weekStart"
+                      :week-start="weekStart" :scroll-change-date="scrollChangeDate"
                       :is-show-week-view="isShowWeekView" :mark-date="markDate" @height="heightChange"
                       @confirm="dateConfirm"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
@@ -40,6 +40,10 @@
             visible: {//是否显示日历组件
                 type: Boolean,
                 default: false
+            },
+            scrollChangeDate: {// 滑动的时候，是否触发改变日期
+                type: Boolean,
+                default: true
             },
             pickerType: {//选择器类型 datetime：日期+时间   date：日期   time：时间
                 type: String,
