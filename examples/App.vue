@@ -19,7 +19,9 @@
                 week-start="sunday"
                 picker-type="datetime"
                 :show-today-button="true"
-                @confirm="dateConfirm">
+                @confirm="dateConfirm"
+                @click="dateClick"
+                @change="dateChange">
         </vue-hash-calendar>
         <!--github入口-->
         <github></github>
@@ -53,8 +55,14 @@
             showCalendarDialog() {// 显示日历
                 this.isShowCalendar = true;
             },
-            dateConfirm(date) {
-                console.log(date,'confirm')
+            dateChange(date) {// 日期改变触发
+                console.log(date,'change');
+            },
+            dateConfirm(date) {// 点击确认按钮触发
+                console.log(date,'confirm');
+            },
+            dateClick(date) {// 点击日期时按钮触发
+                console.log(date,'click');
             }
         }
     }

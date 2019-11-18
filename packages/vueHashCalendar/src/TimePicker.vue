@@ -55,7 +55,7 @@
             },
             checkedDate: {
                 handler(val) {
-                    this.$emit('confirm', val);
+                    this.$emit('change', val);
                 },
                 deep: true,
                 immediate: true

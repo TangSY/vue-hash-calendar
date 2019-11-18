@@ -128,7 +128,7 @@
             },
             checkedDate: {
                 handler(val) {
-                    this.$emit('confirm', val);
+                    this.$emit('change', val);
                 },
                 deep: true,
                 immediate: true
@@ -299,6 +299,8 @@
                 if (this.isShowWeek) {
                     this.showWeek();
                 }
+
+                this.$emit('click', this.checkedDate)
             },
             isToday(date) {//该日期是否为今天
                 return this.yearOfToday === date.year && this.monthOfToday === date.month && this.dayOfToday === date.day;
