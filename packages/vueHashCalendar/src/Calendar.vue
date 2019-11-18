@@ -300,7 +300,7 @@
                     this.showWeek();
                 }
 
-                this.$emit('click', date)
+                this.$emit('click', this.checkedDate)
             },
             isToday(date) {//该日期是否为今天
                 return this.yearOfToday === date.year && this.monthOfToday === date.month && this.dayOfToday === date.day;

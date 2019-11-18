@@ -23,7 +23,7 @@
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
                       :week-start="weekStart" :scroll-change-date="scrollChangeDate"
                       :is-show-week-view="isShowWeekView" :mark-date="markDate" @height="heightChange"
-                      @change="dateChange"></calendar>
+                      @change="dateChange" @click="dateClick"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
                          @change="timeChange"></time-picker>
         </div>
@@ -178,6 +178,17 @@
                 date.hours = this.checkedDate.hours;
                 date.minutes = this.checkedDate.minutes;
                 this.checkedDate = date;
+            },
+            dateClick(date) {
+                date.hours = this.checkedDate.hours;
+                date.minutes = this.checkedDate.minutes;
+                this.checkedDate = date;
+
+                let fDate = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`);
+                if (this.format) {
+                    fDate = formatDate(fDate, this.format);
+                }
+                this.$emit('click', fDate)
             },
             timeChange(date) {
                 date.year = this.checkedDate.year;

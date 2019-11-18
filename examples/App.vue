@@ -20,6 +20,7 @@
                 picker-type="datetime"
                 :show-today-button="true"
                 @confirm="dateConfirm"
+                @click="dateClick"
                 @change="dateChange">
         </vue-hash-calendar>
         <!--github入口-->
@@ -59,6 +60,9 @@
             },
             dateConfirm(date) {// 点击确认按钮触发
                 console.log(date,'confirm');
+            },
+            dateClick(date) {// 点击日期时按钮触发
+                console.log(date,'click');
             }
         }
     }
