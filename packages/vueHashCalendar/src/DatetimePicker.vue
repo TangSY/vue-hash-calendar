@@ -23,9 +23,9 @@
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
                       :week-start="weekStart" :scroll-change-date="scrollChangeDate"
                       :is-show-week-view="isShowWeekView" :mark-date="markDate" @height="heightChange"
-                      @confirm="dateConfirm"></calendar>
+                      @change="dateChange"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
-                         @confirm="timeConfirm"></time-picker>
+                         @change="timeChange"></time-picker>
         </div>
     </div>
 </template>
@@ -145,7 +145,7 @@
                     if (this.format) {
                         date = formatDate(date, this.format);
                     }
-                    this.$emit('confirm', date);
+                    this.$emit('change', date);
                 },
                 deep: true
             },
@@ -174,12 +174,12 @@
             today() {
                 this.$refs.calendar.today();
             },
-            dateConfirm(date) {
+            dateChange(date) {
                 date.hours = this.checkedDate.hours;
                 date.minutes = this.checkedDate.minutes;
                 this.checkedDate = date;
             },
-            timeConfirm(date) {
+            timeChange(date) {
                 date.year = this.checkedDate.year;
                 date.month = this.checkedDate.month;
                 date.day = this.checkedDate.day;
