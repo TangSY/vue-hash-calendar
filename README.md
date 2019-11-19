@@ -89,7 +89,7 @@ this.isShowCalendar = true;
 /** vue methods 中的方法 **/
 disabledDate(date) {
     let timestamp = date.getTime();
-    if (timestamp >= new Date().getTime()) {
+    if (timestamp > new Date().getTime()) {
         return true
     }
 
