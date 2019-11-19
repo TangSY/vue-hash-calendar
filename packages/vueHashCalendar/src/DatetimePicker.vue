@@ -17,11 +17,11 @@
                           :class="{'calendar_title_date_active': !isShowCalendar}"
                           @click="showTime">{{ `${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`}}</span>
                 </div>
-                <div v-if="showTodayButton" class="calendar_confirm" @click="today">今天</div>
+                <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">今天</div>
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
-                      :week-start="weekStart" :scroll-change-date="scrollChangeDate"
+                      :week-start="weekStart" :scroll-change-date="scrollChangeDate" :disabled-date="disabledDate"
                       :is-show-week-view="isShowWeekView" :mark-date="markDate" @height="heightChange"
                       @change="dateChange" @click="dateClick"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
@@ -77,6 +77,13 @@
             markDate: {
                 type: Array,
                 default: () => []
+            },
+            // 禁用的日期
+            disabledDate: {
+                type: Function,
+                default: () => {
+                    return false
+                }
             }
         },
         components: {
@@ -172,6 +179,8 @@
         },
         methods: {
             today() {
+                if (this.disabledDate(new Date())) return
+
                 this.$refs.calendar.today();
             },
             dateChange(date) {
@@ -304,5 +313,9 @@
     .calendar_confirm {
         color main-color
         margin-right px2vw(34px)
+    }
+
+    .today_disable {
+        color disabled-font-color
     }
 </style>
