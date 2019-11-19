@@ -67,7 +67,7 @@
             },
             disabledDate(date) {// 禁用的日期
                 let timestamp = date.getTime();
-                if (timestamp >= new Date().getTime()) {
+                if (timestamp > new Date().getTime()) {
                     return true
                 }
 

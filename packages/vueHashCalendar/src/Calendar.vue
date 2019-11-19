@@ -500,7 +500,7 @@
                 return this.markDateColorObj[dateString];
             },
             formatDisabledDate(date) {
-                let fDate = new Date(`${date.year}/${date.month + 1}/${date.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`);
+                let fDate = new Date(`${date.year}/${date.month + 1}/${date.day}`);
 
                 return this.disabledDate(fDate);
             },
