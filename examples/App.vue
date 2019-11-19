@@ -15,6 +15,7 @@
                 :default-datetime="defaultDatetime"
                 :is-show-week-view="false"
                 :mark-date="markDate"
+                :disabled-date="disabledDate"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"
                 picker-type="datetime"
@@ -63,6 +64,14 @@
             },
             dateClick(date) {// 点击日期时按钮触发
                 console.log(date,'click');
+            },
+            disabledDate(date) {// 禁用的日期
+                let timestamp = date.getTime();
+                if (timestamp >= new Date().getTime()) {
+                    return true
+                }
+
+                return false
             }
         }
     }

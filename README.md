@@ -48,18 +48,19 @@ Vue.use(vueHashCalendar)
 
 # API
 
-| 属性          | 说明                                                                                                   |  默认  | 是否必传 |
-| :------------ | :----------------------------------------------------------------------------------------------------- | :----: | :------: |
-| visible      | 控制日历组件的显示或隐藏,需使用 `.sycn` 修饰符                    |   false   |    否    |
-| scrollChangeDate      | 控制滑动的时候是否修改选中的日期                    |   true   |    否    |
-| model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   inline   |    否    |
-| defaultDatetime| 指定默认时间。数据类型为 Date                                                      |   当前时间   |    否    |
-| format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”                                      |  YY/MM/DD hh:mm   |    否    |
-| weekStart      | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']            | sunday |    否    |
-| pickerType  | 选择器类型 datetime：日期+时间   date：日期   time：时间                                                               | datetime |    否    |
-| showTodayButton    | 是否显示返回今日按钮                                                          |   true    |    否    |
-| isShowWeekView    | 是否以周视图展示组件                                                          |   false    |    否    |
-| markDate | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20']                                                      |  []  |    否    |
+| 属性          | 说明                                                                                                   |  类型  |  默认  | 是否必传 |
+| :------------ | :----------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
+| visible      | 控制日历组件的显示或隐藏,需使用 `.sycn` 修饰符                    |   Boolean   |   false   |    否    |
+| scrollChangeDate      | 控制滑动的时候是否修改选中的日期                    |   Boolean   |   true   |    否    |
+| model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   String   |   inline   |    否    |
+| defaultDatetime| 指定默认时间。                                                  |   Date   |   当前时间   |    否    |
+| format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”                                    |   String     |  YY/MM/DD hh:mm   |    否    |
+| weekStart      | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']          |   String     | sunday |    否    |
+| pickerType  | 选择器类型 datetime：日期+时间   date：日期   time：时间                                                            |   String      | datetime |    否    |
+| showTodayButton    | 是否显示返回今日按钮                                                         |   Boolean    |   true    |    否    |
+| isShowWeekView    | 是否以周视图展示组件                                                         |   Boolean    |   false    |    否    |
+| disabledDate    | 设置禁用状态，参数为当前日期，要求返回 Boolean   （禁用返回 true）                                                     |   Function     |   ---    |    否    |
+| markDate | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20']                                          |   Array     |  []  |    否    |
 
 # 事件
 
@@ -78,6 +79,24 @@ Vue.use(vueHashCalendar)
 //设置为true
 this.isShowCalendar = true;
 ```
+* 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
+```
+// 例如禁用今日之后的所有日期
+
+/** vue模板文件 **/
+<vue-hash-calendar :disabled-date="disabledDate"></vue-hash-calendar>
+
+/** vue methods 中的方法 **/
+disabledDate(date) {
+    let timestamp = date.getTime();
+    if (timestamp >= new Date().getTime()) {
+        return true
+    }
+
+    return false
+}
+```
+
 
 * 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者 github 提交 issue。
 

@@ -18,6 +18,7 @@
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonthShow" :key="i"
                     :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
+                         :class="{'calendar_item_disable': formatDisabledDate(date)}"
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
                            class="calendar_day calendar_first_today" ref="calendarDay"
@@ -64,6 +65,13 @@
             markDate: {
                 type: Array,
                 default: () => []
+            },
+            // 禁用的日期
+            disabledDate: {
+                type: Function,
+                default: () => {
+                    return false
+                }
             }
         },
         data() {
@@ -121,7 +129,8 @@
                         throw new Error(`The calendar component's defaultDate must be date type!`);
                         return
                     }
-                    this.$set(this.checkedDate, 'day', val.getDate())
+
+                    this.$set(this.checkedDate, 'day', val.getDate());
                     this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth());
                 },
                 immediate: true
@@ -218,11 +227,16 @@
                 }
 
                 // 改变日期选择的日期
+                let tempDate = {};
                 let day = this.checkedDate.day;
                 if (day > 30 || (day > 28 && month === 1)) {
-                    this.$set(this.checkedDate, 'day', this.daysOfMonth(year)[month])
-
+                    day = this.daysOfMonth(year)[month];
                 }
+                tempDate = { day: day, year: year, month: month };
+
+                if (this.formatDisabledDate(tempDate)) return;
+
+                this.$set(this.checkedDate, 'day', tempDate.day);
                 this.$set(this.checkedDate, 'year', year);
                 this.$set(this.checkedDate, 'month', month);
             },
@@ -285,6 +299,8 @@
             clickCalendarDay(date) {//点击日历上的日期
                 if (!date) return;
 
+                if (this.formatDisabledDate(date)) return;
+
                 this.$set(this.checkedDate, 'year', date.year)
                 this.$set(this.checkedDate, 'month', date.month)
                 this.$set(this.checkedDate, 'day', date.day)
@@ -306,6 +322,8 @@
                 return this.yearOfToday === date.year && this.monthOfToday === date.month && this.dayOfToday === date.day;
             },
             isCheckedDay(date) {//该日期是否为选中的日期
+                if (this.formatDisabledDate(date)) return false;
+
                 return this.checkedDate.year === date.year && this.checkedDate.month === date.month && this.checkedDate.day === date.day;
             },
             isNotCurrentMonthDay(date, index) {//非本月日期
@@ -380,15 +398,15 @@
 
                 this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month);
             },
-            showWeek() {//日历以星期方式展示
+            showWeek(checkedDate = this.checkedDate) {//日历以星期方式展示
                 let daysArr = [];
                 this.calendarOfMonth[1].forEach((item) => {
                     daysArr.push(item.day);
                 })
-                let dayIndexOfMonth = daysArr.indexOf(this.checkedDate.day);
+                let dayIndexOfMonth = daysArr.indexOf(checkedDate.day);
                 // 当day为月底的天数时，有可能在daysArr的前面也存在上一个月对应的日期，所以需要取lastIndexOf
-                if (this.checkedDate.day > 15) {
-                    dayIndexOfMonth = daysArr.lastIndexOf(this.checkedDate.day);
+                if (checkedDate.day > 15) {
+                    dayIndexOfMonth = daysArr.lastIndexOf(checkedDate.day);
                 }
 
                 // 计算当前日期在第几行
@@ -406,35 +424,35 @@
                 this.isLastWeekInCurrentMonth = false;
                 currentWeek = this.calendarOfMonth[1].slice(sliceStart, sliceEnd);
                 for (let i in currentWeek) {
-                    if (currentWeek[i].day === this.checkedDate.day) {
+                    if (currentWeek[i].day === checkedDate.day) {
                         this.selectedDayIndex = i;
                     }
                 }
 
                 let firstDayOfCurrentWeek = currentWeek[0];
                 let lastDayOfCurrentWeek = currentWeek[6];
-                if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month === this.checkedDate.month) {
+                if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month === checkedDate.month) {
                     this.lastWeek = this.calendarOfMonth[0].slice(21, 28);
                 } else {
                     if (firstDayOfCurrentWeek.day === 1) {
                         this.lastWeek = this.calendarOfMonth[0].slice(28, 35);
                     } else {
                         this.lastWeek = this.calendarOfMonth[1].slice(sliceStart - 7, sliceEnd - 7);
-                        if (this.lastWeek[this.selectedDayIndex].month === this.checkedDate.month) {
+                        if (this.lastWeek[this.selectedDayIndex].month === checkedDate.month) {
                             this.isLastWeekInCurrentMonth = true;
                         }
                     }
                 }
 
                 this.isNextWeekInCurrentMonth = false;
-                if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month !== this.checkedDate.month) {
+                if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month !== checkedDate.month) {
                     this.nextWeek = this.calendarOfMonth[2].slice(7, 14);
                 } else {
                     if (lastDayOfCurrentWeek.day === this.daysOfMonth(lastDayOfCurrentWeek.year)[lastDayOfCurrentWeek.month]) {
                         this.nextWeek = this.calendarOfMonth[2].slice(0, 7);
                     } else {
                         this.nextWeek = this.calendarOfMonth[1].slice(sliceStart + 7, sliceEnd + 7);
-                        if (this.nextWeek[this.selectedDayIndex].month === this.checkedDate.month) {
+                        if (this.nextWeek[this.selectedDayIndex].month === checkedDate.month) {
                             this.isNextWeekInCurrentMonth = true;
                         }
                     }
@@ -443,12 +461,20 @@
                 this.calendarOfMonthShow[2].splice(sliceStart, 7, ...this.nextWeek);
             },
             getLastWeek() {//显示上一周
-                this.checkedDate = this.lastWeek[this.selectedDayIndex];
-                this.showWeek();
+                let checkedDate = this.lastWeek[this.selectedDayIndex];
+                this.showWeek(checkedDate);
+
+                if (this.formatDisabledDate(checkedDate)) return;
+
+                this.checkedDate = checkedDate;
             },
             getNextWeek() {//显示下一周
-                this.checkedDate = this.nextWeek[this.selectedDayIndex];
-                this.showWeek();
+                let checkedDate = this.nextWeek[this.selectedDayIndex];
+                this.showWeek(checkedDate);
+
+                if (this.formatDisabledDate(checkedDate)) return;
+
+                this.checkedDate = checkedDate;
             },
             getLastMonth() {//获取上个月日历
                 this.translateIndex += 1;
@@ -472,6 +498,11 @@
                 let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
 
                 return this.markDateColorObj[dateString];
+            },
+            formatDisabledDate(date) {
+                let fDate = new Date(`${date.year}/${date.month + 1}/${date.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`);
+
+                return this.disabledDate(fDate);
             },
             fillNumber(val) {//小于10，在前面补0
                 return val > 9 ? val : '0' + val
@@ -518,7 +549,7 @@
     .calendar_group_li {
         position absolute
         top 0
-        left 0
+        left px2vw(4px)
         bottom 0
         right 0
         height 100%
@@ -530,10 +561,16 @@
     }
 
     .calendar_item {
-        width px2vw(100px)
-        margin-left px2vw(5px)
+        width px2vw(106px)
         flexContent()
         flex-direction column
+    }
+
+    .calendar_item_disable {
+        background-color disabled-bg-color
+        opacity 1
+        cursor not-allowed
+        color disabled-font-color
     }
 
     .calendar_day {
@@ -559,7 +596,7 @@
     }
 
     .calendar_day_not {
-        color vice-font-color
+        color disabled-font-color
     }
 
     .calendar_day_checked {
