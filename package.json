@@ -20,6 +20,7 @@
     "build": "vue-cli-service build",
     "test": "echo 'exited with 0'",
     "lib": "vue-cli-service build --target lib --name vue-hash-calendar --dest lib packages/index.js",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",
     "babel-plugin-component": "^1.1.1",
+    "husky": "^3.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
     "vue-template-compiler": "^2.5.16"
@@ -53,6 +55,11 @@
   "postcss": {
     "plugins": {
       "autoprefixer": {}
+    }
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-customizable"
     }
   },
   "browserslist": [
