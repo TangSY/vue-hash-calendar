@@ -60,6 +60,9 @@
   "config": {
     "commitizen": {
       "path": "cz-customizable"
+    },
+    "ghooks": {
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },
   "husky": {
