@@ -195,6 +195,7 @@
             },
             today() {//今天
                 this.$set(this.checkedDate, 'day', new Date().getDate());
+
                 this.calculateCalendarOfThreeMonth();
 
 
@@ -362,14 +363,18 @@
                         if (this.isShowWeek) {
                             setTimeout(() => {
                                 this.isTouching = true;
+                                this.currentChangeIsScroll = true;
                                 this.getLastWeek();
                             }, this.transitionDuration * 1000)
                         }
                     } else if (this.touch.x < 0) {
+                        console.log(JSON.stringify(this.calendarOfMonth[1]), 'getNextMonth')
                         this.getNextMonth();
                         if (this.isShowWeek) {
                             setTimeout(() => {
                                 this.isTouching = true;
+                                this.currentChangeIsScroll = true;
+                                console.log(JSON.stringify(this.calendarOfMonth[1]), 'getNextWeek')
                                 this.getNextWeek();
                             }, this.transitionDuration * 1000)
                         }
@@ -400,6 +405,7 @@
             },
             showWeek(checkedDate = this.checkedDate) {//日历以星期方式展示
                 let daysArr = [];
+                console.log(JSON.stringify(this.calendarOfMonth[1]), 'showWeek')
                 this.calendarOfMonth[1].forEach((item) => {
                     daysArr.push(item.day);
                 })
@@ -466,13 +472,24 @@
 
                 if (this.formatDisabledDate(checkedDate)) return;
 
+                if (!this.scrollChangeDate && this.currentChangeIsScroll) {
+                    this.currentChangeIsScroll = false;
+                    return
+                }
+
                 this.checkedDate = checkedDate;
             },
             getNextWeek() {//显示下一周
                 let checkedDate = this.nextWeek[this.selectedDayIndex];
+                console.log(JSON.stringify(checkedDate),'checkedDate')
                 this.showWeek(checkedDate);
 
                 if (this.formatDisabledDate(checkedDate)) return;
+
+                if (!this.scrollChangeDate && this.currentChangeIsScroll) {
+                    this.currentChangeIsScroll = false;
+                    return
+                }
 
                 this.checkedDate = checkedDate;
             },
