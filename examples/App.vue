@@ -10,7 +10,7 @@
         <vue-hash-calendar
                 ref="picker"
                 model="dialog"
-                :scroll-change-date="false"
+                :scroll-change-date="true"
                 :visible.sync="isShowCalendar"
                 :default-datetime="defaultDatetime"
                 :is-show-week-view="false"
@@ -57,13 +57,13 @@
                 this.isShowCalendar = true;
             },
             dateChange(date) {// 日期改变触发
-//                console.log(date,'change');
+               console.log(date,'change');
             },
             dateConfirm(date) {// 点击确认按钮触发
-//                console.log(date,'confirm');
+               console.log(date,'confirm');
             },
             dateClick(date) {// 点击日期时按钮触发
-//                console.log(date,'click');
+               console.log(date,'click');
             },
             disabledDate(date) {// 禁用的日期
                 let timestamp = date.getTime();
