@@ -195,8 +195,11 @@
             },
             today() {//今天
                 this.$set(this.checkedDate, 'day', new Date().getDate());
-                this.calculateCalendarOfThreeMonth();
 
+                this.yearOfCurrentShow = new Date().getFullYear();//当前日历展示的年份
+                this.monthOfCurrentShow = new Date().getMonth();//当前日历展示的月份
+
+                this.calculateCalendarOfThreeMonth();
 
                 if (this.isShowWeek) {
                     setTimeout(() => {
@@ -362,6 +365,7 @@
                         if (this.isShowWeek) {
                             setTimeout(() => {
                                 this.isTouching = true;
+                                this.currentChangeIsScroll = true;
                                 this.getLastWeek();
                             }, this.transitionDuration * 1000)
                         }
@@ -370,6 +374,7 @@
                         if (this.isShowWeek) {
                             setTimeout(() => {
                                 this.isTouching = true;
+                                this.currentChangeIsScroll = true;
                                 this.getNextWeek();
                             }, this.transitionDuration * 1000)
                         }
@@ -466,6 +471,11 @@
 
                 if (this.formatDisabledDate(checkedDate)) return;
 
+                if (!this.scrollChangeDate && this.currentChangeIsScroll) {
+                    this.currentChangeIsScroll = false;
+                    return
+                }
+
                 this.checkedDate = checkedDate;
             },
             getNextWeek() {//显示下一周
@@ -473,6 +483,11 @@
                 this.showWeek(checkedDate);
 
                 if (this.formatDisabledDate(checkedDate)) return;
+
+                if (!this.scrollChangeDate && this.currentChangeIsScroll) {
+                    this.currentChangeIsScroll = false;
+                    return
+                }
 
                 this.checkedDate = checkedDate;
             },
