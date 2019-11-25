@@ -15,11 +15,11 @@
 
 ### Features
 
-* travis自动发布npm包 ([ce7cdb6](https://github.com/TangSY/vue-hash-calendar/commit/ce7cdb61690943963239bff93538b0fc099c5204))
-* 修改版本号 ([f96e26a](https://github.com/TangSY/vue-hash-calendar/commit/f96e26a9de90dc9ae9f8c92bc6489233ebdaf8c0))
+* 新增标记按颜色分组的功能 ([43ec197](https://github.com/TangSY/vue-hash-calendar/commit/43ec197937cece8c1680796dc21a8778f0e6b960))
 * 增加  在周模式中，左右滑动切换上一周/下一周的功能 ([eb00f4b](https://github.com/TangSY/vue-hash-calendar/commit/eb00f4b3fa8f9a1b73145e8a41bd91ff6e5f35df))
 * 增加上下滑动，切换周/月模式 ([a5a65d3](https://github.com/TangSY/vue-hash-calendar/commit/a5a65d361a939c0468c734b19c7e93f2b2498b9a))
-* 新增标记按颜色分组的功能 ([43ec197](https://github.com/TangSY/vue-hash-calendar/commit/43ec197937cece8c1680796dc21a8778f0e6b960))
+* travis自动发布npm包 ([ce7cdb6](https://github.com/TangSY/vue-hash-calendar/commit/ce7cdb61690943963239bff93538b0fc099c5204))
+* 修改版本号 ([f96e26a](https://github.com/TangSY/vue-hash-calendar/commit/f96e26a9de90dc9ae9f8c92bc6489233ebdaf8c0))
 * 更新npmignore ([59814ef](https://github.com/TangSY/vue-hash-calendar/commit/59814ef2426dff4acfa5c289fbaccbde0f28a72e))
 * 更新项目目录结构 ([eff67b9](https://github.com/TangSY/vue-hash-calendar/commit/eff67b9f6efa35b63629636e42b479d330ea2b28))
 * 添加切换周动画 ([09af0b2](https://github.com/TangSY/vue-hash-calendar/commit/09af0b28cebeb350c70629e9e8c34880d8ab365d))
