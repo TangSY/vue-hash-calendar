@@ -70,6 +70,10 @@ Vue.use(vueHashCalendar)
 | confirm | 点击确认按钮时，触发该事件，dialog模式中才有该按钮。（返回的日期格式取决于 format 属性）                                                            
 | click | 点击日期时，触发该事件。（返回的日期格式取决于 format 属性）                                                            
 
+## 版本记录
+
+[changelog](https://github.com/TangSY/vue-hash-calendar/blob/travis_build/CHANGELOG.md)
+
 ## Other
 
 * 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
