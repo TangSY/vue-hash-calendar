@@ -1,6 +1,6 @@
 {
   "name": "vue-hash-calendar",
-  "version": "1.1.11",
+  "version": "1.1.12",
   "author": "HashTang",
   "repository": {
     "type": "git",
@@ -20,8 +20,6 @@
     "build": "vue-cli-service build",
     "test": "echo 'exited with 0'",
     "lib": "vue-cli-service build --target lib --name vue-hash-calendar --dest lib packages/index.js",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
