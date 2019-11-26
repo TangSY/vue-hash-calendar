@@ -8,9 +8,9 @@
     <div class="time_body" v-show="show">
         <div class="time_group">
             <div class="time_content" :id="'time' + index" v-for="(item, index) in timeArray" :key="index"
-                 @touchstart.stop.prevent="timeTouchStart"
-                 @touchmove.stop.prevent="timeTouchMove"
-                 @touchend.stop.prevent="timeTouchEnd($event, index)">
+                 @touchstart="timeTouchStart"
+                 @touchmove="timeTouchMove($event, index)"
+                 @touchend="timeTouchEnd($event, index)">
                 <div class="time_item" :class="{'time_item_show': isShowTime(time, index)}"
                      v-for="(time, j) in item" :key="index + j">{{ time | fillNumber }}
                 </div>
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+    import { checkPlatform } from '../utils/util'
     export default {
         name: "TimePicker",
         props: {
@@ -32,6 +33,7 @@
                     hours: new Date().getHours(),
                     minutes: new Date().getMinutes()
                 },//被选中的日期
+                timeHeight: 0,// 单个时间项的高度
                 timeArray: [],//时间选择器数据
                 timeStartY: 0,//touchstart,Y轴坐标
                 timeStartUp: 0,//滑动开始前，时间控件dom与顶部的偏移量
@@ -90,24 +92,33 @@
                 this.$nextTick(() => {
                     let checkHours = this.checkedDate.hours;
                     let checkMinutes = this.checkedDate.minutes;
-                    let timeHeight = document.querySelector('.time_item').clientHeight
-                    let hoursUp = (2 - parseInt(checkHours)) * timeHeight;
-                    let minutesUp = (2 - parseInt(checkMinutes)) * timeHeight;
+
+                    this.timeHeight = getComputedStyle(document.querySelector('.time_item')).height || '';
+                    this.timeHeight = parseFloat(this.timeHeight.split('px')[0]);
+
+                    let hoursUp = (2 - parseFloat(checkHours)) * this.timeHeight;
+                    let minutesUp = (2 - parseFloat(checkMinutes)) * this.timeHeight;
                     document.querySelector('#time0').style.webkitTransform = 'translate3d(0px,' + hoursUp + 'px,0px)';
                     document.querySelector('#time1').style.webkitTransform = 'translate3d(0px,' + minutesUp + 'px,0px)';
                 })
             },
             timeTouchStart(e) {
+                e.preventDefault();
                 this.timeStartY = e.changedTouches[0].pageY;
                 let transform = e.currentTarget.style.webkitTransform;
                 if (transform) {
-                    this.timeStartUp = parseFloat(e.currentTarget.style.webkitTransform.split(' ')[1].split('px')[0]);
+                    this.timeStartUp = parseFloat(transform.split(' ')[1].split('px')[0]);
                 }
             },
-            timeTouchMove(e) {
+            timeTouchMove(e, index) {
                 let moveEndY = e.changedTouches[0].pageY;
                 let Y = moveEndY - this.timeStartY;
                 e.currentTarget.style.webkitTransform = 'translate3d(0px,' + (Y + this.timeStartUp) + 'px,0px)';
+
+                if (checkPlatform() === "2") {
+                    this.timeTouchEnd(e, index);
+                    return false;
+                }
             },
             timeTouchEnd(e, index) {
                 let transform = e.currentTarget.style.webkitTransform;
@@ -116,12 +127,9 @@
                     endUp = parseFloat(e.currentTarget.style.webkitTransform.split(' ')[1].split('px')[0]);
                 }
 
-                let timeHeight = getComputedStyle(document.querySelector('.time_item')).height || '';
-                timeHeight = parseFloat(timeHeight.split('px')[0]);
-
                 let distance = Math.abs(endUp - this.timeStartUp),
-                    upCount = Math.floor(distance / timeHeight) || 1,
-                    halfWinWith = timeHeight / 2,
+                    upCount = Math.floor(distance / this.timeHeight) || 1,
+                    halfWinWith = this.timeHeight / 2,
                     up = this.timeStartUp;
 
                 if (endUp <= this.timeStartUp) {
@@ -129,9 +137,9 @@
                     if (distance <= halfWinWith) {
                         up = this.timeStartUp;
                     } else {
-                        up = this.timeStartUp - timeHeight * upCount;
-                        if (up < -(this.timeArray[index].length - 3) * timeHeight) {
-                            up = -(this.timeArray[index].length - 3) * timeHeight;
+                        up = this.timeStartUp - this.timeHeight * upCount;
+                        if (up < -(this.timeArray[index].length - 3) * this.timeHeight) {
+                            up = -(this.timeArray[index].length - 3) * this.timeHeight;
                         }
                     }
                 } else {
@@ -139,17 +147,17 @@
                     if (distance <= halfWinWith) {
                         up = this.timeStartUp;
                     } else {
-                        up = this.timeStartUp + timeHeight * upCount;
-                        if (up > timeHeight * 2) {
-                            up = timeHeight * 2;
+                        up = this.timeStartUp + this.timeHeight * upCount;
+                        if (up > this.timeHeight * 2) {
+                            up = this.timeHeight * 2;
                         }
                     }
                 }
                 if (index === 0) {
-                    let hour = 2 - Math.round(parseInt(up) / parseInt(timeHeight));
+                    let hour = 2 - Math.round(parseFloat(up) / parseFloat(this.timeHeight));
                     this.$set(this.checkedDate, 'hours', hour)
                 } else {
-                    let minute = 2 - Math.round(parseInt(up) / parseInt(timeHeight));
+                    let minute = 2 - Math.round(parseFloat(up) / parseFloat(this.timeHeight));
                     this.$set(this.checkedDate, 'minutes', minute)
                 }
                 e.currentTarget.style.webkitTransition = 'transform 300ms';
@@ -177,11 +185,14 @@
         justify-content center
         height px2vw(360px)
         margin-top px2vw(100px)
+        -webkit-overflow-scrolling touch
         overflow hidden
     }
 
     .time_content {
+        touch-action none
         padding 0 px2vw(40px)
+        -webkit-overflow-scrolling touch
     }
 
     .time_item {
