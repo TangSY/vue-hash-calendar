@@ -69,6 +69,10 @@ Vue.use(vueHashCalendar)
 | change | 日期改变时，触发该事件。（返回的日期格式取决于 format 属性）                                                            
 | confirm | 点击确认按钮时，触发该事件，dialog模式中才有该按钮。（返回的日期格式取决于 format 属性）                                                            
 | click | 点击日期时，触发该事件。（返回的日期格式取决于 format 属性）                                                            
+| touchstart | 日历滑动 start 事件，同于原生该事件。                                                            
+| touchmove | 日历滑动 move 事件，同于原生该事件。                                                            
+| touchend | 日历滑动 end 事件，同于原生该事件。                                                            
+| slidechange |  日历滑动的方向。对应 right、left、up、down 。                                                        
 
 ## 版本记录
 
@@ -104,7 +108,9 @@ disabledDate(date) {
 
 * 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者 github 提交 issue。
 
+## 赞助
 
+![pay.jpg](https://raw.githubusercontent.com/TangSY/vue-hash-calendar/dev/public/pay.jpg)
 
 ## Project setup
 ```
