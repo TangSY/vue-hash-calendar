@@ -334,6 +334,8 @@
                 return date.year !== dateOfCurrentShow.year || date.month !== dateOfCurrentShow.month
             },
             touchStart(event) {//监听手指开始滑动事件
+                this.$emit('touchstart', event);
+
                 this.touchStartPositionX = event.touches[0].clientX;
                 this.touchStartPositionY = event.touches[0].clientY;
                 this.touch = {
@@ -342,6 +344,8 @@
                 this.isTouching = true;
             },
             touchMove(event) {//监听手指移动事件
+                this.$emit('touchmove', event);
+
                 let moveX = event.touches[0].clientX - this.touchStartPositionX;
                 let moveY = event.touches[0].clientY - this.touchStartPositionY;
                 if (Math.abs(moveX) > Math.abs(moveY)) {
@@ -357,10 +361,14 @@
                 }
             },
             touchEnd(e) {//监听touch结束事件
+                this.$emit('touchend', e);
+
                 this.isTouching = false;
                 if (Math.abs(this.touch.x) > Math.abs(this.touch.y) && Math.abs(this.touch.x) > 0.2) {
                     this.currentChangeIsScroll = true;
                     if (this.touch.x > 0) {
+                        this.$emit('slidechange', 'right');
+
                         this.getLastMonth();
                         if (this.isShowWeek) {
                             setTimeout(() => {
@@ -370,6 +378,8 @@
                             }, this.transitionDuration * 1000)
                         }
                     } else if (this.touch.x < 0) {
+                        this.$emit('slidechange', 'left');
+
                         this.getNextMonth();
                         if (this.isShowWeek) {
                             setTimeout(() => {
@@ -382,8 +392,12 @@
                 }
                 if (Math.abs(this.touch.y) > Math.abs(this.touch.x) && Math.abs(this.touch.y * this.$refs.calendar.offsetHeight) > 50) {
                     if (this.touch.y > 0 && this.isShowWeek) {
+                        this.$emit('slidechange', 'down');
+
                         this.showMonth();
                     } else if (this.touch.y < 0 && !this.isShowWeek) {
+                        this.$emit('slidechange', 'up');
+
                         this.showWeek();
                     }
                 } else {
