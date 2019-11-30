@@ -20,6 +20,7 @@
     "build": "vue-cli-service build",
     "test": "echo 'exited with 0'",
     "lib": "vue-cli-service build --target lib --name vue-hash-calendar --dest lib packages/index.js",
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w -r 1",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

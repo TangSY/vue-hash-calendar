@@ -1,3 +1,16 @@
+## [1.1.14](https://github.com/TangSY/vue-hash-calendar/compare/v1.0.5...v1.1.14) (2019-11-30)
+
+
+### Bug Fixes
+
+--
+
+
+### Features
+
+* 新增 touch 滑动方向监听事件 ([b37a28b](https://github.com/TangSY/vue-hash-calendar/commit/b37a28bfcd047e5b17d21a016e6e411f87bd6165))
+
+
 ## 1.1.11 (2019-11-25)
 
 
