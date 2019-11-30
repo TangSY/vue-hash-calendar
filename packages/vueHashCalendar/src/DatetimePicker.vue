@@ -23,6 +23,7 @@
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
                       :week-start="weekStart" :scroll-change-date="scrollChangeDate" :disabled-date="disabledDate"
                       :is-show-week-view="isShowWeekView" :mark-date="markDate" @height="heightChange"
+                      @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                       @change="dateChange" @click="dateClick"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
                          @change="timeChange"></time-picker>
@@ -242,6 +243,18 @@
                 });
 
                 return dateArr
+            },
+            touchStart(event) {// 监听手指开始滑动事件
+                this.$emit('touchstart', event);
+            },
+            touchMove(event) {// 监听手指开始滑动事件
+                this.$emit('touchmove', event);
+            },
+            touchEnd(event) {// 监听手指开始滑动事件
+                this.$emit('touchend', event);
+            },
+            slideChange(direction) {// 滑动方向改变
+                this.$emit('slidechange', direction);
             }
         }
     }
