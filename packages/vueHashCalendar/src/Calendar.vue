@@ -156,12 +156,13 @@
                     if (val) {
                         val.forEach(item => {
                             item.date.forEach(date => {
-                                this.markDateColorObj[date] = item.color;
+                                this.$set(this.markDateColorObj, date, item.color);
                             })
                         })
                     }
                 },
-                immediate: true
+                immediate: true,
+                deep: true
             },
             isShowWeekView: {
                 handler(val) {
