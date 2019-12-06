@@ -20,6 +20,7 @@
                 week-start="sunday"
                 picker-type="datetime"
                 :show-today-button="true"
+                :disabled-week-view="false"
                 @confirm="dateConfirm"
                 @click="dateClick"
                 @change="dateChange">
