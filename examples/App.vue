@@ -15,6 +15,7 @@
                 :default-datetime="defaultDatetime"
                 :is-show-week-view="false"
                 :mark-date="markDate"
+                mark-type="dot"
                 :disabled-date="disabledDate"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"

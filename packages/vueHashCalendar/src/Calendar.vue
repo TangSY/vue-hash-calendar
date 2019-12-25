@@ -23,10 +23,10 @@
                         <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
                            class="calendar_day calendar_first_today" ref="calendarDay"
                            :class="{'calendar_day_checked': isCheckedDay(date)}">{{ date.month + 1 }}<span>月</span></p>
-                        <p v-else class="calendar_day" ref="calendarDay"
-                           :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i)}">
+                        <p v-else class="calendar_day" ref="calendarDay" :style="{'border-color': markDateColor(date, 'circle')}"
+                           :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i), 'calendar_mark_circle': markDateColor(date, 'circle')}">
                             {{ date.day }}</p>
-                        <div :style="{'background': markDateColor(date)}" class="calendar_dot"></div>
+                        <div :style="{'background': markDateColor(date, 'dot')}" class="calendar_dot"></div>
                     </div>
                 </li>
             </ul>
@@ -65,6 +65,11 @@
             markDate: {
                 type: Array,
                 default: () => []
+            },
+            // 日期标记类型
+            markType: {
+                type: String,
+                default: 'dot'
             },
             // 禁用的日期
             disabledDate: {
@@ -524,7 +529,9 @@
                 }
                 this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow);
             },
-            markDateColor(date) {//当前日期是否需要标记
+            markDateColor(date, type) {//当前日期是否需要标记
+                if (this.markType.indexOf(type) === -1) return;
+
                 let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
 
                 return this.markDateColorObj[dateString];
@@ -623,6 +630,10 @@
 
     .calendar_day_today {
         background bg-color
+    }
+
+    .calendar_mark_circle {
+        border 1px solid main-color
     }
 
     .calendar_day_not {

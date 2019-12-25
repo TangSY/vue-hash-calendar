@@ -22,7 +22,7 @@
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
                       :week-start="weekStart" :scroll-change-date="scrollChangeDate" :disabled-date="disabledDate"
-                      :is-show-week-view="isShowWeekView" :mark-date="markDate" @height="heightChange"
+                      :is-show-week-view="isShowWeekView" :mark-date="markDate" :mark-type="markType" @height="heightChange"
                       @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                       @change="dateChange" @click="dateClick"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
@@ -78,6 +78,11 @@
             markDate: {
                 type: Array,
                 default: () => []
+            },
+            // 日期标记类型
+            markType: {
+                type: String,
+                default: 'dot'
             },
             // 禁用的日期
             disabledDate: {
