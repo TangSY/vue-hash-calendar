@@ -38,9 +38,15 @@
     export default {
         name: "Calendar",
         props: {
-            scrollChangeDate: {// 滑动的时候，是否触发改变日期
+            // 滑动的时候，是否触发改变日期
+            scrollChangeDate: {
                 type: Boolean,
                 default: true
+            },
+            // 禁用周视图
+            disabledWeekView: {
+                type: Boolean,
+                default: false
             },
             defaultDate: {
                 type: Date,
@@ -360,6 +366,9 @@
                         y: 0,
                     };
                 } else {
+                    // 禁用周视图（禁止上下滑动）
+                    if (this.disabledWeekView) return
+
                     this.touch = {
                         x: 0,
                         y: moveY / this.$refs.calendar.offsetHeight,

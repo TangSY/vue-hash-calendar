@@ -22,6 +22,7 @@
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
                       :week-start="weekStart" :scroll-change-date="scrollChangeDate" :disabled-date="disabledDate"
+                      :disabled-week-view="disabledWeekView"
                       :is-show-week-view="isShowWeekView" :mark-date="markDate" :mark-type="markType" @height="heightChange"
                       @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                       @change="dateChange" @click="dateClick"></calendar>
@@ -90,6 +91,11 @@
                 default: () => {
                     return false
                 }
+            },
+            // 禁用周视图
+            disabledWeekView: {
+                type: Boolean,
+                default: false
             }
         },
         components: {

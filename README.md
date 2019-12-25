@@ -49,18 +49,19 @@ Vue.use(vueHashCalendar)
 # API
 
 | 属性          | 说明                                                                                                   |  类型  |  默认  | 是否必传 |
-| :------------ | :----------------------------------------------------------------------------------------------------- | :----: | :----: | :------: |
+| :------------ | :------------------------------------------------------------------- | :----: | :----: | :------: |
 | visible      | 控制日历组件的显示或隐藏,需使用 `.sycn` 修饰符                    |   Boolean   |   false   |    否    |
 | scrollChangeDate      | 控制滑动的时候是否修改选中的日期                    |   Boolean   |   true   |    否    |
 | model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   String   |   inline   |    否    |
 | defaultDatetime| 指定默认时间。                                                  |   Date   |   当前时间   |    否    |
-| format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”                                    |   String     |  YY/MM/DD hh:mm   |    否    |
+| format       | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”       |   String     |  YY/MM/DD hh:mm   |    否    |
 | weekStart      | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']          |   String     | sunday |    否    |
 | pickerType  | 选择器类型 datetime：日期+时间   date：日期   time：时间                                                            |   String      | datetime |    否    |
 | showTodayButton    | 是否显示返回今日按钮                                                         |   Boolean    |   true    |    否    |
 | isShowWeekView    | 是否以周视图展示组件                                                         |   Boolean    |   false    |    否    |
-| disabledDate    | 设置禁用状态，参数为当前日期，要求返回 Boolean   （禁用返回 true）                                                     |   Function     |   ---    |    否    |
-| markDate | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20']                                          |   Array     |  []  |    否    |
+| disabledWeekView    | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                         |   Boolean    |   false    |    否    |
+| disabledDate    | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean   （禁用该日期需返回 true）                    |   Function     |   ---    |    否    |
+| markDate | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20']          |   Array     |  []  |    否    |
 | markType  | 标记图案类型 dot：小圆点（日期下方小圆点标记）   circle：小圆圈（日期被小圆圈包围）   dot+circle：同时使用小圆点与圆圈标记    |   String      | dot |    否    |
 
 # 事件
