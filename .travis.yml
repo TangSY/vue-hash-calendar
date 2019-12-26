@@ -25,7 +25,7 @@ jobs:
         - echo "NPM Deploying Started ..."
         - cd ../
         - rm -rf vue-hash-calendar/
-        - git clone ${GH_REF}
+        - git clone https://${GH_REF}
         - cd vue-hash-calendar
         - git branch
         - git checkout travis_build
