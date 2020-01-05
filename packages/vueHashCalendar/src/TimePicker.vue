@@ -25,7 +25,11 @@
         name: "TimePicker",
         props: {
             defaultTime: null,
-            show: false
+            show: false,
+            minuteStep: {
+                type: Number,
+                default: 1
+            }
         },
         data() {
             return {
@@ -85,7 +89,9 @@
                 }
                 let minutes = [];
                 for (let i = 0; i < 60; i++) {
-                    minutes.push(i);
+                    if (i % this.minuteStep === 0) {
+                        minutes.push(i);
+                    }
                 }
                 this.timeArray.push(hours, minutes);
 
@@ -97,7 +103,7 @@
                     this.timeHeight = parseFloat(this.timeHeight.split('px')[0]);
 
                     let hoursUp = (2 - parseFloat(checkHours)) * this.timeHeight;
-                    let minutesUp = (2 - parseFloat(checkMinutes)) * this.timeHeight;
+                    let minutesUp = (2 - parseFloat(checkMinutes) / this.minuteStep) * this.timeHeight;
                     document.querySelector('#time0').style.webkitTransform = 'translate3d(0px,' + hoursUp + 'px,0px)';
                     document.querySelector('#time1').style.webkitTransform = 'translate3d(0px,' + minutesUp + 'px,0px)';
                 })
@@ -158,7 +164,7 @@
                     this.$set(this.checkedDate, 'hours', hour)
                 } else {
                     let minute = 2 - Math.round(parseFloat(up) / parseFloat(this.timeHeight));
-                    this.$set(this.checkedDate, 'minutes', minute)
+                    this.$set(this.checkedDate, 'minutes', minute * this.minuteStep)
                 }
                 e.currentTarget.style.webkitTransition = 'transform 300ms';
                 e.currentTarget.style.webkitTransform = 'translate3d(0px,' + up + 'px,0px)';

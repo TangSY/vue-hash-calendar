@@ -20,14 +20,11 @@
                 <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">今天</div>
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
-            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" :default-date="defaultDatetime"
-                      :week-start="weekStart" :scroll-change-date="scrollChangeDate" :disabled-date="disabledDate"
-                      :disabled-week-view="disabledWeekView"
-                      :is-show-week-view="isShowWeekView" :mark-date="markDate" :mark-type="markType" @height="heightChange"
+            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="$props" @height="heightChange"
                       @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                       @change="dateChange" @click="dateClick"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
-                         @change="timeChange"></time-picker>
+                         :minute-step="minuteStep" @change="timeChange"></time-picker>
         </div>
     </div>
 </template>
@@ -96,6 +93,11 @@
             disabledWeekView: {
                 type: Boolean,
                 default: false
+            },
+            // 分钟的步长
+            minuteStep: {
+                type: Number,
+                default: 1
             }
         },
         components: {
@@ -129,6 +131,19 @@
                     throw new Error(`The calendar component's defaultDate must be date type!`);
                     return
                 }
+            },
+            minuteStep: {
+                handler(val) {
+                    if (val <= 0 || val >= 60) {
+                        throw new Error(`The minutes-step can't be: ${ val }!`);
+                        return
+                    }
+                    if (60 % val !== 0) {
+                        throw new Error(`The minutes-step must be divided by 60!`);
+                        return
+                    }
+                },
+                immediate: true
             },
             markDate: {
                 handler(val) {
