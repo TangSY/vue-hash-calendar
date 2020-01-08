@@ -82,8 +82,4 @@
     }
 </script>
 
-<style lang="stylus">
-    @import "./style/reset.styl"
-
-
-</style>
+<style lang="stylus"></style>

@@ -3,6 +3,7 @@
  * @Author:         TSY
  * @CreateDate:     2019/8/31 12:30
  */
+import "./vueHashCalendar/style/reset.styl"
 
 // 导入时间选择器组件
 import vueHashCalendar from './vueHashCalendar'
