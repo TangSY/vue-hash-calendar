@@ -16,7 +16,7 @@
                 :is-show-week-view="false"
                 :minute-step="1"
                 :mark-date="markDate"
-                mark-type="dot"
+                mark-type="dotcircle"
                 :disabled-date="disabledDate"
                 format="YY/MM/DD hh:mm"
                 week-start="sunday"
@@ -81,9 +81,3 @@
         }
     }
 </script>
-
-<style lang="stylus">
-    @import "./style/reset.styl"
-
-
-</style>
