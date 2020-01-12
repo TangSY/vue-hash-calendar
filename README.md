@@ -7,6 +7,8 @@
 # 按照惯例，先上效果图
 
 ![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif)
+![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif)
+![week.gif](https://www.hxkj.vip/demo/calendar/week.gif)
 
 # vue-hash-calendar
 
@@ -113,19 +115,5 @@ disabledDate(date) {
 
 ## 赞助
 
-![pay.jpg](https://raw.githubusercontent.com/TangSY/vue-hash-calendar/dev/public/pay.jpg)
+![pay.jpg](https://www.hxkj.vip/demo/calendar/pay.jpg)
 
-## Project setup
-```
-npm install
-```
-
-## Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-## Compiles and minifies for production
-```
-npm run build
-```
