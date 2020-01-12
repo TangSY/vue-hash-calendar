@@ -20,11 +20,11 @@
                 <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">今天</div>
                 <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
             </div>
-            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="$props" @height="heightChange"
+            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="{...$props, ...$attrs}" @height="heightChange"
                       @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
                       @change="dateChange" @click="dateClick"></calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
-                         :minute-step="minuteStep" @change="timeChange"></time-picker>
+                         v-bind="{...$props, ...$attrs}" @change="timeChange"></time-picker>
         </div>
     </div>
 </template>
@@ -40,10 +40,6 @@ export default {
       type: Boolean,
       default: false
     },
-    scrollChangeDate: {// 滑动的时候，是否触发改变日期
-      type: Boolean,
-      default: true
-    },
     pickerType: {// 选择器类型 datetime：日期+时间   date：日期   time：时间
       type: String,
       default: 'datetime'
@@ -54,33 +50,19 @@ export default {
     },
     defaultDatetime: {// 默认时间
       type: Date,
-      default () {
+      default() {
         return new Date()
       }
     },
     format: null, // 确认选择之后，返回的日期格式
-    weekStart: {// 设置每周以星期几开始
-      type: String,
-      default: 'Sunday'
-    },
     model: {
       type: String,
       default: 'inline'
-    },
-    // 是否展示周视图
-    isShowWeekView: {
-      type: Boolean,
-      default: false
     },
     // 日期下面的标记
     markDate: {
       type: Array,
       default: () => []
-    },
-    // 日期标记类型
-    markType: {
-      type: String,
-      default: 'dot'
     },
     // 禁用的日期
     disabledDate: {
@@ -88,16 +70,6 @@ export default {
       default: () => {
         return false
       }
-    },
-    // 禁用周视图
-    disabledWeekView: {
-      type: Boolean,
-      default: false
-    },
-    // 分钟的步长
-    minuteStep: {
-      type: Number,
-      default: 1
     }
   },
   components: {
@@ -105,7 +77,7 @@ export default {
     Calendar
   },
   name: 'VueHashCalendar',
-  data () {
+  data() {
     return {
       checkedDate: {
         year: new Date().getFullYear(),
@@ -120,49 +92,19 @@ export default {
       firstTimes: true// 第一次触发
     }
   },
-  mounted () {
+  mounted() {
     if (this.model === 'inline') {
       this.isShowDatetimePicker = true
     }
   },
   watch: {
-    defaultDatetime (val) {
+    defaultDatetime(val) {
       if (!(val instanceof Date)) {
         throw new Error(`The calendar component's defaultDate must be date type!`)
       }
     },
-    minuteStep: {
-      handler (val) {
-        if (val <= 0 || val >= 60) {
-          throw new Error(`The minutes-step can't be: ${val}!`)
-        }
-        if (60 % val !== 0) {
-          throw new Error(`The minutes-step must be divided by 60!`)
-        }
-      },
-      immediate: true
-    },
-    markDate: {
-      handler (val) {
-        val.forEach((item, index) => {
-          if (item.color === undefined) {
-            let obj = {}
-            obj.color = '#1c71fb'
-            if (typeof item === 'string' || typeof item === 'number') {
-              item = [item]
-            }
-            obj.date = item || []
-            val[index] = obj
-          }
-
-          val[index].date = this.dateFormat(val[index].date)
-        })
-      },
-      deep: true,
-      immediate: true
-    },
     pickerType: {
-      handler (val) {
+      handler(val) {
         if (val === 'time') {
           this.showTime()
         }
@@ -170,7 +112,7 @@ export default {
       immediate: true
     },
     checkedDate: {
-      handler () {
+      handler() {
         let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
         if (this.format) {
           date = formatDate(date, this.format)
@@ -180,7 +122,7 @@ export default {
       deep: true
     },
     visible: {
-      handler (val) {
+      handler(val) {
         this.isShowCalendar = val
 
         this.$nextTick(() => {
@@ -192,26 +134,26 @@ export default {
   },
   computed: {
     isShowDatetimePicker: {// 是否显示日期控件
-      get () {
+      get() {
         return this.visible
       },
-      set (val) {
+      set(val) {
         this.$emit('update:visible', val)
       }
     }
   },
   methods: {
-    today () {
+    today() {
       if (this.disabledDate(new Date())) return
 
       this.$refs.calendar.today()
     },
-    dateChange (date) {
+    dateChange(date) {
       date.hours = this.checkedDate.hours
       date.minutes = this.checkedDate.minutes
       this.checkedDate = date
     },
-    dateClick (date) {
+    dateClick(date) {
       date.hours = this.checkedDate.hours
       date.minutes = this.checkedDate.minutes
       this.checkedDate = date
@@ -222,13 +164,13 @@ export default {
       }
       this.$emit('click', fDate)
     },
-    timeChange (date) {
+    timeChange(date) {
       date.year = this.checkedDate.year
       date.month = this.checkedDate.month
       date.day = this.checkedDate.day
       this.checkedDate = date
     },
-    confirm () { // 确认选择时间
+    confirm() { // 确认选择时间
       let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
       if (this.format) {
         date = formatDate(date, this.format)
@@ -238,44 +180,37 @@ export default {
         this.close()
       }
     },
-    show () {
+    show() {
       this.isShowDatetimePicker = true
     },
-    close () {
+    close() {
       this.isShowDatetimePicker = false
     },
-    fillNumber (val) { // 小于10，在前面补0
+    fillNumber(val) { // 小于10，在前面补0
       return val > 9 ? val : '0' + val
     },
-    showCalendar () { // 显示日历控件
+    showCalendar() { // 显示日历控件
       this.isShowCalendar = true
     },
-    showTime () { // 显示时间选择控件
+    showTime() { // 显示时间选择控件
       this.isShowCalendar = false
     },
-    heightChange (height) { // 高度变化
+    heightChange(height) { // 高度变化
       if (!this.firstTimes && this.model === 'dialog') return
 
       this.calendarContentHeight = height + this.calendarTitleHeight
       this.firstTimes = false
     },
-    dateFormat (dateArr) { // 日期格式转换
-      dateArr.forEach((date, index) => {
-        dateArr[index] = formatDate(date, 'YY/MM/DD')
-      })
-
-      return dateArr
-    },
-    touchStart (event) { // 监听手指开始滑动事件
+    touchStart(event) { // 监听手指开始滑动事件
       this.$emit('touchstart', event)
     },
-    touchMove (event) { // 监听手指开始滑动事件
+    touchMove(event) { // 监听手指开始滑动事件
       this.$emit('touchmove', event)
     },
-    touchEnd (event) { // 监听手指开始滑动事件
+    touchEnd(event) { // 监听手指开始滑动事件
       this.$emit('touchend', event)
     },
-    slideChange (direction) { // 滑动方向改变
+    slideChange(direction) { // 滑动方向改变
       this.$emit('slidechange', direction)
     }
   }

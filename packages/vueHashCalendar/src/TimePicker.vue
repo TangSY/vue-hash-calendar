@@ -11,7 +11,7 @@
                  @touchstart="timeTouchStart"
                  @touchmove="timeTouchMove($event, index)"
                  @touchend="timeTouchEnd($event, index)">
-                <div class="time_item" :class="{'time_item_show': isShowTime(time, index)}"
+                <div class="time_item" :class="{'time_item_show': isBeSelectedTime(time, index)}"
                      v-for="(time, j) in item" :key="index + j">{{ time | fillNumber }}
                 </div>
             </div>
@@ -29,10 +29,21 @@ export default {
     minuteStep: {
       type: Number,
       default: 1
+    },
+    selectableRange: {
+      type: String | Array,
+      default: ''
     }
   },
-  data () {
+  data() {
     return {
+      timeRange: [], // 时间范围
+      timeOptions: {
+        minHours: 24,
+        minMinutes: 59,
+        maxHours: 0,
+        maxMinutes: 0
+      },
       checkedDate: {
         hours: new Date().getHours(),
         minutes: new Date().getMinutes()
@@ -43,13 +54,13 @@ export default {
       timeStartUp: 0// 滑动开始前，时间控件dom与顶部的偏移量
     }
   },
-  mounted () {
+  mounted() {
 
   },
   computed: {},
   watch: {
     defaultTime: {
-      handler (val) {
+      handler(val) {
         if (!(val instanceof Date)) {
           throw new Error(`The calendar component's defaultTime must be date type!`)
         }
@@ -59,28 +70,53 @@ export default {
       immediate: true
     },
     checkedDate: {
-      handler (val) {
+      handler(val) {
         this.$emit('change', val)
       },
       deep: true,
       immediate: true
     },
     show: {
-      handler (val) {
+      handler(val) {
         if (val) {
           this.initTimeArray()
         }
       },
       immediate: true
+    },
+    minuteStep: {
+      handler(val) {
+        if (val <= 0 || val >= 60) {
+          throw new Error(`The minutes-step can't be: ${val}!`)
+        }
+        if (60 % val !== 0) {
+          throw new Error(`The minutes-step must be divided by 60!`)
+        }
+      },
+      immediate: true
+    },
+    selectableRange: {
+      handler(val) {
+        if (!val) return
+        this.timeRange = []
+        let formatPass = false
+        if (typeof val === 'string') {
+          formatPass = this.checkTimeRange(val)
+        } else if (val instanceof Array) {
+          formatPass = val.every(item => this.checkTimeRange(item))
+        }
+        if (!formatPass) throw new Error('The format of selectableRange is error!')
+      },
+      immediate: true
     }
   },
   filters: {
-    fillNumber (val) { // 小于10，在前面补0
+    fillNumber(val) { // 小于10，在前面补0
       return val > 9 ? val : '0' + val
     }
   },
   methods: {
-    initTimeArray () { // 初始化时间选择器数据
+    initTimeArray() { // 初始化时间选择器数据
       let hours = []
       this.timeArray = []
       for (let i = 0; i < 24; i++) {
@@ -107,7 +143,7 @@ export default {
         document.querySelector('#time1').style.webkitTransform = 'translate3d(0px,' + minutesUp + 'px,0px)'
       })
     },
-    timeTouchStart (e) {
+    timeTouchStart(e) {
       e.preventDefault()
       this.timeStartY = e.changedTouches[0].pageY
       let transform = e.currentTarget.style.webkitTransform
@@ -115,7 +151,7 @@ export default {
         this.timeStartUp = parseFloat(transform.split(' ')[1].split('px')[0])
       }
     },
-    timeTouchMove (e, index) {
+    timeTouchMove(e, index) {
       let moveEndY = e.changedTouches[0].pageY
       let Y = moveEndY - this.timeStartY
       e.currentTarget.style.webkitTransform = 'translate3d(0px,' + (Y + this.timeStartUp) + 'px,0px)'
@@ -125,7 +161,7 @@ export default {
         return false
       }
     },
-    timeTouchEnd (e, index) {
+    timeTouchEnd(e, index) {
       let transform = e.currentTarget.style.webkitTransform
       let endUp = this.timeStartUp
       if (transform) {
@@ -168,8 +204,41 @@ export default {
       e.currentTarget.style.webkitTransition = 'transform 300ms'
       e.currentTarget.style.webkitTransform = 'translate3d(0px,' + up + 'px,0px)'
     },
-    isShowTime (time, index) { // 是否为当前选中的时间
+    isBeSelectedTime(time, index) { // 是否为当前选中的时间
       return (index === 0 && time === this.checkedDate.hours) || (index === 1 && time === this.checkedDate.minutes)
+    },
+    isDisableTime(time, index) { // 是否禁用当前时间
+      console.log(this.timeRange, 'timeRange')
+      for (let i in this.timeRange) {
+        for (let j in this.timeRange[i]) {
+          if (index === 0) {
+            let currentHours = this.timeRange[i][j].split(':')[0]
+
+            if (currentHours > time) {
+              this.timeOptions.minHours = currentHours
+              return true
+            }
+          }
+        }
+      }
+      return false
+    },
+    checkTimeRange(timeRange) { // 校验时间范围
+      if (!timeRange) return
+      let timeArr = timeRange.split('-')
+      if (timeArr.length === 0 || timeArr.length > 2) return false
+      this.timeRange.push(timeRange)
+
+      return timeArr.every(time => {
+        let mhArr = time.split(':')
+        if (mhArr.length === 0 || mhArr.length > 2) return false
+
+        // 校验单个时间是否符合规范 00:00 - 24:00
+        if (parseInt(mhArr[0]) < 0 || parseInt(mhArr[0]) > 24) return false
+        if (parseInt(mhArr[1]) < 0 || parseInt(mhArr[1]) > 59) return false
+        if (parseInt(mhArr[0]) === 24 && parseInt(mhArr[1]) > 0) return false
+        return true
+      })
     }
   }
 }
@@ -207,5 +276,9 @@ export default {
 
     .time_item_show {
         color main-font-color
+    }
+
+    .time_disabled {
+        color red
     }
 </style>

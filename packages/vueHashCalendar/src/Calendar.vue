@@ -35,6 +35,8 @@
 </template>
 
 <script>
+  import {formatDate} from '../utils/util'
+
 export default {
   name: 'Calendar',
   props: {
@@ -50,7 +52,7 @@ export default {
     },
     defaultDate: {
       type: Date,
-      default () {
+      default() {
         return new Date()
       }
     },
@@ -85,7 +87,7 @@ export default {
       }
     }
   },
-  data () {
+  data() {
     return {
       currentChangeIsScroll: false, // 改变当前日期的方式是否为滑动事件
       yearOfCurrentShow: new Date().getFullYear(), // 当前日历展示的年份
@@ -126,16 +128,45 @@ export default {
       markDateColorObj: []// 所有被标记的日期所对应的颜色
     }
   },
-  mounted () {
+  mounted() {
     this.weekStartIndex = this.weekArray.indexOf(this.weekStart.toLowerCase())
     this.calendarWeek = [...this.calendarWeek.slice(this.weekStartIndex, this.calendarWeek.length), ...this.calendarWeek.slice(0, this.weekStartIndex)]
   },
   watch: {
-    weekStartIndex () {
+    markDate: {
+      handler(val) {
+        val.forEach((item, index) => {
+          if (item.color === undefined) {
+            let obj = {}
+            obj.color = '#1c71fb'
+            if (typeof item === 'string' || typeof item === 'number') {
+              item = [item]
+            }
+            obj.date = item || []
+            val[index] = obj
+          }
+
+          /* val[index].forEach(dateObj => {
+            this.$set(this.markDateColorObj, this.formatDate(dateObj.date), dateObj.color)
+          }) 待简化 */
+
+          val[index].date = this.dateFormat(val[index].date)
+        })
+
+        val.forEach(item => {
+          item.date.forEach(date => {
+            this.$set(this.markDateColorObj, date, item.color)
+          })
+        })
+      },
+      deep: true,
+      immediate: true
+    },
+    weekStartIndex() {
       this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month)
     },
     defaultDate: {
-      handler (val) {
+      handler(val) {
         if (!(val instanceof Date)) {
           throw new Error(`The calendar component's defaultDate must be date type!`)
         }
@@ -146,14 +177,14 @@ export default {
       immediate: true
     },
     checkedDate: {
-      handler (val) {
+      handler(val) {
         this.$emit('change', val)
       },
       deep: true,
       immediate: true
     },
     show: {
-      handler (val) {
+      handler(val) {
         if (val) {
           this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month)
           this.initDom()
@@ -161,21 +192,8 @@ export default {
       },
       immediate: true
     },
-    markDate: {
-      handler (val) {
-        if (val) {
-          val.forEach(item => {
-            item.date.forEach(date => {
-              this.$set(this.markDateColorObj, date, item.color)
-            })
-          })
-        }
-      },
-      immediate: true,
-      deep: true
-    },
     isShowWeekView: {
-      handler (val) {
+      handler(val) {
         if (val) {
           this.$nextTick(() => {
             this.showWeek()
@@ -184,13 +202,13 @@ export default {
       },
       immediate: true
     },
-    calendarGroupHeight (val) {
+    calendarGroupHeight(val) {
       this.$emit('height', val + this.calendarWeekTitleHeight)
     }
   },
   computed: {},
   methods: {
-    initDom () { // 初始化日历dom
+    initDom() { // 初始化日历dom
       this.$nextTick(() => {
         this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + 10
         this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight
@@ -204,7 +222,7 @@ export default {
         this.calendarGroupHeight = this.calendarItemHeight * 6
       })
     },
-    today () { // 今天
+    today() { // 今天
       this.$set(this.checkedDate, 'day', new Date().getDate())
 
       this.yearOfCurrentShow = new Date().getFullYear()// 当前日历展示的年份
@@ -220,7 +238,7 @@ export default {
       }
     },
     // 计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息
-    calculateCalendarOfThreeMonth (year = new Date().getFullYear(), month = new Date().getMonth()) {
+    calculateCalendarOfThreeMonth(year = new Date().getFullYear(), month = new Date().getMonth()) {
       this.lastMonthYear = month === 0 ? year - 1 : year// 上个月的年份
       this.lastMonth = month === 0 ? 11 : month - 1// 上个月的月份
       this.nextMonthYear = month === 11 ? year + 1 : year// 下个月的年份
@@ -254,7 +272,7 @@ export default {
       this.$set(this.checkedDate, 'year', year)
       this.$set(this.checkedDate, 'month', month)
     },
-    calculateCalendarOfMonth (year = new Date().getFullYear(), month = new Date().getMonth()) { // 计算每个月的日历
+    calculateCalendarOfMonth(year = new Date().getFullYear(), month = new Date().getMonth()) { // 计算每个月的日历
       let calendarOfCurrentMonth = []
 
       let lastMonthYear = month === 0 ? year - 1 : year// 上个月的年份
@@ -299,18 +317,18 @@ export default {
 
       return calendarOfCurrentMonth
     },
-    daysOfMonth (year) {
+    daysOfMonth(year) {
       return [31, 28 + this.isLeap(year), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     },
-    isLeap (year) { // 判断是否为闰年
+    isLeap(year) { // 判断是否为闰年
       return year % 4 === 0 ? (year % 100 !== 0 ? 1 : (year % 400 === 0 ? 1 : 0)) : 0
     },
-    getDayOfWeek (year = new Date().getFullYear(), month = new Date().getMonth(), day = 1) { // 获取月份某一天是星期几
+    getDayOfWeek(year = new Date().getFullYear(), month = new Date().getMonth(), day = 1) { // 获取月份某一天是星期几
       let dayOfMonth = new Date(year, month, day) // 获取当月的第day天
       let dayOfWeek = dayOfMonth.getDay() // 判断第day天是星期几(返回[0-6]中的一个，0代表星期天，1代表星期一)
       return dayOfWeek
     },
-    clickCalendarDay (date) { // 点击日历上的日期
+    clickCalendarDay(date) { // 点击日历上的日期
       if (!date) return
 
       if (this.formatDisabledDate(date)) return
@@ -332,19 +350,19 @@ export default {
 
       this.$emit('click', this.checkedDate)
     },
-    isToday (date) { // 该日期是否为今天
+    isToday(date) { // 该日期是否为今天
       return this.yearOfToday === date.year && this.monthOfToday === date.month && this.dayOfToday === date.day
     },
-    isCheckedDay (date) { // 该日期是否为选中的日期
+    isCheckedDay(date) { // 该日期是否为选中的日期
       if (this.formatDisabledDate(date)) return false
 
       return this.checkedDate.year === date.year && this.checkedDate.month === date.month && this.checkedDate.day === date.day
     },
-    isNotCurrentMonthDay (date, index) { // 非本月日期
+    isNotCurrentMonthDay(date, index) { // 非本月日期
       let dateOfCurrentShow = this.calendarOfMonth[index][15]// 本月中间的日期一定为本月
       return date.year !== dateOfCurrentShow.year || date.month !== dateOfCurrentShow.month
     },
-    touchStart (event) { // 监听手指开始滑动事件
+    touchStart(event) { // 监听手指开始滑动事件
       this.$emit('touchstart', event)
 
       this.touchStartPositionX = event.touches[0].clientX
@@ -354,7 +372,7 @@ export default {
       }
       this.isTouching = true
     },
-    touchMove (event) { // 监听手指移动事件
+    touchMove(event) { // 监听手指移动事件
       this.$emit('touchmove', event)
 
       let moveX = event.touches[0].clientX - this.touchStartPositionX
@@ -374,7 +392,7 @@ export default {
         }
       }
     },
-    touchEnd (e) { // 监听touch结束事件
+    touchEnd(e) { // 监听touch结束事件
       this.$emit('touchend', e)
 
       this.isTouching = false
@@ -421,7 +439,7 @@ export default {
         }
       }
     },
-    showMonth () { // 日历以月份方式展示
+    showMonth() { // 日历以月份方式展示
       this.calendarY = 0
       this.isShowWeek = false
       this.calendarGroupHeight = this.calendarItemHeight * 6
@@ -431,7 +449,7 @@ export default {
 
       this.calculateCalendarOfThreeMonth(this.checkedDate.year, this.checkedDate.month)
     },
-    showWeek (checkedDate = this.checkedDate) { // 日历以星期方式展示
+    showWeek(checkedDate = this.checkedDate) { // 日历以星期方式展示
       let daysArr = []
       this.calendarOfMonth[1].forEach((item) => {
         daysArr.push(item.day)
@@ -493,7 +511,7 @@ export default {
       this.calendarOfMonthShow[0].splice(sliceStart, 7, ...this.lastWeek)
       this.calendarOfMonthShow[2].splice(sliceStart, 7, ...this.nextWeek)
     },
-    getLastWeek () { // 显示上一周
+    getLastWeek() { // 显示上一周
       let checkedDate = this.lastWeek[this.selectedDayIndex]
       this.showWeek(checkedDate)
 
@@ -506,7 +524,7 @@ export default {
 
       this.checkedDate = checkedDate
     },
-    getNextWeek () { // 显示下一周
+    getNextWeek() { // 显示下一周
       let checkedDate = this.nextWeek[this.selectedDayIndex]
       this.showWeek(checkedDate)
 
@@ -519,7 +537,7 @@ export default {
 
       this.checkedDate = checkedDate
     },
-    getLastMonth () { // 获取上个月日历
+    getLastMonth() { // 获取上个月日历
       this.translateIndex += 1
 
       if (!this.isLastWeekInCurrentMonth) {
@@ -528,7 +546,7 @@ export default {
       }
       this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow)
     },
-    getNextMonth () { // 获取下个月日历
+    getNextMonth() { // 获取下个月日历
       this.translateIndex -= 1
 
       if (!this.isNextWeekInCurrentMonth) {
@@ -537,20 +555,27 @@ export default {
       }
       this.calculateCalendarOfThreeMonth(this.yearOfCurrentShow, this.monthOfCurrentShow)
     },
-    markDateColor (date, type) { // 当前日期是否需要标记
+    markDateColor(date, type) { // 当前日期是否需要标记
       if (this.markType.indexOf(type) === -1) return
 
       let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
 
       return this.markDateColorObj[dateString]
     },
-    formatDisabledDate (date) {
+    formatDisabledDate(date) {
       let fDate = new Date(`${date.year}/${date.month + 1}/${date.day}`)
 
       return this.disabledDate(fDate)
     },
-    fillNumber (val) { // 小于10，在前面补0
+    fillNumber(val) { // 小于10，在前面补0
       return val > 9 ? val : '0' + val
+    },
+    dateFormat(dateArr) { // 日期格式转换
+      dateArr.forEach((date, index) => {
+        dateArr[index] = formatDate(date, 'YY/MM/DD')
+      })
+
+      return dateArr
     }
   }
 }

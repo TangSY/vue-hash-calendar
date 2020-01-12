@@ -23,21 +23,21 @@ import Github from './Github.vue'
 export default {
   name: 'TouchDemo',
   components: { Github },
-  data () {
+  data() {
     return {}
   },
-  mounted () {},
+  mounted() {},
   methods: {
-    touchStart (event) { // 监听手指开始滑动事件
+    touchStart(event) { // 监听手指开始滑动事件
       console.log(event, 'start')
     },
-    touchMove (event) { // 监听手指开始滑动事件
+    touchMove(event) { // 监听手指开始滑动事件
       console.log(event, 'move')
     },
-    touchEnd (event) { // 监听手指开始滑动事件
+    touchEnd(event) { // 监听手指开始滑动事件
       console.log(event, 'end')
     },
-    slideChange (direction) { // 滑动方向改变
+    slideChange(direction) { // 滑动方向改变
       console.log(direction, 'direction')
     }
   }

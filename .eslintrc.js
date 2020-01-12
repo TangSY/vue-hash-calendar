@@ -36,6 +36,7 @@ module.exports = {
     "no-ex-assign": 2, //在try catch语句中不允许重新分配异常变量
     "no-extra-semi": 2, //不允许出现不必要的分号
     "no-func-assign": 2, //不允许重新分配函数声明
+    "space-before-function-paren": [2, {"anonymous": "never", "named": "never"}], // 函数名右边不加空格
     "no-dupe-args": 2, // 函数参数不能重复
     "no-dupe-args": 2, // 函数参数不能重复no-duplicate-case": 2, // switch中的case标签不能重复
     "no-unreachable": 2, // 不能有无法执行的代码

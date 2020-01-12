@@ -8,7 +8,7 @@
  * 判断安卓与IOS平台
  * @returns {string}
  */
-export const checkPlatform = function () {
+export const checkPlatform = function() {
   if (/android/i.test(navigator.userAgent)) {
     return '1'
   }
@@ -23,7 +23,7 @@ export const checkPlatform = function () {
  * @param format
  * @returns {string}
  */
-export let formatDate = function (time, format = 'YY-MM-DD hh:mm:ss') {
+export let formatDate = function(time, format = 'YY-MM-DD hh:mm:ss') {
   let date = time ? new Date(time) : new Date()
   let year = date.getFullYear()
   let month = date.getMonth() + 1 // 月份是从0开始的
@@ -31,7 +31,7 @@ export let formatDate = function (time, format = 'YY-MM-DD hh:mm:ss') {
   let hour = date.getHours()
   let min = date.getMinutes()
   let sec = date.getSeconds()
-  let preArr = Array.apply(null, Array(10)).map(function (elem, index) {
+  let preArr = Array.apply(null, Array(10)).map(function(elem, index) {
     return '0' + index
   })/// /开个长度为10的数组 格式为 00 01 02 03
 

@@ -21,10 +21,10 @@
 <script>
 export default {
   name: 'Github',
-  data () {
+  data() {
     return {}
   },
-  mounted () {
+  mounted() {
 
   },
   computed: {},
