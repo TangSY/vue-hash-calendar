@@ -21,8 +21,8 @@
     "test": "echo 'exited with 0'",
     "lib": "vue-cli-service build --target lib --name vue-hash-calendar --dest lib packages/index.js",
     "commitmsg": "commitlint -e $GIT_PARAMS",
-    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s -r 1",
-    "lint": "vue-cli-service lint"
+    "changelog": "conventional-changelog -p angular -i CHANGELOG.md -w -r 1",
+    "lint": "eslint  --fix --ext .js,.vue --ignore-path .gitignore ."
   },
   "dependencies": {
     "vue": "^2.5.17",
@@ -30,15 +30,24 @@
   },
   "devDependencies": {
     "@babel/preset-es2015": "^7.0.0-beta.51",
+    "@commitlint/cli": "^8.2.0",
+    "@commitlint/config-conventional": "^8.2.0",
     "@vue/cli-plugin-babel": "^3.5.1",
     "@vue/cli-plugin-eslint": "^3.0.0-beta.15",
     "@vue/cli-service": "^3.0.0-beta.15",
+    "eslint": "^4.15.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-friendly-formatter": "^3.0.0",
+    "eslint-loader": "^1.7.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.2.0",
+    "eslint-plugin-promise": "^3.8.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "eslint-plugin-vue": "^4.0.0",
     "babel-plugin-component": "^1.1.1",
-    "cz-customizable": "^6.2.0",
     "husky": "^3.1.0",
     "stylus": "^0.54.5",
     "stylus-loader": "^3.0.2",
-    "validate-commit-msg": "^2.14.0",
     "vue-template-compiler": "^2.5.16"
   },
   "eslintConfig": {
@@ -67,6 +76,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "npm run lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
     }
   },

@@ -1,6 +1,6 @@
 /**
 * @Description:    右上角github入口
-* @Author:         TSY 
+* @Author:         TSY
 * @Email:          t@tsy6.com
 * @CreateDate:     2019/5/9 23:18
 */
@@ -19,17 +19,17 @@
 </template>
 
 <script>
-    export default {
-        name: "Github",
-        data() {
-            return {}
-        },
-        mounted() {
+export default {
+  name: 'Github',
+  data() {
+    return {}
+  },
+  mounted() {
 
-        },
-        computed: {},
-        methods: {}
-    }
+  },
+  computed: {},
+  methods: {}
+}
 </script>
 
 <style lang="stylus" scoped>
