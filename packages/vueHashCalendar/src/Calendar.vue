@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import {formatDate} from '../utils/util'
+import {formatDate} from '../utils/util'
 
 export default {
   name: 'Calendar',
