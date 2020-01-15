@@ -25,7 +25,7 @@ npm i vue-hash-calendar
 ```
 
   ```
-// 在入口文件中（main.js），导入组件库
+// 在入口文件中（main.js），导入组件库.
 import vueHashCalendar from 'vue-hash-calendar'
 // 引入组件CSS样式
 import 'vue-hash-calendar/lib/vue-hash-calendar.css'
