@@ -1,3 +1,11 @@
+## 1.1.21 (2020-01-15)
+
+
+### Bug Fixes
+
+* 修复在 IOS 中，touchEnd 失效的问题 ([bfb8302](https://github.com/TangSY/vue-hash-calendar/commit/bfb8302d4a47fc49425356ff82c2caa44f968506))
+* 修复引入组件后，全局样式污染的问题 ([918f25b](https://github.com/TangSY/vue-hash-calendar/commit/918f25bb091a66bccd45bf8c8d73649864b03811))
+
 ## [1.1.14](https://github.com/TangSY/vue-hash-calendar/compare/v1.0.5...v1.1.14) (2019-11-30)
 
 
