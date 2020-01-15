@@ -5,7 +5,7 @@
 * @Email:          t@tsy6.com
 */
 <template>
-    <div class="calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
+    <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
          :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
         <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`}" @click.stop>
             <div class="calendar_title" ref="calendarTitle">
@@ -220,7 +220,7 @@ export default {
 <style lang="stylus" scoped>
     @import "../style/common.styl"
 
-    .calendar {
+    .hash-calendar {
         position fixed
         width 100vw
         height 100vh
