@@ -110,7 +110,6 @@ disabledDate(date) {
 }
 ```
 
-
 * 如果有其他问题， 或者功能上不兼容的。可以邮件沟通 t@tsy6.com，或者 github 提交 issue。
 
 ## 赞助
