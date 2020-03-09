@@ -631,7 +631,7 @@ export default {
     }
 
     .calendar_item {
-        width px2vw(106px)
+        width 14.13333335%
         flexContent()
         flex-direction column
     }
