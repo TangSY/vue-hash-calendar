@@ -52,7 +52,7 @@ Vue.use(vueHashCalendar)
 
 | 属性          | 说明                                                                                                   |  类型  |  默认  | 是否必传 |
 | :------------ | :------------------------------------------------------------------- | :----: | :----: | :------: |
-| visible      | 控制日历组件的显示或隐藏,需使用 `.sycn` 修饰符                    |   Boolean   |   false   |    否    |
+| visible      | 控制日历组件的显示或隐藏,需使用 `.sync` 修饰符                    |   Boolean   |   false   |    否    |
 | scrollChangeDate      | 控制滑动的时候是否修改选中的日期                    |   Boolean   |   true   |    否    |
 | model      | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                            |   String   |   inline   |    否    |
 | defaultDatetime| 指定默认时间。                                                  |   Date   |   当前时间   |    否    |
