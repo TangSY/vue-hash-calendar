@@ -153,6 +153,7 @@ export default {
           val[index].date = this.dateFormat(val[index].date)
         })
 
+        this.markDateColorObj = []
         val.forEach(item => {
           item.date.forEach(date => {
             this.$set(this.markDateColorObj, date, item.color)
