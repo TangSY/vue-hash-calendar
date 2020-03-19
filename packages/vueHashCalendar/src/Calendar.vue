@@ -199,6 +199,10 @@ export default {
           this.$nextTick(() => {
             this.showWeek()
           })
+        } else {
+          this.$nextTick(() => {
+            this.showMonth()
+          })
         }
       },
       immediate: true
