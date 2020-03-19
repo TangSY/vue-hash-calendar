@@ -1,3 +1,14 @@
+## [1.1.25](https://github.com/TangSY/vue-hash-calendar/compare/v1.0.5...v1.1.25) (2020-03-19)
+
+
+### Bug Fixes
+
+* 修复 MarkDate 无法更新的 bug ([c349575](https://github.com/TangSY/vue-hash-calendar/commit/c349575367c05c8ba874a204c02b6ec24924cff2))
+* 修复 默认显示周视图无效的 bug ([df62933](https://github.com/TangSY/vue-hash-calendar/commit/df62933e51292594f484fbaf381665406085d85f))
+* 修复个别机型，样式错误的问题 ([cb4f557](https://github.com/TangSY/vue-hash-calendar/commit/cb4f557532aaec6230ec830323ef9c8562e5791a))
+* 修复日历宽度不足屏幕100%时，一行无法显示 7 个日期的问题 ([c001ea3](https://github.com/TangSY/vue-hash-calendar/commit/c001ea35e32efecc236445562edc6ca1b42754b5))
+* 修复设置默认日期失败的问题 ([c225d09](https://github.com/TangSY/vue-hash-calendar/commit/c225d09e4867cef808bb876c0941324c44fb1f01))
+
 ## 1.1.21 (2020-01-15)
 
 
