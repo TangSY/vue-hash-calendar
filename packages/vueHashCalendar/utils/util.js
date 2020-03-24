@@ -23,7 +23,10 @@ export const checkPlatform = function() {
  * @param format
  * @returns {string}
  */
-export let formatDate = function(time, format = 'YY-MM-DD hh:mm:ss') {
+export let formatDate = function(time, format, lang = 'CN') {
+  lang = lang.toUpperCase()
+  let language = require('../language').default[lang] || {}
+  format = format || `${language.DEFAULT_DATE_FORMAT} ${language.DEFAULT_TIME_FORMAT}`
   let date = time ? new Date(time) : new Date()
   let year = date.getFullYear()
   let month = date.getMonth() + 1 // 月份是从0开始的
@@ -36,11 +39,12 @@ export let formatDate = function(time, format = 'YY-MM-DD hh:mm:ss') {
   })/// /开个长度为10的数组 格式为 00 01 02 03
 
   let newTime = format.replace(/YY/g, year)
-    .replace(/MM/g, preArr[month] || month)
-    .replace(/DD/g, preArr[day] || day)
-    .replace(/hh/g, preArr[hour] || hour)
-    .replace(/mm/g, preArr[min] || min)
+    .replace(/F/g, hour >= 12 ? 'pm' : 'am')
     .replace(/ss/g, preArr[sec] || sec)
+    .replace(/mm/g, preArr[min] || min)
+    .replace(/hh/g, hour > 12 ? hour - 12 : format.includes('F') ? hour : preArr[hour] || hour)
+    .replace(/DD/g, preArr[day] || day)
+    .replace(/MM/g, lang === 'EN' ? language.MONTH[month - 1] : preArr[month] || month)
 
   return newTime
 }
