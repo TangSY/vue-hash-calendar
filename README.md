@@ -66,6 +66,7 @@ Vue.use(vueHashCalendar)
 | markDate | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20']          |   Array     |  []  |    否    |
 | markType  | 标记图案类型 dot：小圆点（日期下方小圆点标记）   circle：小圆圈（日期被小圆圈包围）   dot+circle：同时使用小圆点与圆圈标记    |   String      | dot |    否    |
 | minuteStep  | 间隔时间。（分钟的步长）    |   Number      | 1 |    否    |
+| lang  | 选择的语言版本。可选值:['CN', 'EN']    |   String      | CN |    否    |
 
 # 事件
 
