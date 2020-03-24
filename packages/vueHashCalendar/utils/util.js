@@ -42,7 +42,7 @@ export let formatDate = function(time, format, lang = 'CN') {
     .replace(/F/g, hour >= 12 ? 'pm' : 'am')
     .replace(/ss/g, preArr[sec] || sec)
     .replace(/mm/g, preArr[min] || min)
-    .replace(/hh/g, hour > 12 ? hour - 12 : format.includes('F') ? hour : preArr[hour] || hour)
+    .replace(/hh/g, (hour > 12 && format.includes('F')) ? hour - 12 : format.includes('F') ? hour : preArr[hour] || hour)
     .replace(/DD/g, preArr[day] || day)
     .replace(/MM/g, lang === 'EN' ? language.MONTH[month - 1] : preArr[month] || month)
 

@@ -7,11 +7,11 @@
 <template>
     <div class="time_body" v-show="show">
         <div class="time_group">
-            <div class="time_content" :id="'time' + index" v-for="(item, index) in timeArray" :key="index"
+            <div class="time_content" :id="hashID[index]" v-for="(item, index) in timeArray" :key="index"
                  @touchstart="timeTouchStart"
                  @touchmove="timeTouchMove($event, index)"
                  @touchend="timeTouchEnd($event, index)">
-                <div class="time_item" :class="{'time_item_show': isBeSelectedTime(time, index)}"
+                <div class="time_item" :class="[{'time_item_show': isBeSelectedTime(time, index)}, hashClass]"
                      v-for="(time, j) in item" :key="index + j">{{ time | fillNumber }}
                 </div>
             </div>
@@ -37,6 +37,8 @@ export default {
   },
   data() {
     return {
+      hashID: [], // 用于生成随机ID
+      hashClass: '', // 用于生成随机class
       timeRange: [], // 时间范围
       timeOptions: {
         minHours: 24,
@@ -54,8 +56,9 @@ export default {
       timeStartUp: 0// 滑动开始前，时间控件dom与顶部的偏移量
     }
   },
-  mounted() {
-
+  created() {
+    this.hashID = [`time${parseInt(Math.random() * 1000000)}`, `time${parseInt(Math.random() * 1000000)}`]
+    this.hashClass = `time_item_${parseInt(Math.random() * 1000000)}`
   },
   computed: {},
   watch: {
@@ -134,13 +137,13 @@ export default {
         let checkHours = this.checkedDate.hours
         let checkMinutes = this.checkedDate.minutes
 
-        this.timeHeight = getComputedStyle(document.querySelector('.time_item')).height || ''
+        this.timeHeight = getComputedStyle(document.querySelector(`.${this.hashClass}`)).height || ''
         this.timeHeight = parseFloat(this.timeHeight.split('px')[0])
 
         let hoursUp = (2 - parseFloat(checkHours)) * this.timeHeight
         let minutesUp = (2 - parseFloat(checkMinutes) / this.minuteStep) * this.timeHeight
-        document.querySelector('#time0').style.webkitTransform = 'translate3d(0px,' + hoursUp + 'px,0px)'
-        document.querySelector('#time1').style.webkitTransform = 'translate3d(0px,' + minutesUp + 'px,0px)'
+        document.querySelector(`#${this.hashID[0]}`).style.webkitTransform = 'translate3d(0px,' + hoursUp + 'px,0px)'
+        document.querySelector(`#${this.hashID[1]}`).style.webkitTransform = 'translate3d(0px,' + minutesUp + 'px,0px)'
       })
     },
     timeTouchStart(e) {
