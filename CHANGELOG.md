@@ -1,3 +1,16 @@
+## [1.2.2](https://github.com/TangSY/vue-hash-calendar/compare/v1.1.25...v1.2.2) (2020-03-24)
+
+
+### Bug Fixes
+
+* 修复当多个组件一起使用时，时间无法正常显示的bug ([d36929e](https://github.com/TangSY/vue-hash-calendar/commit/d36929e2a61c133f89ad73138bc2b529c877949d))
+
+
+### Features
+
+* 添加 lang 属性，用于控制中英文语言 ([787e931](https://github.com/TangSY/vue-hash-calendar/commit/787e931ff486a803e46e149d89893e0788ace671))
+
+
 ## [1.1.25](https://github.com/TangSY/vue-hash-calendar/compare/v1.0.5...v1.1.25) (2020-03-19)
 
 
