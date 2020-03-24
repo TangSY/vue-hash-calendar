@@ -12,13 +12,13 @@
                 <div class="calendar_title_date">
                     <span v-if="pickerType !== 'time'" class="calendar_title_date_year"
                           :class="{'calendar_title_date_active': isShowCalendar}"
-                          @click="showCalendar">{{ `${checkedDate.year}年${checkedDate.month + 1}月${checkedDate.day}日`}}</span>
+                          @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
                     <span v-if="pickerType !== 'date'" class="calendar_title_date_time"
                           :class="{'calendar_title_date_active': !isShowCalendar}"
-                          @click="showTime">{{ `${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`}}</span>
+                          @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
                 </div>
-                <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">今天</div>
-                <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">确定</div>
+                <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">{{ language.TODAY }}</div>
+                <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">{{ language.CONFIRM }}</div>
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="{...$props, ...$attrs}" @height="heightChange"
                       :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
@@ -33,6 +33,7 @@
 import Calendar from './Calendar.vue'
 import TimePicker from './TimePicker.vue'
 import {formatDate} from '../utils/util'
+import languageUtil from '../language'
 
 export default {
   props: {
@@ -70,6 +71,11 @@ export default {
       default: () => {
         return false
       }
+    },
+    // 使用的语言包
+    lang: {
+      type: String,
+      default: 'CN'
     }
   },
   components: {
@@ -79,6 +85,7 @@ export default {
   name: 'VueHashCalendar',
   data() {
     return {
+      language: {}, // 使用的语言包
       checkedDate: {
         year: new Date().getFullYear(),
         month: new Date().getMonth(),
@@ -96,6 +103,8 @@ export default {
     if (this.model === 'inline') {
       this.isShowDatetimePicker = true
     }
+
+    this.language = languageUtil[this.lang.toUpperCase()]
   },
   watch: {
     defaultDatetime(val) {
@@ -114,8 +123,8 @@ export default {
     checkedDate: {
       handler() {
         let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-        if (this.format) {
-          date = formatDate(date, this.format)
+        if (this.dateFormat) {
+          date = formatDate(date, this.dateFormat, this.lang)
         }
         this.$emit('change', date)
       },
@@ -140,6 +149,9 @@ export default {
       set(val) {
         this.$emit('update:visible', val)
       }
+    },
+    dateFormat() {
+      return this.format || `${this.language.DEFAULT_DATE_FORMAT} ${this.language.DEFAULT_TIME_FORMAT}`
     }
   },
   methods: {
@@ -159,8 +171,8 @@ export default {
       this.checkedDate = date
 
       let fDate = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-      if (this.format) {
-        fDate = formatDate(fDate, this.format)
+      if (this.dateFormat) {
+        fDate = formatDate(fDate, this.dateFormat, this.lang)
       }
       this.$emit('click', fDate)
     },
@@ -172,8 +184,8 @@ export default {
     },
     confirm() { // 确认选择时间
       let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-      if (this.format) {
-        date = formatDate(date, this.format)
+      if (this.dateFormat) {
+        date = formatDate(date, this.dateFormat, this.lang)
       }
       this.$emit('confirm', date)
       if (this.model === 'dialog') {
@@ -188,6 +200,9 @@ export default {
     },
     fillNumber(val) { // 小于10，在前面补0
       return val > 9 ? val : '0' + val
+    },
+    formatDate(time, format) {
+      return formatDate(time, format, this.lang)
     },
     showCalendar() { // 显示日历控件
       this.isShowCalendar = true
@@ -268,7 +283,7 @@ export default {
     .calendar_title_date {
         color vice-font-color
         background white
-        paddingAround()
+        padding px2vw(30px) px2vw(15px)
     }
 
     .calendar_title_date_active {

@@ -18,11 +18,11 @@
                 :mark-date="markDate"
                 mark-type="dot"
                 :disabled-date="disabledDate"
-                format="YY/MM/DD hh:mm"
                 week-start="sunday"
                 picker-type="datetime"
                 :show-today-button="true"
                 :disabled-week-view="false"
+                lang="CN"
                 @confirm="dateConfirm"
                 @click="dateClick"
                 @change="dateChange">
