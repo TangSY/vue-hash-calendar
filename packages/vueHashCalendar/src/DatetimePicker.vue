@@ -123,8 +123,8 @@ export default {
     checkedDate: {
       handler() {
         let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-        if (this.dateFormat) {
-          date = formatDate(date, this.dateFormat, this.lang)
+        if (this.format) {
+          date = formatDate(date, this.format, this.lang)
         }
         this.$emit('change', date)
       },
@@ -149,9 +149,6 @@ export default {
       set(val) {
         this.$emit('update:visible', val)
       }
-    },
-    dateFormat() {
-      return this.format || `${this.language.DEFAULT_DATE_FORMAT} ${this.language.DEFAULT_TIME_FORMAT}`
     }
   },
   methods: {
@@ -171,8 +168,8 @@ export default {
       this.checkedDate = date
 
       let fDate = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-      if (this.dateFormat) {
-        fDate = formatDate(fDate, this.dateFormat, this.lang)
+      if (this.format) {
+        fDate = formatDate(fDate, this.format, this.lang)
       }
       this.$emit('click', fDate)
     },
@@ -184,8 +181,8 @@ export default {
     },
     confirm() { // 确认选择时间
       let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-      if (this.dateFormat) {
-        date = formatDate(date, this.dateFormat, this.lang)
+      if (this.format) {
+        date = formatDate(date, this.format, this.lang)
       }
       this.$emit('confirm', date)
       if (this.model === 'dialog') {
