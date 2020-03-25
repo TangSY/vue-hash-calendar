@@ -38,7 +38,7 @@ import Github from './Github.vue'
 export default {
   name: 'demo',
   components: { Github },
-  data () {
+  data() {
     return {
       isShowCalendar: true, // 是否显示弹窗
       isShowTips: false, // 是否显示下载提示
@@ -52,23 +52,23 @@ export default {
       ] // 对象数组形式的标记日期，可以自定义标记颜色
     }
   },
-  mounted () {
+  mounted() {
     //            this.defaultDatetime = new Date('2018-01-01 12:04');
   },
   methods: {
-    showCalendarDialog () { // 显示日历
+    showCalendarDialog() { // 显示日历
       this.isShowCalendar = true
     },
-    dateChange (date) { // 日期改变触发
+    dateChange(date) { // 日期改变触发
       console.log(date, 'change')
     },
-    dateConfirm (date) { // 点击确认按钮触发
+    dateConfirm(date) { // 点击确认按钮触发
       console.log(date, 'confirm')
     },
-    dateClick (date) { // 点击日期时按钮触发
+    dateClick(date) { // 点击日期时按钮触发
       console.log(date, 'click')
     },
-    disabledDate (date) { // 禁用的日期
+    disabledDate(date) { // 禁用的日期
       let timestamp = date.getTime()
       let oneDay = 24 * 60 * 60 * 1000
 
