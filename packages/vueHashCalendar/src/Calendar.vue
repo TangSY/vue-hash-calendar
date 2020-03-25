@@ -22,7 +22,7 @@
                          @click="clickCalendarDay(date)">
                         <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
                            class="calendar_day calendar_first_today" ref="calendarDay"
-                           :class="{'calendar_day_checked': isCheckedDay(date)}">{{ date.month + 1 }}<span>月</span></p>
+                           :class="{'calendar_day_checked': isCheckedDay(date)}">{{ language.MONTH && language.MONTH[date.month] }}</p>
                         <p v-else class="calendar_day" ref="calendarDay" :style="{'border-color': markDateColor(date, 'circle')}"
                            :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i), 'calendar_mark_circle': markDateColor(date, 'circle')}">
                             {{ date.day }}</p>
@@ -36,6 +36,7 @@
 
 <script>
 import {formatDate} from '../utils/util'
+import languageUtil from '../language'
 
 export default {
   name: 'Calendar',
@@ -85,10 +86,16 @@ export default {
       default: () => {
         return false
       }
+    },
+    // 使用的语言包
+    lang: {
+      type: String,
+      default: 'CN'
     }
   },
   data() {
     return {
+      language: {}, // 使用的语言包
       currentChangeIsScroll: false, // 改变当前日期的方式是否为滑动事件
       yearOfCurrentShow: new Date().getFullYear(), // 当前日历展示的年份
       monthOfCurrentShow: new Date().getMonth(), // 当前日历展示的月份
@@ -129,6 +136,8 @@ export default {
     }
   },
   mounted() {
+    this.language = languageUtil[this.lang.toUpperCase()]
+    this.calendarWeek = this.language.WEEK
     this.weekStartIndex = this.weekArray.indexOf(this.weekStart.toLowerCase())
     this.calendarWeek = [...this.calendarWeek.slice(this.weekStartIndex, this.calendarWeek.length), ...this.calendarWeek.slice(0, this.weekStartIndex)]
   },
@@ -153,6 +162,7 @@ export default {
           val[index].date = this.dateFormat(val[index].date)
         })
 
+        this.markDateColorObj = []
         val.forEach(item => {
           item.date.forEach(date => {
             this.$set(this.markDateColorObj, date, item.color)
@@ -197,6 +207,10 @@ export default {
         if (val) {
           this.$nextTick(() => {
             this.showWeek()
+          })
+        } else {
+          this.$nextTick(() => {
+            this.showMonth()
           })
         }
       },
@@ -631,7 +645,7 @@ export default {
     }
 
     .calendar_item {
-        width px2vw(106px)
+        width 14.13333335%
         flexContent()
         flex-direction column
     }
