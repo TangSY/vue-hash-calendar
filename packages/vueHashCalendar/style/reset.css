@@ -3,12 +3,11 @@
 * @Author:         TSY
 * @CreateDate:     2018/6/9 13:28
 */
-@import "//at.alicdn.com/t/font_699465_naty3yibd9s.css";
 html,
 body {
   width: 100%;
   border: 0;
-  font-family: "Helvetica-Neue", "Helvetica", Arial, sans-serif;
+  font-family: 'Helvetica-Neue', 'Helvetica', Arial, sans-serif;
   margin: 0;
   padding: 0;
   overflow-x: hidden;
