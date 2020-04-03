@@ -18,15 +18,13 @@
                 <li class="calendar_group_li" v-for="(item, i) in calendarOfMonthShow" :key="i"
                     :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
                     <div class="calendar_item" ref="calendarItem" v-for="(date, j) in item" :key="i + j"
-                         :class="{'calendar_item_disable': formatDisabledDate(date)}"
                          @click="clickCalendarDay(date)">
-                        <p v-if="date.day === 1 && !isNotCurrentMonthDay(date,i)"
-                           class="calendar_day calendar_first_today" ref="calendarDay"
-                           :class="{'calendar_day_checked': isCheckedDay(date)}">{{ language.MONTH && language.MONTH[date.month] }}</p>
-                        <p v-else class="calendar_day" ref="calendarDay" :style="{'border-color': markDateColor(date, 'circle')}"
-                           :class="{'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i), 'calendar_mark_circle': markDateColor(date, 'circle')}">
-                            {{ date.day }}</p>
-                        <div :style="{'background': markDateColor(date, 'dot')}" class="calendar_dot"></div>
+                        <slot name="day" :date="date" :isMarked="!!(markDateColor(date, 'circle') || markDateColor(date, 'dot'))" :isDisabledDate="formatDisabledDate(date)" :isToday="isToday(date)" :isChecked="isCheckedDay(date)" :isNotCurrentMonthDay="isNotCurrentMonthDay(date,i)" :isFirstDayOfMonth="isFirstDayOfMonth(date, i)">
+                            <p class="calendar_day" :style="{'border-color': markDateColor(date, 'circle')}"
+                               :class="{'calendar_item_disable': formatDisabledDate(date), 'calendar_first_today': isFirstDayOfMonth(date, i), 'calendar_day_today': isToday(date), 'calendar_day_checked': isCheckedDay(date), 'calendar_day_not': isNotCurrentMonthDay(date,i), 'calendar_mark_circle': markDateColor(date, 'circle')}">
+                                {{ isFirstDayOfMonth(date, i) ? language.MONTH && language.MONTH[date.month] : date.day }}</p>
+                            <div :style="{'background': markDateColor(date, 'dot')}" class="calendar_dot"></div>
+                        </slot>
                     </div>
                 </li>
             </ul>
@@ -224,7 +222,7 @@ export default {
   methods: {
     initDom() { // 初始化日历dom
       this.$nextTick(() => {
-        this.calendarItemHeight = this.$refs.calendarDay[0].offsetHeight + 10
+        this.calendarItemHeight = this.$refs.calendarItem && this.$refs.calendarItem[0].offsetHeight + 10
         this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight
 
         let calendarItemGroup = this.$refs.calendarItem
@@ -250,6 +248,10 @@ export default {
           this.showWeek()
         }, this.transitionDuration * 1000)
       }
+    },
+    // 是否为当前月的第一天
+    isFirstDayOfMonth(date, i) {
+      return date.day === 1 && !this.isNotCurrentMonthDay(date, i)
     },
     // 计算当前展示月份的前后月份日历信息 flag  -1:获取上个月日历信息   0:当月信息或者跨月展示日历信息  1:获取下个月日历信息
     calculateCalendarOfThreeMonth(year = new Date().getFullYear(), month = new Date().getMonth()) {

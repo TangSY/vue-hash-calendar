@@ -22,7 +22,11 @@
             </div>
             <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="{...$props, ...$attrs}" @height="heightChange"
                       :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
-                      @change="dateChange" @click="dateClick"></calendar>
+                      @change="dateChange" @click="dateClick">
+                <template v-if="hasSlot" slot="day" scope="scope">
+                    <slot name="day" :date="scope.date" :isMarked="scope.isMarked" :isDisabledDate="scope.isDisabledDate" :isChecked="scope.isChecked" :isFirstDayOfMonth="scope.isFirstDayOfMonth" :isNotCurrentMonthDay="scope.isNotCurrentMonthDay" :isToday="scope.isToday"></slot>
+                </template>
+            </calendar>
             <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
                          v-bind="{...$props, ...$attrs}" @change="timeChange"></time-picker>
         </div>
@@ -85,6 +89,7 @@ export default {
   name: 'VueHashCalendar',
   data() {
     return {
+      hasSlot: false, // 是否有插槽
       language: {}, // 使用的语言包
       checkedDate: {
         year: new Date().getFullYear(),
@@ -100,6 +105,10 @@ export default {
     }
   },
   mounted() {
+    if (this.$scopedSlots.day) {
+      this.hasSlot = true
+    }
+
     if (this.model === 'inline') {
       this.isShowDatetimePicker = true
     }
