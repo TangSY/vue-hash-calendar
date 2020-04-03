@@ -5,18 +5,24 @@
 * @CreateDate:     2019/5/26 22:53
 */
 <template>
-    <div class="time_body" v-show="show">
-        <div class="time_group">
-            <div class="time_content" :id="hashID[index]" v-for="(item, index) in timeArray" :key="index"
-                 @touchstart="timeTouchStart"
-                 @touchmove="timeTouchMove($event, index)"
-                 @touchend="timeTouchEnd($event, index)">
-                <div class="time_item" :class="[{'time_item_show': isBeSelectedTime(time, index)}, hashClass]"
-                     v-for="(time, j) in item" :key="index + j">{{ time | fillNumber }}
-                </div>
-            </div>
+  <div class="time_body"
+       v-show="show">
+    <div class="time_group">
+      <div class="time_content"
+           :id="hashID[index]"
+           v-for="(item, index) in timeArray"
+           :key="index"
+           @touchstart="timeTouchStart"
+           @touchmove="timeTouchMove($event, index)"
+           @touchend="timeTouchEnd($event, index)">
+        <div class="time_item"
+             :class="[{'time_item_show': isBeSelectedTime(time, index)}, hashClass]"
+             v-for="(time, j) in item"
+             :key="index + j">{{ time | fillNumber }}
         </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -65,7 +71,7 @@ export default {
     defaultTime: {
       handler(val) {
         if (!(val instanceof Date)) {
-          throw new Error(`The calendar component's defaultTime must be date type!`)
+          throw new Error('The calendar component\'s defaultTime must be date type!')
         }
         this.$set(this.checkedDate, 'hours', val.getHours())
         this.$set(this.checkedDate, 'minutes', val.getMinutes())
@@ -93,7 +99,7 @@ export default {
           throw new Error(`The minutes-step can't be: ${val}!`)
         }
         if (60 % val !== 0) {
-          throw new Error(`The minutes-step must be divided by 60!`)
+          throw new Error('The minutes-step must be divided by 60!')
         }
       },
       immediate: true
@@ -114,12 +120,14 @@ export default {
     }
   },
   filters: {
-    fillNumber(val) { // 小于10，在前面补0
+    // 小于10，在前面补0
+    fillNumber(val) {
       return val > 9 ? val : '0' + val
     }
   },
   methods: {
-    initTimeArray() { // 初始化时间选择器数据
+    // 初始化时间选择器数据
+    initTimeArray() {
       let hours = []
       this.timeArray = []
       for (let i = 0; i < 24; i++) {
@@ -226,7 +234,8 @@ export default {
       }
       return false
     },
-    checkTimeRange(timeRange) { // 校验时间范围
+    // 校验时间范围
+    checkTimeRange(timeRange) {
       if (!timeRange) return
       let timeArr = timeRange.split('-')
       if (timeArr.length === 0 || timeArr.length > 2) return false
@@ -248,40 +257,28 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-    @import "../style/common.styl"
-
-    .time_body {
-        width 100%
-        margin-top px2vw(100px)
-    }
-
-    .time_group {
-        width 100%
-        display flex
-        align-items flex-start
-        justify-content center
-        height px2vw(360px)
-        margin-top px2vw(100px)
-        -webkit-overflow-scrolling touch
-        overflow hidden
-    }
-
-    .time_content {
-        touch-action none
-        padding 0 px2vw(40px)
-        -webkit-overflow-scrolling touch
-    }
-
-    .time_item {
-        padding px2vw(20px) 0
-        color vice-font-color
-    }
-
-    .time_item_show {
-        color main-font-color
-    }
-
-    .time_disabled {
-        color red
-    }
+@import '../style/common.styl'
+.time_body
+  width 100%
+  margin-top px2vw(100px)
+.time_group
+  width 100%
+  display flex
+  align-items flex-start
+  justify-content center
+  height px2vw(360px)
+  margin-top px2vw(100px)
+  -webkit-overflow-scrolling touch
+  overflow hidden
+.time_content
+  touch-action none
+  padding 0 px2vw(40px)
+  -webkit-overflow-scrolling touch
+.time_item
+  padding px2vw(20px) 0
+  color vice-font-color
+.time_item_show
+  color main-font-color
+.time_disabled
+  color red
 </style>
