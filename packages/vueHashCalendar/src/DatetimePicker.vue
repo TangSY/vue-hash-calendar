@@ -14,6 +14,7 @@
          :style="{'height': `${calendarContentHeight}px`}"
          @click.stop>
       <div class="calendar_title"
+           v-if="isShowAction"
            ref="calendarTitle">
         <div class="calendar_title_date">
           <span v-if="pickerType !== 'time'"
@@ -28,15 +29,24 @@
         <div v-if="showTodayButton"
              class="calendar_confirm"
              :class="{'today_disable': disabledDate(new Date())}"
-             @click="today">{{ language.TODAY }}</div>
+             @click="today">
+          <slot name="today">
+            {{ language.TODAY }}
+          </slot>
+        </div>
         <div class="calendar_confirm"
              v-if="model === 'dialog'"
-             @click="confirm">{{ language.CONFIRM }}</div>
+             @click="confirm">
+          <slot name="confirm">
+            {{ language.CONFIRM }}
+          </slot>
+        </div>
       </div>
       <calendar ref="calendar"
                 v-if="pickerType !== 'time'"
                 :show="isShowCalendar"
                 v-bind="{...$props, ...$attrs}"
+                :calendarTitleHeight="calendarTitleHeight"
                 @height="heightChange"
                 :default-date="defaultDatetime"
                 @touchstart="touchStart"
@@ -81,6 +91,10 @@ export default {
     visible: {// 是否显示日历组件
       type: Boolean,
       default: false
+    },
+    isShowAction: {
+      type: Boolean,
+      default: true
     },
     pickerType: {// 选择器类型 datetime：日期+时间   date：日期   time：时间
       type: String,
@@ -176,7 +190,7 @@ export default {
         this.isShowCalendar = val
 
         this.$nextTick(() => {
-          this.calendarTitleHeight = this.$refs.calendarTitle.offsetHeight
+          this.calendarTitleHeight = this.$refs.calendarTitle ? this.$refs.calendarTitle.offsetHeight : 0
         })
       },
       immediate: true
