@@ -5,41 +5,100 @@
 * @Email:          t@tsy6.com
 */
 <template>
-    <div class="hash-calendar" :class="{'calendar_inline': model === 'inline'}" v-show="isShowDatetimePicker"
-         :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}" @click="close">
-        <div class="calendar_content" :style="{'height': `${calendarContentHeight}px`}" @click.stop>
-            <div class="calendar_title" ref="calendarTitle">
-                <div class="calendar_title_date">
-                    <span v-if="pickerType !== 'time'" class="calendar_title_date_year"
-                          :class="{'calendar_title_date_active': isShowCalendar}"
-                          @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
-                    <span v-if="pickerType !== 'date'" class="calendar_title_date_time"
-                          :class="{'calendar_title_date_active': !isShowCalendar}"
-                          @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
-                </div>
-                <div v-if="showTodayButton" class="calendar_confirm" :class="{'today_disable': disabledDate(new Date())}" @click="today">{{ language.TODAY }}</div>
-                <div class="calendar_confirm" v-if="model === 'dialog'" @click="confirm">{{ language.CONFIRM }}</div>
-            </div>
-            <calendar ref="calendar" v-if="pickerType !== 'time'" :show="isShowCalendar" v-bind="{...$props, ...$attrs}" @height="heightChange"
-                      :default-date="defaultDatetime" @touchstart="touchStart" @touchmove="touchMove" @touchend="touchEnd" @slidechange="slideChange"
-                      @change="dateChange" @click="dateClick"></calendar>
-            <time-picker v-if="pickerType !== 'date'" :show="!isShowCalendar" :default-time="defaultDatetime"
-                         v-bind="{...$props, ...$attrs}" @change="timeChange"></time-picker>
-        </div>
+  <div class="hash-calendar"
+       :class="{'calendar_inline': model === 'inline'}"
+       v-show="isShowDatetimePicker"
+       :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}"
+       @click="close">
+    <div class="calendar_content"
+         :style="{'height': `${calendarContentHeight}px`}"
+         @click.stop>
+      <div class="calendar_title"
+           v-if="isShowAction"
+           ref="calendarTitle">
+        <slot name="action">
+          <div class="calendar_title_date">
+          <span v-if="pickerType !== 'time'"
+                class="calendar_title_date_year"
+                :class="{'calendar_title_date_active': isShowCalendar}"
+                @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
+            <span v-if="pickerType !== 'date'"
+                  class="calendar_title_date_time"
+                  :class="{'calendar_title_date_active': !isShowCalendar}"
+                  @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
+          </div>
+          <div v-if="showTodayButton"
+               class="calendar_confirm"
+               :class="{'today_disable': disabledDate(new Date())}"
+               @click="today">
+            <slot name="today">
+              {{ language.TODAY }}
+            </slot>
+          </div>
+          <div class="calendar_confirm"
+               v-if="model === 'dialog'"
+               @click="confirm">
+            <slot name="confirm">
+              {{ language.CONFIRM }}
+            </slot>
+          </div>
+        </slot>
+      </div>
+      <calendar ref="calendar"
+                v-if="pickerType !== 'time'"
+                :show="isShowCalendar"
+                v-bind="{...$props, ...$attrs}"
+                :calendarTitleHeight="calendarTitleHeight"
+                @height="heightChange"
+                :default-date="defaultDatetime"
+                @touchstart="touchStart"
+                @touchmove="touchMove"
+                @touchend="touchEnd"
+                @slidechange="slideChange"
+                @change="dateChange"
+                @click="dateClick">
+        <template v-if="hasSlot('week')"
+                  slot="week"
+                  scope="scope">
+          <slot name="week"
+                :week="scope.week">
+          </slot>
+        </template>
+        <template v-if="hasSlot('day')"
+                  slot="day"
+                  scope="scope">
+          <slot name="day"
+                :date="scope.date"
+                :extendAttr="scope.extendAttr">
+          </slot>
+        </template>
+      </calendar>
+      <time-picker v-if="pickerType !== 'date'"
+                   :show="!isShowCalendar"
+                   :default-time="defaultDatetime"
+                   v-bind="{...$props, ...$attrs}"
+                   @change="timeChange"></time-picker>
     </div>
+  </div>
 </template>
 
 <script>
 import Calendar from './Calendar.vue'
 import TimePicker from './TimePicker.vue'
-import {formatDate} from '../utils/util'
+import { formatDate } from '../utils/util'
 import languageUtil from '../language'
 
 export default {
   props: {
-    visible: {// 是否显示日历组件
+    // 是否显示日历组件
+    visible: {
       type: Boolean,
       default: false
+    },
+    // 是否显示日历组件操作栏
+    isShowAction: {
+      type: Boolean,
+      default: true
     },
     pickerType: {// 选择器类型 datetime：日期+时间   date：日期   time：时间
       type: String,
@@ -94,7 +153,7 @@ export default {
         minutes: new Date().getMinutes()
       }, // 被选中的日期
       isShowCalendar: false, // 是否显示日历选择控件
-      calendarContentHeight: 0, // 日历组件高度
+      calendarBodyHeight: 0, // 日历内容的高度
       calendarTitleHeight: 0, // 日历组件标题高度
       firstTimes: true// 第一次触发
     }
@@ -109,7 +168,7 @@ export default {
   watch: {
     defaultDatetime(val) {
       if (!(val instanceof Date)) {
-        throw new Error(`The calendar component's defaultDate must be date type!`)
+        throw new Error('The calendar component\'s defaultDate must be date type!')
       }
     },
     pickerType: {
@@ -120,11 +179,20 @@ export default {
       },
       immediate: true
     },
+    isShowAction(flag) {
+      if (!flag) {
+        this.calendarTitleHeight = 0
+      } else {
+        setTimeout(() => {
+          this.calendarTitleHeight = this.$refs.calendarTitle ? this.$refs.calendarTitle.offsetHeight : 0
+        })
+      }
+    },
     checkedDate: {
       handler() {
         let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-        if (this.dateFormat) {
-          date = formatDate(date, this.dateFormat, this.lang)
+        if (this.format) {
+          date = formatDate(date, this.format, this.lang)
         }
         this.$emit('change', date)
       },
@@ -134,15 +202,16 @@ export default {
       handler(val) {
         this.isShowCalendar = val
 
-        this.$nextTick(() => {
-          this.calendarTitleHeight = this.$refs.calendarTitle.offsetHeight
+        setTimeout(() => {
+          this.calendarTitleHeight = this.$refs.calendarTitle ? this.$refs.calendarTitle.offsetHeight : 0
         })
       },
       immediate: true
     }
   },
   computed: {
-    isShowDatetimePicker: {// 是否显示日期控件
+    // 是否显示日期控件
+    isShowDatetimePicker: {
       get() {
         return this.visible
       },
@@ -150,11 +219,16 @@ export default {
         this.$emit('update:visible', val)
       }
     },
-    dateFormat() {
-      return this.format || `${this.language.DEFAULT_DATE_FORMAT} ${this.language.DEFAULT_TIME_FORMAT}`
+    // 日历组件的高度
+    calendarContentHeight() {
+      return this.calendarBodyHeight + this.calendarTitleHeight
     }
   },
   methods: {
+    // 判断是否有插槽
+    hasSlot(slotName) {
+      return !!this.$scopedSlots[slotName]
+    },
     today() {
       if (this.disabledDate(new Date())) return
 
@@ -171,8 +245,8 @@ export default {
       this.checkedDate = date
 
       let fDate = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-      if (this.dateFormat) {
-        fDate = formatDate(fDate, this.dateFormat, this.lang)
+      if (this.format) {
+        fDate = formatDate(fDate, this.format, this.lang)
       }
       this.$emit('click', fDate)
     },
@@ -182,10 +256,11 @@ export default {
       date.day = this.checkedDate.day
       this.checkedDate = date
     },
-    confirm() { // 确认选择时间
+    // 确认选择时间
+    confirm() {
       let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
-      if (this.dateFormat) {
-        date = formatDate(date, this.dateFormat, this.lang)
+      if (this.format) {
+        date = formatDate(date, this.format, this.lang)
       }
       this.$emit('confirm', date)
       if (this.model === 'dialog') {
@@ -198,34 +273,42 @@ export default {
     close() {
       this.isShowDatetimePicker = false
     },
-    fillNumber(val) { // 小于10，在前面补0
+    // 小于10，在前面补0
+    fillNumber(val) {
       return val > 9 ? val : '0' + val
     },
     formatDate(time, format) {
       return formatDate(time, format, this.lang)
     },
-    showCalendar() { // 显示日历控件
+    // 显示日历控件
+    showCalendar() {
       this.isShowCalendar = true
     },
-    showTime() { // 显示时间选择控件
+    // 显示时间选择控件
+    showTime() {
       this.isShowCalendar = false
     },
-    heightChange(height) { // 高度变化
+    // 高度变化
+    heightChange(height) {
       if (!this.firstTimes && this.model === 'dialog') return
 
-      this.calendarContentHeight = height + this.calendarTitleHeight
+      this.calendarBodyHeight = height
       this.firstTimes = false
     },
-    touchStart(event) { // 监听手指开始滑动事件
+    // 监听手指开始滑动事件
+    touchStart(event) {
       this.$emit('touchstart', event)
     },
-    touchMove(event) { // 监听手指开始滑动事件
+    // 监听手指开始滑动事件
+    touchMove(event) {
       this.$emit('touchmove', event)
     },
-    touchEnd(event) { // 监听手指开始滑动事件
+    // 监听手指开始滑动事件
+    touchEnd(event) {
       this.$emit('touchend', event)
     },
-    slideChange(direction) { // 滑动方向改变
+    // 滑动方向改变
+    slideChange(direction) {
       this.$emit('slidechange', direction)
     }
   }
@@ -233,74 +316,56 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-    @import "../style/common.styl"
-
-    .hash-calendar {
-        position fixed
-        width 100vw
-        height 100vh
-        top 0
-        left 0
-        background rgba(0, 0, 0, .6)
-        z-index 999
-    }
-
-    .calendar_inline {
-        position relative
-        width 100%
-        height auto
-        background none
-        height px2vw(710px)
-        z-index 1
-    }
-
-    .calendar_content {
-        position absolute
-        width 100%
-        left 0
-        bottom 0
-        display flex
-        padding-bottom px2vw(26px)
-        flex-wrap wrap
-        background white
-        height px2vw(710px)
-        overflow hidden
-    }
-
-    .calendar_title {
-        position absolute
-        width 100%
-        left 0
-        top 0
-        background bg-color
-        borderBottom()
-        display flex
-        align-items center
-        justify-content space-between
-        z-index 1
-    }
-
-    .calendar_title_date {
-        color vice-font-color
-        background white
-        padding px2vw(30px) px2vw(15px)
-    }
-
-    .calendar_title_date_active {
-        color main-font-color
-        font-weight bold
-    }
-
-    .calendar_title_date_time {
-        margin-left px2vw(20px)
-    }
-
-    .calendar_confirm {
-        color main-color
-        margin-right px2vw(34px)
-    }
-
-    .today_disable {
-        color disabled-font-color
-    }
+@import '../style/common.styl'
+.hash-calendar
+  position fixed
+  width 100vw
+  height 100vh
+  top 0
+  left 0
+  background rgba(0, 0, 0, 0.6)
+  z-index 999
+.calendar_inline
+  position relative
+  width 100%
+  height auto
+  background none
+  height px2vw(710px)
+  z-index 1
+.calendar_content
+  position absolute
+  width 100%
+  left 0
+  bottom 0
+  display flex
+  padding-bottom px2vw(26px)
+  flex-wrap wrap
+  background white
+  height px2vw(710px)
+  overflow hidden
+.calendar_title
+  position absolute
+  width 100%
+  left 0
+  top 0
+  background bg-color
+  borderBottom()
+  display flex
+  align-items center
+  justify-content space-between
+  z-index 1
+.calendar_title_date
+  color vice-font-color
+  background white
+  padding px2vw(30px) px2vw(15px)
+.calendar_title_date_active
+  color main-font-color
+  font-weight bold
+.calendar_title_date_time
+  margin-left px2vw(20px)
+.calendar_confirm
+  color main-color
+  margin-right px2vw(34px)
+.today_disable
+  color disabled-font-color
 </style>
