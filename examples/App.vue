@@ -27,7 +27,6 @@
                        @confirm="dateConfirm"
                        @click="dateClick"
                        @change="dateChange">
-      <div slot="action">000</div>
     </vue-hash-calendar>
     <!--github入口-->
     <github></github>

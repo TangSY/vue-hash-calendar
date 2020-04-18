@@ -6,7 +6,7 @@
 */
 <template>
   <div class="calendar_body"
-       :style="{'margin-top': calendarMarginTop + 'px'}"
+       :style="{'margin-top': calendarTitleHeight + 'px'}"
        v-show="show">
     <div class="calendar_week"
          ref="weekTitle">
@@ -192,7 +192,6 @@ export default {
       selectedDayIndex: 0, // 当前选中的日期，在这一周的第几天
       lastWeek: [], // 上一周的数据
       nextWeek: [], // 下一周的数据
-//      calendarMarginTop: 0,
       isLastWeekInCurrentMonth: false, // 上一周的数据是否在本月
       isNextWeekInCurrentMonth: false, // 下一周的数据是否在本月
       markDateColorObj: []// 所有被标记的日期所对应的颜色
@@ -265,9 +264,6 @@ export default {
       },
       immediate: true
     },
-    calendarMarginTop(v) {
-      console.log(v)
-    },
     isShowWeekView: {
       handler(val) {
         if (val) {
@@ -284,13 +280,6 @@ export default {
     },
     calendarGroupHeight(val) {
       this.$emit('height', val + this.calendarWeekTitleHeight)
-    }
-  },
-  computed: {
-    calendarMarginTop: {
-      get() {
-        return this.calendarTitleHeight
-      }
     }
   },
   methods: {
