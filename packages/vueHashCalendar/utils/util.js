@@ -8,7 +8,7 @@
  * 判断安卓与IOS平台
  * @returns {string}
  */
-export const checkPlatform = function() {
+export const checkPlatform = function () {
   if (/android/i.test(navigator.userAgent)) {
     return '1'
   }
@@ -23,7 +23,7 @@ export const checkPlatform = function() {
  * @param format
  * @returns {string}
  */
-export let formatDate = function(time, format, lang = 'CN') {
+export let formatDate = function (time, format, lang = 'CN') {
   lang = lang.toUpperCase()
   let language = require('../language').default[lang] || {}
   format = format || `${language.DEFAULT_DATE_FORMAT} ${language.DEFAULT_TIME_FORMAT}`
@@ -34,7 +34,7 @@ export let formatDate = function(time, format, lang = 'CN') {
   let hour = date.getHours()
   let min = date.getMinutes()
   let sec = date.getSeconds()
-  let preArr = Array.apply(null, Array(10)).map(function(elem, index) {
+  let preArr = Array.apply(null, Array(10)).map(function (elem, index) {
     return '0' + index
   })/// /开个长度为10的数组 格式为 00 01 02 03
 

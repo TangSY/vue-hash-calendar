@@ -18,10 +18,10 @@
            ref="calendarTitle">
         <slot name="action">
           <div class="calendar_title_date">
-          <span v-if="pickerType !== 'time'"
-                class="calendar_title_date_year"
-                :class="{'calendar_title_date_active': isShowCalendar}"
-                @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
+            <span v-if="pickerType !== 'time'"
+                  class="calendar_title_date_year"
+                  :class="{'calendar_title_date_active': isShowCalendar}"
+                  @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
             <span v-if="pickerType !== 'date'"
                   class="calendar_title_date_time"
                   :class="{'calendar_title_date_active': !isShowCalendar}"
