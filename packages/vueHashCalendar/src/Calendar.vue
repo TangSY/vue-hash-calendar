@@ -286,7 +286,7 @@ export default {
     // 初始化日历dom
     initDom() {
       this.$nextTick(() => {
-        this.calendarItemHeight = this.$refs.calendarItem && this.$refs.calendarItem[0].offsetHeight + 10
+        this.calendarItemHeight = this.$refs.calendarItem && this.$refs.calendarItem[0].offsetHeight
         this.calendarWeekTitleHeight = this.$refs.weekTitle.offsetHeight
 
         let calendarItemGroup = this.$refs.calendarItem
