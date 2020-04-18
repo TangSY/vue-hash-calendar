@@ -14,29 +14,41 @@
          :style="{'height': `${calendarContentHeight}px`}"
          @click.stop>
       <div class="calendar_title"
+           v-if="isShowAction"
            ref="calendarTitle">
-        <div class="calendar_title_date">
-          <span v-if="pickerType !== 'time'"
-                class="calendar_title_date_year"
-                :class="{'calendar_title_date_active': isShowCalendar}"
-                @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
-          <span v-if="pickerType !== 'date'"
-                class="calendar_title_date_time"
-                :class="{'calendar_title_date_active': !isShowCalendar}"
-                @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
-        </div>
-        <div v-if="showTodayButton"
-             class="calendar_confirm"
-             :class="{'today_disable': disabledDate(new Date())}"
-             @click="today">{{ language.TODAY }}</div>
-        <div class="calendar_confirm"
-             v-if="model === 'dialog'"
-             @click="confirm">{{ language.CONFIRM }}</div>
+        <slot name="action">
+          <div class="calendar_title_date">
+            <span v-if="pickerType !== 'time'"
+                  class="calendar_title_date_year"
+                  :class="{'calendar_title_date_active': isShowCalendar}"
+                  @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
+            <span v-if="pickerType !== 'date'"
+                  class="calendar_title_date_time"
+                  :class="{'calendar_title_date_active': !isShowCalendar}"
+                  @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
+          </div>
+          <div v-if="showTodayButton"
+               class="calendar_confirm"
+               :class="{'today_disable': disabledDate(new Date())}"
+               @click="today">
+            <slot name="today">
+              {{ language.TODAY }}
+            </slot>
+          </div>
+          <div class="calendar_confirm"
+               v-if="model === 'dialog'"
+               @click="confirm">
+            <slot name="confirm">
+              {{ language.CONFIRM }}
+            </slot>
+          </div>
+        </slot>
       </div>
       <calendar ref="calendar"
                 v-if="pickerType !== 'time'"
                 :show="isShowCalendar"
                 v-bind="{...$props, ...$attrs}"
+                :calendarTitleHeight="calendarTitleHeight"
                 @height="heightChange"
                 :default-date="defaultDatetime"
                 @touchstart="touchStart"
@@ -78,9 +90,15 @@ import languageUtil from '../language'
 
 export default {
   props: {
-    visible: {// 是否显示日历组件
+    // 是否显示日历组件
+    visible: {
       type: Boolean,
       default: false
+    },
+    // 是否显示日历组件操作栏
+    isShowAction: {
+      type: Boolean,
+      default: true
     },
     pickerType: {// 选择器类型 datetime：日期+时间   date：日期   time：时间
       type: String,
@@ -135,7 +153,7 @@ export default {
         minutes: new Date().getMinutes()
       }, // 被选中的日期
       isShowCalendar: false, // 是否显示日历选择控件
-      calendarContentHeight: 0, // 日历组件高度
+      calendarBodyHeight: 0, // 日历内容的高度
       calendarTitleHeight: 0, // 日历组件标题高度
       firstTimes: true// 第一次触发
     }
@@ -161,6 +179,15 @@ export default {
       },
       immediate: true
     },
+    isShowAction(flag) {
+      if (!flag) {
+        this.calendarTitleHeight = 0
+      } else {
+        setTimeout(() => {
+          this.calendarTitleHeight = this.$refs.calendarTitle ? this.$refs.calendarTitle.offsetHeight : 0
+        })
+      }
+    },
     checkedDate: {
       handler() {
         let date = new Date(`${this.checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${this.checkedDate.hours}:${this.checkedDate.minutes}`)
@@ -175,8 +202,8 @@ export default {
       handler(val) {
         this.isShowCalendar = val
 
-        this.$nextTick(() => {
-          this.calendarTitleHeight = this.$refs.calendarTitle.offsetHeight
+        setTimeout(() => {
+          this.calendarTitleHeight = this.$refs.calendarTitle ? this.$refs.calendarTitle.offsetHeight : 0
         })
       },
       immediate: true
@@ -191,6 +218,10 @@ export default {
       set(val) {
         this.$emit('update:visible', val)
       }
+    },
+    // 日历组件的高度
+    calendarContentHeight() {
+      return this.calendarBodyHeight + this.calendarTitleHeight
     }
   },
   methods: {
@@ -261,7 +292,7 @@ export default {
     heightChange(height) {
       if (!this.firstTimes && this.model === 'dialog') return
 
-      this.calendarContentHeight = height + this.calendarTitleHeight
+      this.calendarBodyHeight = height
       this.firstTimes = false
     },
     // 监听手指开始滑动事件

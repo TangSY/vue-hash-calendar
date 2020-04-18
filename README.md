@@ -39,6 +39,19 @@ Vue.use(vueHashCalendar)
  <vue-hash-calendar></vue-hash-calendar>
 ```
 
+### CDN 方式引入
+
+```
+//在 index.html 加入以下两个 CDN 链接：
+js CDN：https://cdn.jsdelivr.net/npm/vue-hash-calendar@1.1.17/lib/vue-hash-calendar.umd.min.js
+css CDN: https://cdn.jsdelivr.net/npm/vue-hash-calendar@1.1.17/lib/vue-hash-calendar.css
+
+//然后在 webpack 配置中，加入以下配置。
+externals: {
+'vue-hash-calendar': 'VueHashCalendar'
+},
+```
+
 # Demo
 
 ![demo_qrcode.png](https://www.hxkj.vip/demo/calendar/demo.webp)
@@ -62,6 +75,7 @@ Vue.use(vueHashCalendar)
 | pickerType                  | 选择器类型 datetime：日期+时间 date：日期 time：时间                                                                                                  |  String  |    datetime    |    否    |
 | showTodayButton             | 是否显示返回今日按钮                                                                                                                                  | Boolean  |      true      |    否    |
 | isShowWeekView              | 是否以周视图展示组件                                                                                                                                  | Boolean  |     false      |    否    |
+| isShowAction                | 是否显示日历组件操作栏（标题栏）                                                                                                                      | Boolean  |      true      |    否    |
 | disabledWeekView            | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                                                                                               | Boolean  |     false      |    否    |
 | disabledDate                | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean （禁用该日期需返回 true）                                                                        | Function |      ---       |    否    |
 | markDate                    | 需要被标记的日期，可按不同颜色分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',date: ['2019/01/20']},'2019/03/20'] |  Array   |       []       |    否    |
@@ -88,10 +102,13 @@ Vue.use(vueHashCalendar)
 
 # 插槽 Slot
 
-| name | 说明                                                                                                                                                                                                                                                                                                                                                                                      |
-| :--- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| day  | 自定义日期内容。例如可用于添加农历之类的。配合自定义 className 使用，效果更佳！参数为 { date, extendAttr }，其中 extendAttr 参数包含 `isMarked`（该日期是否被标记）、`isDisabledDate`（该日期是否被禁用）、`isToday`（该日期是否为今天）、`isChecked`（该日期是否被选中）、`isCurrentMonthDay`（该日期是否为本月日期）、`isFirstDayOfMonth`（该日期是否为当月第一天），可用于一些特殊需求 |
-| week | 自定义星期内容。例如可用于自定义星期样式等等。参数为 { week }                                                                                                                                                                                                                                                                                                                             |
+| name    | 说明                                                                                                                                                                                                                                                                                                                                                                                      |
+| :------ | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| day     | 自定义日期内容。例如可用于添加农历之类的。配合自定义 className 使用，效果更佳！参数为 { date, extendAttr }，其中 extendAttr 参数包含 `isMarked`（该日期是否被标记）、`isDisabledDate`（该日期是否被禁用）、`isToday`（该日期是否为今天）、`isChecked`（该日期是否被选中）、`isCurrentMonthDay`（该日期是否为本月日期）、`isFirstDayOfMonth`（该日期是否为当月第一天），可用于一些特殊需求 |
+| week    | 自定义星期内容。例如可用于自定义星期样式等等。参数为 { week }                                                                                                                                                                                                                                                                                                                             |
+| today   | 自定义 "今天" 按钮文字内容以及样式                                                                                                                                                                                                                                                                                                                                                        |
+| confirm | 自定义 "确定" 按钮文字内容以及样式                                                                                                                                                                                                                                                                                                                                                        |
+| action  | 自定义操作栏（标题栏）内容以及样式                                                                                                                                                                                                                                                                                                                                                        |
 
 ## 版本记录
 

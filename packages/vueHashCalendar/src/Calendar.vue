@@ -6,6 +6,7 @@
 */
 <template>
   <div class="calendar_body"
+       :style="{'margin-top': calendarTitleHeight + 'px'}"
        v-show="show">
     <div class="calendar_week"
          ref="weekTitle">
@@ -76,6 +77,11 @@ export default {
     firstDayOfMonthClassName: {
       type: String,
       default: ''
+    },
+    // 操作栏高度
+    calendarTitleHeight: {
+      type: Number,
+      default: 0
     },
     // 当天日期的 className
     todayClassName: {
@@ -276,7 +282,6 @@ export default {
       this.$emit('height', val + this.calendarWeekTitleHeight)
     }
   },
-  computed: {},
   methods: {
     // 初始化日历dom
     initDom() {

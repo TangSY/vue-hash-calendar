@@ -13,6 +13,7 @@
                        :visible.sync="isShowCalendar"
                        :default-datetime="defaultDatetime"
                        :is-show-week-view="false"
+                       :is-show-action="true"
                        :minute-step="1"
                        :mark-date="markDate"
                        mark-type="dotcircle"
@@ -56,9 +57,6 @@ export default {
     //            this.defaultDatetime = new Date('2018-01-01 12:04');
   },
   methods: {
-    a(data) {
-      console.log(data, 'data')
-    },
     showCalendarDialog() { // 显示日历
       this.isShowCalendar = true
     },
