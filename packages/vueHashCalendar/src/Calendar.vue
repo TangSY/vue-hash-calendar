@@ -194,7 +194,8 @@ export default {
       nextWeek: [], // 下一周的数据
       isLastWeekInCurrentMonth: false, // 上一周的数据是否在本月
       isNextWeekInCurrentMonth: false, // 下一周的数据是否在本月
-      markDateColorObj: []// 所有被标记的日期所对应的颜色
+      markDateColorObj: {}, // 所有被标记的日期所对应的颜色
+      markDateTypeObj: {} // 所有被标记的日期所对应的标记类型
     }
   },
   mounted() {
@@ -207,7 +208,7 @@ export default {
     markDate: {
       handler(val) {
         val.forEach((item, index) => {
-          if (item.color === undefined) {
+          if (!item.color) {
             let obj = {}
             obj.color = '#1c71fb'
             if (typeof item === 'string' || typeof item === 'number') {
@@ -216,7 +217,7 @@ export default {
             obj.date = item || []
             val[index] = obj
           }
-
+          val[index].type = item.type || this.markType || ''
           /* val[index].forEach(dateObj => {
             this.$set(this.markDateColorObj, this.formatDate(dateObj.date), dateObj.color)
           }) 待简化 */
@@ -224,12 +225,16 @@ export default {
           val[index].date = this.dateFormat(val[index].date)
         })
 
-        this.markDateColorObj = []
+        this.markDateColorObj = {}
+        this.markDateTypeObj = {}
         val.forEach(item => {
           item.date.forEach(date => {
             this.$set(this.markDateColorObj, date, item.color)
+            this.$set(this.markDateTypeObj, date, item.type)
           })
         })
+
+        console.log(this.markDateTypeObj, 'this.markDateTypeObj')
       },
       deep: true,
       immediate: true
@@ -654,9 +659,10 @@ export default {
     },
     // 当前日期是否需要标记
     markDateColor(date, type) {
-      if (this.markType.indexOf(type) === -1) return
-
       let dateString = `${date.year}/${this.fillNumber(date.month + 1)}/${this.fillNumber(date.day)}`
+      let markDateTypeString = this.markDateTypeObj[dateString] || ''
+
+      if (markDateTypeString.indexOf(type) === -1) return
 
       return this.markDateColorObj[dateString]
     },
