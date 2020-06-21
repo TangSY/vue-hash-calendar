@@ -233,8 +233,6 @@ export default {
             this.$set(this.markDateTypeObj, date, item.type)
           })
         })
-
-        console.log(this.markDateTypeObj, 'this.markDateTypeObj')
       },
       deep: true,
       immediate: true
@@ -248,6 +246,8 @@ export default {
           throw new Error('The calendar component\'s defaultDate must be date type!')
         }
 
+        this.$set(this.checkedDate, 'year', val.getFullYear())
+        this.$set(this.checkedDate, 'month', val.getMonth())
         this.$set(this.checkedDate, 'day', val.getDate())
         this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth())
       },
@@ -587,7 +587,7 @@ export default {
           this.lastWeek = this.calendarOfMonth[0].slice(28, 35)
         } else {
           this.lastWeek = this.calendarOfMonth[1].slice(sliceStart - 7, sliceEnd - 7)
-          if (this.lastWeek[this.selectedDayIndex].month === checkedDate.month) {
+          if (this.lastWeek[this.selectedDayIndex] && this.lastWeek[this.selectedDayIndex].month === checkedDate.month) {
             this.isLastWeekInCurrentMonth = true
           }
         }
