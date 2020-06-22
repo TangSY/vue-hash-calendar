@@ -250,6 +250,10 @@ export default {
         this.$set(this.checkedDate, 'month', val.getMonth())
         this.$set(this.checkedDate, 'day', val.getDate())
         this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth())
+
+        if (this.isShowWeekView) {
+          this.showWeek()
+        }
       },
       immediate: true
     },
