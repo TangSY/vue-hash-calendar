@@ -12,7 +12,8 @@
                        :visible.sync="isShowCalendar"
                        picker-type="date">
       <div slot="day" slot-scope="scope">
-        <div>{{scope.date.day}}</div>
+        <div v-if="scope.extendAttr.isToday">今</div>
+        <div v-else>{{scope.date.day}}</div>
       </div>
     </vue-hash-calendar>
     <!--github入口-->
