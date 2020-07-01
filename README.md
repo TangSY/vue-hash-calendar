@@ -139,6 +139,13 @@ this.isShowCalendar = true;
 
 ```
 
+- day slot 的基本用法
+
+```
+https://github.com/TangSY/vue-hash-calendar/blob/dev/examples/FirstDayDemo.vue
+
+```
+
 - 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
 
 ```
