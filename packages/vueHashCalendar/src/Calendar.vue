@@ -149,6 +149,11 @@ export default {
         return false
       }
     },
+    // 禁止滑动，可选值【left, right, up, down, horizontal, vertical, true, false】
+    disabledScroll: {
+      type: [Boolean, String],
+      default: false
+    },
     // 使用的语言包
     lang: {
       type: String,
@@ -490,6 +495,8 @@ export default {
           y: moveY / this.$refs.calendar.offsetHeight
         }
       }
+
+      this.setDisabledScrollDirection()
     },
     // 监听touch结束事件
     touchEnd(e) {
@@ -686,6 +693,25 @@ export default {
       })
 
       return dateArr
+    },
+    // 是否可以滑动
+    isCanScroll(dire) {
+      const scrollObj = {
+        up: [true, 'up', 'vertical'],
+        down: [true, 'down', 'vertical'],
+        left: [true, 'left', 'horizontal'],
+        right: [true, 'right', 'horizontal']
+      }
+
+      let checkedScrollArr = scrollObj[dire]
+      return !checkedScrollArr.some(item => item === this.disabledScroll)
+    },
+    // 设置禁止滑动的方向
+    setDisabledScrollDirection() {
+      this.touch.x < 0 && !this.isCanScroll('left') && (this.touch.x = 0)
+      this.touch.x > 0 && !this.isCanScroll('right') && (this.touch.x = 0)
+      this.touch.y < 0 && !this.isCanScroll('up') && (this.touch.y = 0)
+      this.touch.y > 0 && !this.isCanScroll('down') && (this.touch.y = 0)
     }
   }
 }
