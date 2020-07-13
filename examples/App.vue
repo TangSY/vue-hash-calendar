@@ -15,6 +15,7 @@
                        :is-show-week-view="false"
                        :is-show-action="true"
                        :minute-step="1"
+                       :disabled-scroll="false"
                        :mark-date="markDate"
                        mark-type="dotcircle"
                        :disabled-date="disabledDate"
