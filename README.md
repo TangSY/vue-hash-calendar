@@ -64,30 +64,30 @@ externals: {
 
 # API
 
-| 属性                        | 说明                                                                                                                                                  |   类型   |      默认      | 是否必传 |
-| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------- | :------: | :------------: | :------: |
-| visible                     | 控制日历组件的显示或隐藏,需使用 `.sync` 修饰符                                                                                                        | Boolean  |     false      |    否    |
-| scrollChangeDate            | 控制滑动的时候是否修改选中的日期                                                                                                                      | Boolean  |      true      |    否    |
-| model                       | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                                                        |  String  |     inline     |    否    |
-| defaultDatetime             | 指定默认时间。                                                                                                                                        |   Date   |    当前时间    |    否    |
-| format                      | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”、“MM DD,YY at hh:mm F”                           |  String  | YY/MM/DD hh:mm |    否    |
-| weekStart                   | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']                                  |  String  |     sunday     |    否    |
-| pickerType                  | 选择器类型 datetime：日期+时间 date：日期 time：时间                                                                                                  |  String  |    datetime    |    否    |
-| showTodayButton             | 是否显示返回今日按钮                                                                                                                                  | Boolean  |      true      |    否    |
-| isShowWeekView              | 是否以周视图展示组件                                                                                                                                  | Boolean  |     false      |    否    |
-| isShowAction                | 是否显示日历组件操作栏（标题栏）                                                                                                                      | Boolean  |      true      |    否    |
-| disabledWeekView            | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                                                                                               | Boolean  |     false      |    否    |
-| disabledDate                | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean （禁用该日期需返回 true）                                                                        | Function |      ---       |    否    |
-| disabledScroll              | 设置日历的禁止滑动方向。可选['left', 'right', 'up', 'down', 'horizontal', 'vertical', true, false] 。可取其一控制单个方向，其中 `true` 和 `false` 控制所有方向。   | Boolean, String |      false       |    否    |
-| markDate                    | 需要被标记的日期，可按不同颜色不同标记类型分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',type: 'dot',date: ['2019/01/20']},'2019/03/20'] |  Array   |       []       |    否    |
-| markType                    | 标记图案类型 dot：小圆点（日期下方小圆点标记） circle：小圆圈（日期被小圆圈包围） dot+circle：同时使用小圆点与圆圈标记                                |  String  |      dot       |    否    |
-| minuteStep                  | 间隔时间。（分钟的步长）                                                                                                                              |  Number  |       1        |    否    |
-| lang                        | 选择的语言版本。可选值:['CN', 'EN']                                                                                                                   |  String  |       CN       |    否    |
-| disabledClassName           | 日期被禁用时的 className。用于修改日期被禁用时的默认样式                                                                                              |  String  |      ---       |    否    |
-| notCurrentMonthDayClassName | 非当前展示月份日期的 className(例如日历前面几天与后面几天灰色部分)。用于修改非当前展示月份日期的默认样式                                              |  String  |      ---       |    否    |
-| checkedDayClassName         | 日期被选中时的 className。用于修改日期被选中时的默认样式                                                                                              |  String  |      ---       |    否    |
-| todayClassName              | 当天日期的 className。用于修改当天日期的默认样式                                                                                                      |  String  |      ---       |    否    |
-| firstDayOfMonthClassName    | 每月第一天的 className。用于修改每月第一天的默认样式                                                                                                  |  String  |      ---       |    否    |
+| 属性                        | 说明                                                                                                                                                                          |      类型       |      默认      | 是否必传 |
+| :-------------------------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | :-------------: | :------------: | :------: |
+| visible                     | 控制日历组件的显示或隐藏,需使用 `.sync` 修饰符                                                                                                                                |     Boolean     |     false      |    否    |
+| scrollChangeDate            | 控制滑动的时候是否修改选中的日期                                                                                                                                              |     Boolean     |      true      |    否    |
+| model                       | 日历组件以哪种形式展示。inline：内联的方式。dialog：弹窗的方式                                                                                                                |     String      |     inline     |    否    |
+| defaultDatetime             | 指定默认时间。                                                                                                                                                                |      Date       |    当前时间    |    否    |
+| format                      | 确认日期时，回调事件返回的日期格式。如“YY/MM/DD hh:mm” 、“YY 年 MM 月第 DD 天，当前时间 hh 时 mm 分”、“MM DD,YY at hh:mm F”                                                   |     String      | YY/MM/DD hh:mm |    否    |
+| weekStart                   | 以星期几作为日历每一周的起始星期。可选['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday']                                                          |     String      |     sunday     |    否    |
+| pickerType                  | 选择器类型 datetime：日期+时间 date：日期 time：时间                                                                                                                          |     String      |    datetime    |    否    |
+| showTodayButton             | 是否显示返回今日按钮                                                                                                                                                          |     Boolean     |      true      |    否    |
+| isShowWeekView              | 是否以周视图展示组件                                                                                                                                                          |     Boolean     |     false      |    否    |
+| isShowAction                | 是否显示日历组件操作栏（标题栏）                                                                                                                                              |     Boolean     |      true      |    否    |
+| disabledWeekView            | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                                                                                                                       |     Boolean     |     false      |    否    |
+| disabledDate                | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean （禁用该日期需返回 true）                                                                                                |    Function     |      ---       |    否    |
+| disabledScroll              | 设置日历的禁止滑动方向。可选['left', 'right', 'up', 'down', 'horizontal', 'vertical', true, false] 。可取其一控制单个方向，其中 `true` 和 `false` 控制所有方向。              | Boolean, String |     false      |    否    |
+| markDate                    | 需要被标记的日期，可按不同颜色不同标记类型分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',type: 'dot',date: ['2019/01/20']},'2019/03/20'] |      Array      |       []       |    否    |
+| markType                    | 标记图案类型 dot：小圆点（日期下方小圆点标记） circle：小圆圈（日期被小圆圈包围） dot+circle：同时使用小圆点与圆圈标记                                                        |     String      |      dot       |    否    |
+| minuteStep                  | 间隔时间。（分钟的步长）                                                                                                                                                      |     Number      |       1        |    否    |
+| lang                        | 选择的语言版本。可选值:['CN', 'EN']                                                                                                                                           |     String      |       CN       |    否    |
+| disabledClassName           | 日期被禁用时的 className。用于修改日期被禁用时的默认样式                                                                                                                      |     String      |      ---       |    否    |
+| notCurrentMonthDayClassName | 非当前展示月份日期的 className(例如日历前面几天与后面几天灰色部分)。用于修改非当前展示月份日期的默认样式                                                                      |     String      |      ---       |    否    |
+| checkedDayClassName         | 日期被选中时的 className。用于修改日期被选中时的默认样式                                                                                                                      |     String      |      ---       |    否    |
+| todayClassName              | 当天日期的 className。用于修改当天日期的默认样式                                                                                                                              |     String      |      ---       |    否    |
+| firstDayOfMonthClassName    | 每月第一天的 className。用于修改每月第一天的默认样式                                                                                                                          |     String      |      ---       |    否    |
 
 # 事件
 
@@ -144,6 +144,13 @@ this.isShowCalendar = true;
 
 ```
 https://github.com/TangSY/vue-hash-calendar/blob/dev/examples/FirstDayDemo.vue
+
+```
+
+- 能否通过外部的某个按钮来触发日历的展开和收起
+
+```
+可以在外部通过修改 isShowWeekView 的值来控制日历的收起与展开
 
 ```
 
