@@ -83,6 +83,7 @@ export default {
 }
 </script>
 <style lang="stylus">
-.hhhh
-  background red
+.hhhh {
+  background: red;
+}
 </style>
