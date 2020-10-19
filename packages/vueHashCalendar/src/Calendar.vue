@@ -73,6 +73,16 @@ import languageUtil from '../language'
 export default {
   name: 'Calendar',
   props: {
+    // 最小可选日期
+    minDate: {
+      type: Date,
+      default: null
+    },
+    // 最大可选日期
+    maxDate: {
+      type: Date,
+      default: null
+    },
     // 每月第一天的 className
     firstDayOfMonthClassName: {
       type: String,
@@ -482,6 +492,9 @@ export default {
       let moveX = event.touches[0].clientX - this.touchStartPositionX
       let moveY = event.touches[0].clientY - this.touchStartPositionY
       if (Math.abs(moveX) > Math.abs(moveY)) {
+        console.log(this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right'))
+        if (this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right')) return
+
         this.touch = {
           x: moveX / this.$refs.calendar.offsetWidth,
           y: 0
@@ -680,7 +693,39 @@ export default {
     formatDisabledDate(date) {
       let fDate = new Date(`${date.year}/${date.month + 1}/${date.day}`)
 
-      return this.disabledDate(fDate)
+      return this.disabledDate(fDate) || !this.isDateInRange(fDate)
+    },
+    // 当前日期是否在两个日期范围之间
+    isDateInRange(curr, min = this.minDate, max = this.maxDate) {
+      let minDate = min && min.getTime() - 24 * 60 * 60 * 1000
+      let maxDate = max && max.getTime()
+      let currentDate = curr && curr.getTime()
+
+      if (minDate && maxDate) return currentDate > minDate && currentDate < maxDate
+      if (minDate) return currentDate > minDate
+      if (maxDate) return currentDate < maxDate
+
+      return true
+    },
+    // 禁止继续往横向的当前方向滑动 （当设置 minDate 或 maxDate 时生效）
+    isDisabledHorizontalScroll(direc) {
+      let minDate = this.minDate && this.minDate.getTime() - 24 * 60 * 60 * 1000
+      let maxDate = this.maxDate && this.maxDate.getTime()
+
+      if (this.isShowWeek) {
+        let lastWeekLastedDay = new Date(`${this.lastWeek[6].year}/${this.lastWeek[6].month + 1}/${this.lastWeek[6].day}`).getTime()
+        let nextWeekFirstDay = new Date(`${this.nextWeek[0].year}/${this.nextWeek[0].month + 1}/${this.nextWeek[0].day}`).getTime()
+        console.log(this.nextWeek, 'this.nextWeek')
+        if (direc === 'left' && maxDate) return nextWeekFirstDay >= maxDate
+        if (direc === 'right' && minDate) return lastWeekLastedDay <= minDate
+      } else {
+        let lastMonthLastedDay = new Date(`${this.lastMonthYear}/${this.lastMonth + 1}/${this.daysOfMonth(this.lastMonthYear)[this.lastMonth]}`).getTime()
+        let nextMonthFirstDay = new Date(`${this.nextMonthYear}/${this.nextMonth + 1}/1`).getTime()
+        if (direc === 'left' && maxDate) return nextMonthFirstDay >= maxDate
+        if (direc === 'right' && minDate) return lastMonthLastedDay <= minDate
+      }
+
+      return false
     },
     // 小于10，在前面补0
     fillNumber(val) {
@@ -718,75 +763,91 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../style/common.styl'
-.calendar_body
-  position relative
-  width 100%
-  margin-top px2vw(100px)
-.calendar_week
-  position absolute
-  width 100%
-  left 0
-  top 0
-  flexAlign()
-  background white
-  color vice-font-color
-  z-index 2
-.calendar_group
-  position absolute
-  top px2vw(70px)
-  left 0
-  bottom 0
-  right 0
-  overflow hidden
-  transition height 0.3s
-  -webkit-transition height 0.3s
-.calendar_group ul
-  height 100%
-.calendar_group_li
-  position absolute
-  top 0
-  left px2vw(4px)
-  bottom 0
-  right 0
-  height 100%
-  width 100%
-  flexAlign()
-  flex-wrap wrap
-  background white
-  will-change transform
-.calendar_item
-  width 14.13333335%
-  flexContent()
-  flex-direction column
-.calendar_item_disable
-  background-color disabled-bg-color
-  opacity 1
-  cursor not-allowed
-  color disabled-font-color
-.calendar_day
-  width px2vw(60px)
-  height px2vw(60px)
-  border-radius 50%
-  fontSize(28px)
-  flexContent()
-  margin-bottom px2vw(8px)
-.calendar_first_today
-  color main-color
-.calendar_first_today span
-  fontSize(20px)
-  margin-top px2vw(3px)
-.calendar_day_today
-  background bg-color
-.calendar_mark_circle
-  border 1px solid main-color
-.calendar_day_not
-  color disabled-font-color
-.calendar_day_checked
-  background main-color
-  color white
-.calendar_dot
-  width 5px
-  height 5px
-  border-radius 50%
+@import '../style/common.styl';
+
+.calendar_body {
+  position: relative;
+  width: 100%;
+  margin-top: px2vw(100px);
+}
+.calendar_week {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  flexAlign();
+  background: white;
+  color: vice-font-color;
+  z-index: 2;
+}
+.calendar_group {
+  position: absolute;
+  top: px2vw(70px);
+  left: 0;
+  bottom: 0;
+  right: 0;
+  overflow: hidden;
+  transition: height 0.3s;
+  -webkit-transition: height 0.3s;
+}
+.calendar_group ul {
+  height: 100%;
+}
+.calendar_group_li {
+  position: absolute;
+  top: 0;
+  left: px2vw(4px);
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  flexAlign();
+  flex-wrap: wrap;
+  background: white;
+  will-change: transform;
+}
+.calendar_item {
+  width: 14.13333335%;
+  flexContent();
+  flex-direction: column;
+}
+.calendar_item_disable {
+  background-color: disabled-bg-color;
+  opacity: 1;
+  cursor: not-allowed;
+  color: disabled-font-color;
+}
+.calendar_day {
+  width: px2vw(60px);
+  height: px2vw(60px);
+  border-radius: 50%;
+  fontSize(28px);
+  flexContent();
+  margin-bottom: px2vw(8px);
+}
+.calendar_first_today {
+  color: main-color;
+}
+.calendar_first_today span {
+  fontSize(20px);
+  margin-top: px2vw(3px);
+}
+.calendar_day_today {
+  background: bg-color;
+}
+.calendar_mark_circle {
+  border: 1px solid main-color;
+}
+.calendar_day_not {
+  color: disabled-font-color;
+}
+.calendar_day_checked {
+  background: main-color;
+  color: white;
+}
+.calendar_dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
 </style>
