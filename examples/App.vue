@@ -9,6 +9,7 @@
     <button @click="showCalendarDialog">显示</button>
     <vue-hash-calendar ref="picker"
                        model="dialog"
+                       :is-show-arrow="false"
                        :scroll-change-date="true"
                        :visible.sync="isShowCalendar"
                        :default-datetime="defaultDatetime"

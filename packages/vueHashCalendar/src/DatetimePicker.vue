@@ -8,10 +8,10 @@
   <div class="hash-calendar"
        :class="{'calendar_inline': model === 'inline'}"
        v-show="isShowDatetimePicker"
-       :style="{'height': `${model === 'inline' ? calendarContentHeight : undefined}px`}"
+       :style="{'height': `${model === 'inline' ? calendarContentHeight + (isShowArrowImg ? 30 : 0) : undefined}px`}"
        @click="close">
     <div class="calendar_content"
-         :style="{'height': `${calendarContentHeight}px`}"
+         :style="{'height': `${calendarContentHeight}px`, 'bottom': `${isShowArrowImg ? 30 : 0}px`}"
          @click.stop>
       <div class="calendar_title"
            v-if="isShowAction"
@@ -47,6 +47,7 @@
       <calendar ref="calendar"
                 v-if="pickerType !== 'time'"
                 :show="isShowCalendar"
+                :isShowWeekView.sync="isShowWeek"
                 v-bind="{...$props, ...$attrs}"
                 :calendarTitleHeight="calendarTitleHeight"
                 @height="heightChange"
@@ -78,6 +79,16 @@
                    :default-time="defaultDatetime"
                    v-bind="{...$props, ...$attrs}"
                    @change="timeChange"></time-picker>
+
+    </div>
+    <div class="ctrl-img"
+         v-if="isShowArrowImg"
+         @click.stop="toggleWeek"
+         :style="{'margin-top': `${calendarContentHeight}px`}">
+      <slot name="arrow"
+            :show="isShowWeek">
+        <img :src="isShowWeek ? arrowDownImg : arrowUpImg">
+      </slot>
     </div>
   </div>
 </template>
@@ -86,10 +97,21 @@
 import Calendar from './Calendar.vue'
 import TimePicker from './TimePicker.vue'
 import { formatDate } from '../utils/util'
+import { ARROW_DOWN_IMG, ARROW_UP_IMG } from '../constant/img'
 import languageUtil from '../language'
 
 export default {
   props: {
+    // 是否显示 周月视图切换指示箭头，model 等于 inline 时生效
+    isShowArrow: {
+      type: Boolean,
+      default: false
+    },
+    // 是否展示周视图
+    isShowWeekView: {
+      type: Boolean,
+      default: false
+    },
     // 是否显示日历组件
     visible: {
       type: Boolean,
@@ -144,6 +166,8 @@ export default {
   name: 'VueHashCalendar',
   data() {
     return {
+      arrowDownImg: ARROW_DOWN_IMG,
+      arrowUpImg: ARROW_UP_IMG,
       language: {}, // 使用的语言包
       checkedDate: {
         year: new Date().getFullYear(),
@@ -152,6 +176,7 @@ export default {
         hours: new Date().getHours(),
         minutes: new Date().getMinutes()
       }, // 被选中的日期
+      isShowWeek: false,
       isShowCalendar: false, // 是否显示日历选择控件
       calendarBodyHeight: 0, // 日历内容的高度
       calendarTitleHeight: 0, // 日历组件标题高度
@@ -207,9 +232,27 @@ export default {
         })
       },
       immediate: true
+    },
+    isShowWeekView: {
+      handler(val) {
+        this.isShowWeek = val
+      },
+      immediate: true
     }
   },
   computed: {
+    isShowArrowImg() {
+      return this.isShowArrow && this.model === 'inline'
+    },
+    // 是否显示周视图 (为兼容旧版本，舍弃这种方式)
+    // isShowWeek: {
+    //   get() {
+    //     return this.isShowWeekView
+    //   },
+    //   set(val) {
+    //     this.$emit('update:isShowWeekView', val)
+    //   }
+    // },
     // 是否显示日期控件
     isShowDatetimePicker: {
       get() {
@@ -228,6 +271,10 @@ export default {
     // 判断是否有插槽
     hasSlot(slotName) {
       return !!this.$scopedSlots[slotName]
+    },
+    // 周视图开关
+    toggleWeek() {
+      this.isShowWeek = !this.isShowWeek
     },
     today() {
       if (this.disabledDate(new Date())) return
@@ -316,56 +363,73 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../style/common.styl'
-.hash-calendar
-  position fixed
-  width 100vw
-  height 100vh
-  top 0
-  left 0
-  background rgba(0, 0, 0, 0.6)
-  z-index 999
-.calendar_inline
-  position relative
-  width 100%
-  height auto
-  background none
-  height px2vw(710px)
-  z-index 1
-.calendar_content
-  position absolute
-  width 100%
-  left 0
-  bottom 0
-  display flex
-  padding-bottom px2vw(26px)
-  flex-wrap wrap
-  background white
-  height px2vw(710px)
-  overflow hidden
-.calendar_title
-  position absolute
-  width 100%
-  left 0
-  top 0
-  background bg-color
-  borderBottom()
-  display flex
-  align-items center
-  justify-content space-between
-  z-index 1
-.calendar_title_date
-  color vice-font-color
-  background white
-  padding px2vw(30px) px2vw(15px)
-.calendar_title_date_active
-  color main-font-color
-  font-weight bold
-.calendar_title_date_time
-  margin-left px2vw(20px)
-.calendar_confirm
-  color main-color
-  margin-right px2vw(34px)
-.today_disable
-  color disabled-font-color
+@import '../style/common.styl';
+
+.hash-calendar {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 999;
+}
+.calendar_inline {
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: none;
+  height: px2vw(710px);
+  z-index: 1;
+}
+.calendar_content {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  bottom: 0;
+  display: flex;
+  padding-bottom: px2vw(26px);
+  flex-wrap: wrap;
+  background: white;
+  height: px2vw(710px);
+  overflow: hidden;
+}
+.calendar_title {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  top: 0;
+  background: bg-color;
+  borderBottom();
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 1;
+}
+.calendar_title_date {
+  color: vice-font-color;
+  background: white;
+  padding: px2vw(30px) px2vw(15px);
+}
+.calendar_title_date_active {
+  color: main-font-color;
+  font-weight: bold;
+}
+.calendar_title_date_time {
+  margin-left: px2vw(20px);
+}
+.calendar_confirm {
+  color: main-color;
+  margin-right: px2vw(34px);
+}
+.today_disable {
+  color: disabled-font-color;
+}
+.ctrl-img {
+  width: 100%;
+  text-align: center;
+  img {
+    width: 28px;
+  }
+}
 </style>
