@@ -219,7 +219,6 @@ export default {
       return (index === 0 && time === this.checkedDate.hours) || (index === 1 && time === this.checkedDate.minutes)
     },
     isDisableTime(time, index) { // 是否禁用当前时间
-      console.log(this.timeRange, 'timeRange')
       for (let i in this.timeRange) {
         for (let j in this.timeRange[i]) {
           if (index === 0) {
@@ -257,28 +256,35 @@ export default {
 </script>
 
 <style lang="stylus" scoped>
-@import '../style/common.styl'
-.time_body
-  width 100%
-  margin-top px2vw(100px)
-.time_group
-  width 100%
-  display flex
-  align-items flex-start
-  justify-content center
-  height px2vw(360px)
-  margin-top px2vw(100px)
-  -webkit-overflow-scrolling touch
-  overflow hidden
-.time_content
-  touch-action none
-  padding 0 px2vw(40px)
-  -webkit-overflow-scrolling touch
-.time_item
-  padding px2vw(20px) 0
-  color vice-font-color
-.time_item_show
-  color main-font-color
-.time_disabled
-  color red
+@import '../style/common.styl';
+
+.time_body {
+  width: 100%;
+  margin-top: px2vw(100px);
+}
+.time_group {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: px2vw(360px);
+  margin-top: px2vw(100px);
+  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+}
+.time_content {
+  touch-action: none;
+  padding: 0 px2vw(40px);
+  -webkit-overflow-scrolling: touch;
+}
+.time_item {
+  padding: px2vw(20px) 0;
+  color: vice-font-color;
+}
+.time_item_show {
+  color: main-font-color;
+}
+.time_disabled {
+  color: red;
+}
 </style>

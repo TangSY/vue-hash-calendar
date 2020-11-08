@@ -202,7 +202,6 @@ export default {
       calendarItemHeight: 0,
       touchStartPositionX: null, // 开始滑动x轴的值
       touchStartPositionY: null, // 开始滑动时y轴的值
-      isShowWeek: false, // 当前日历是否以星期方式展示
       calendarY: 0, // 日历相对于Y轴的位置
       selectedDayIndex: 0, // 当前选中的日期，在这一周的第几天
       lastWeek: [], // 上一周的数据
@@ -211,6 +210,7 @@ export default {
       isNextWeekInCurrentMonth: false, // 下一周的数据是否在本月
       markDateColorObj: {}, // 所有被标记的日期所对应的颜色
       markDateTypeObj: {} // 所有被标记的日期所对应的标记类型
+
     }
   },
   mounted() {
@@ -233,9 +233,6 @@ export default {
             val[index] = obj
           }
           val[index].type = item.type || this.markType || ''
-          /* val[index].forEach(dateObj => {
-            this.$set(this.markDateColorObj, this.formatDate(dateObj.date), dateObj.color)
-          }) 待简化 */
 
           val[index].date = this.dateFormat(val[index].date)
         })
@@ -266,7 +263,7 @@ export default {
         this.$set(this.checkedDate, 'day', val.getDate())
         this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth())
 
-        if (this.isShowWeekView) {
+        if (this.isShowWeek) {
           this.showWeek()
         }
       },
@@ -288,7 +285,7 @@ export default {
       },
       immediate: true
     },
-    isShowWeekView: {
+    isShowWeek: {
       handler(val) {
         if (val) {
           this.$nextTick(() => {
@@ -304,6 +301,17 @@ export default {
     },
     calendarGroupHeight(val) {
       this.$emit('height', val + this.calendarWeekTitleHeight)
+    }
+  },
+  computed: {
+    // 当前日历是否以星期方式展示
+    isShowWeek: {
+      get() {
+        return this.isShowWeekView
+      },
+      set(val) {
+        this.$emit('update:isShowWeekView', val)
+      }
     }
   },
   methods: {
