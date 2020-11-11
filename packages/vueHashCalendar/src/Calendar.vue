@@ -301,7 +301,24 @@ export default {
     },
     calendarGroupHeight(val) {
       this.$emit('height', val + this.calendarWeekTitleHeight)
+    },
+    isShowWeekView: {
+      handler(val) {
+        if (val && this.disabledWeekView) {
+          throw new Error('\'isShowWeekView\' and \'disabledWeekView\' can\'t be used at the same time')
+        }
+      },
+      immediate: true
+    },
+    disabledWeekView: {
+      handler(val) {
+        if (val && this.isShowWeekView) {
+          throw new Error('\'isShowWeekView\' and \'disabledWeekView\' can\'t be used at the same time')
+        }
+      },
+      immediate: true
     }
+
   },
   computed: {
     // 当前日历是否以星期方式展示
@@ -500,7 +517,6 @@ export default {
       let moveX = event.touches[0].clientX - this.touchStartPositionX
       let moveY = event.touches[0].clientY - this.touchStartPositionY
       if (Math.abs(moveX) > Math.abs(moveY)) {
-        console.log(this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right'))
         if (this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right')) return
 
         this.touch = {
@@ -723,7 +739,6 @@ export default {
       if (this.isShowWeek) {
         let lastWeekLastedDay = new Date(`${this.lastWeek[6].year}/${this.lastWeek[6].month + 1}/${this.lastWeek[6].day}`).getTime()
         let nextWeekFirstDay = new Date(`${this.nextWeek[0].year}/${this.nextWeek[0].month + 1}/${this.nextWeek[0].day}`).getTime()
-        console.log(this.nextWeek, 'this.nextWeek')
         if (direc === 'left' && maxDate) return nextWeekFirstDay >= maxDate
         if (direc === 'right' && minDate) return lastWeekLastedDay <= minDate
       } else {
