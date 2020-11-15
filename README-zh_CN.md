@@ -43,8 +43,8 @@ Vue.use(vueHashCalendar)
 
 ```
 //在 index.html 加入以下两个 CDN 链接：
-js CDN：https://cdn.jsdelivr.net/npm/vue-hash-calendar@1.1.17/lib/vue-hash-calendar.umd.min.js
-css CDN: https://cdn.jsdelivr.net/npm/vue-hash-calendar@1.1.17/lib/vue-hash-calendar.css
+js CDN：https://cdn.jsdelivr.net/npm/vue-hash-calendar@{version}/lib/vue-hash-calendar.umd.min.js
+css CDN: https://cdn.jsdelivr.net/npm/vue-hash-calendar@{version}/lib/vue-hash-calendar.css
 
 //然后在 webpack 配置中，加入以下配置。
 externals: {
