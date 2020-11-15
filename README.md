@@ -17,12 +17,16 @@ English | [简体中文（更详细）](https://www.hxkj.vip/demo/calendar/blob/
 - Calendar component based on Vue 2. X
 - Support gesture sliding operation
 - Slide up and down to switch weekly / monthly mode
+
   > [week mode] slide left and right to switch the previous week / next week
+
   > [month mode] slide left and right to switch the previous month / next month
 
 ## Install
 
 [![vue-hash-calendar](https://nodei.co/npm/vue-hash-calendar.png)](https://npmjs.org/package/vue-hash-calendar)
+
+## Usage
 
 ```
 // entry （main.js）
