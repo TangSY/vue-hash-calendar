@@ -77,6 +77,7 @@
       <time-picker v-if="pickerType !== 'date'"
                    :show="!isShowCalendar"
                    :default-time="defaultDatetime"
+                   :calendarDate="checkedDate"
                    v-bind="{...$props, ...$attrs}"
                    @change="timeChange"></time-picker>
 
