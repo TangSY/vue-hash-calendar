@@ -4,7 +4,7 @@
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 
-[English](https://www.hxkj.vip/demo/calendar/blob/master/README.md) | 简体中文
+[English](https://github.com/TangSY/vue-hash-calendar/blob/master/README.md) | 简体中文
 
 # 按照惯例，先上效果图
 
@@ -81,6 +81,7 @@ externals: {
 | isShowAction                | 是否显示日历组件操作栏（标题栏）                                                                                                                                              |     Boolean     |      true      |    否    |
 | disabledWeekView            | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                                                                                                                       |     Boolean     |     false      |    否    |
 | disabledDate                | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean （禁用该日期需返回 true）                                                                                                |    Function     |      ---       |    否    |
+| disabledTime                | 设置时间的禁用状态，参数为当前日期，要求返回 Boolean （禁用该时间需返回 true）                                                                                                |    Function     |      ---       |    否    |
 | disabledScroll              | 设置日历的禁止滑动方向。可选['left', 'right', 'up', 'down', 'horizontal', 'vertical', true, false] 。可取其一控制单个方向，其中 `true` 和 `false` 控制所有方向。              | Boolean, String |     false      |    否    |
 | markDate                    | 需要被标记的日期，可按不同颜色不同标记类型分组标记（不分组默认蓝色）。如：[{color: 'red',date: ['2019/02/25']},{color: 'blue',type: 'dot',date: ['2019/01/20']},'2019/03/20'] |      Array      |       []       |    否    |
 | markType                    | 标记图案类型 dot：小圆点（日期下方小圆点标记） circle：小圆圈（日期被小圆圈包围） dot+circle：同时使用小圆点与圆圈标记                                                        |     String      |      dot       |    否    |
@@ -174,6 +175,28 @@ disabledDate(date) {
     }
 
     return false
+}
+```
+
+- 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
+
+```
+// 例如禁用现在之前的时间
+
+/** vue模板文件 **/
+<vue-hash-calendar :disabled-time="disabledTime"></vue-hash-calendar>
+
+/** vue methods 中的方法 **/
+disabledTime(date) { // 禁用的时间
+  let hours = date.getHours()
+  let minute = date.getMinutes()
+  let hoursNow = new Date().getHours()
+  let minuteNow = new Date().getMinutes()
+
+  if (hours < hoursNow || (hours === hoursNow && minute < minuteNow)) {
+    return true
+  }
+  return false
 }
 ```
 

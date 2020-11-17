@@ -16,7 +16,7 @@
            @touchmove="timeTouchMove($event, index)"
            @touchend="timeTouchEnd($event, index)">
         <div class="time_item"
-             :class="[{'time_item_show': isBeSelectedTime(time, index)}, hashClass]"
+             :class="[{'time_item_show': isBeSelectedTime(time, index)}, hashClass, {'time-disabled': formatDisabledDate(time, index)}]"
              v-for="(time, j) in item"
              :key="index + j">{{ time | fillNumber }}
         </div>
@@ -39,6 +39,15 @@ export default {
     selectableRange: {
       type: String | Array,
       default: ''
+    },
+    // 日历选中的时间 {year, month, day}
+    calendarDate: null,
+    // 禁用的日期
+    disabledTime: {
+      type: Function,
+      default: () => {
+        return false
+      }
     }
   },
   data() {
@@ -154,6 +163,14 @@ export default {
         document.querySelector(`#${this.hashID[1]}`).style.webkitTransform = 'translate3d(0px,' + minutesUp + 'px,0px)'
       })
     },
+    formatDisabledDate(time, index) {
+      let hours = index === 0 ? time : this.checkedDate.hours
+      let minutes = index === 1 ? time : this.checkedDate.minutes
+      let dateStr = `${this.calendarDate.year}/${this.calendarDate.month + 1}/${this.calendarDate.day} ${hours}:${minutes}`
+      let fDate = new Date(dateStr)
+
+      return this.disabledTime(fDate)
+    },
     timeTouchStart(e) {
       e.preventDefault()
       this.timeStartY = e.changedTouches[0].pageY
@@ -165,6 +182,7 @@ export default {
     timeTouchMove(e, index) {
       let moveEndY = e.changedTouches[0].pageY
       let Y = moveEndY - this.timeStartY
+
       e.currentTarget.style.webkitTransform = 'translate3d(0px,' + (Y + this.timeStartUp) + 'px,0px)'
 
       if (checkPlatform() === '2') {
@@ -207,10 +225,20 @@ export default {
       }
       if (index === 0) {
         let hour = 2 - Math.round(parseFloat(up) / parseFloat(this.timeHeight))
-        this.$set(this.checkedDate, 'hours', hour)
+
+        if (this.formatDisabledDate(hour, index)) {
+          up = this.timeStartUp
+        } else {
+          this.$set(this.checkedDate, 'hours', hour)
+        }
       } else {
         let minute = 2 - Math.round(parseFloat(up) / parseFloat(this.timeHeight))
-        this.$set(this.checkedDate, 'minutes', minute * this.minuteStep)
+
+        if (this.formatDisabledDate(minute, index)) {
+          up = this.timeStartUp
+        } else {
+          this.$set(this.checkedDate, 'minutes', minute * this.minuteStep)
+        }
       }
       e.currentTarget.style.webkitTransition = 'transform 300ms'
       e.currentTarget.style.webkitTransform = 'translate3d(0px,' + up + 'px,0px)'
@@ -284,7 +312,10 @@ export default {
 .time_item_show {
   color: main-font-color;
 }
-.time_disabled {
-  color: red;
+.time-disabled {
+  background-color: #f5f7fa;
+  opacity: 1;
+  cursor: not-allowed;
+  color: #c0c4cc;
 }
 </style>

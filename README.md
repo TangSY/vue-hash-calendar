@@ -4,7 +4,7 @@
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 
-English | [简体中文](https://www.hxkj.vip/demo/calendar/blob/master/README-zh_CN.md)
+English | [简体中文](https://github.com/TangSY/vue-hash-calendar/blob/master/README-zh_CN.md)
 
 ## Using Effects
 
@@ -84,6 +84,7 @@ online demo：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/ca
 | isShowAction                | --                                                                                                                                                                                                                          | Boolean           | true           |  false  |
 | disabledWeekView            | --                                                                                                                                                                                                                          | Boolean           | false          |  false  |
 | disabledDate                | Set the disabled status of the date (returned true to disabled)                                                                                                                                                             | (date) => Boolean | ---            |  false  |
+| disabledTime                | Set the disabled status of the time (returned true to disabled)                                                                                                                                                             | (date) => Boolean | ---            |  false  |
 | disabledScroll              | Set the no sliding direction of the calendar. choose: 'left', 'right', 'up', 'down', 'horizontal', 'vertical', true, false]                                                                                                 | Boolean, String   | false          |  false  |
 | markDate                    | he date to be marked can be grouped according to different colors and mark types (no grouped, the default is blue). eg：[{color: 'red',date: ['2019/02/25']},{color: 'blue',type: 'dot',date: ['2019/01/20']},'2019/03/20'] | Array             | []             |  false  |
 | markType                    | Mark pattern type. choose: 'dot', 'circle', 'dot+circle'                                                                                                                                                                    | String            | dot            |  false  |
@@ -169,6 +170,28 @@ disabledDate(date) {
     }
 
     return false
+}
+```
+
+- How to disable time?
+
+```
+// For example, disable all time after now
+
+/** vue files template **/
+<vue-hash-calendar :disabled-time="disabledTime"></vue-hash-calendar>
+
+/** vue methods  **/
+disabledTime(date) { // 禁用的时间
+  let hours = date.getHours()
+  let minute = date.getMinutes()
+  let hoursNow = new Date().getHours()
+  let minuteNow = new Date().getMinutes()
+
+  if (hours < hoursNow || (hours === hoursNow && minute < minuteNow)) {
+    return true
+  }
+  return false
 }
 ```
 

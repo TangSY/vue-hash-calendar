@@ -79,6 +79,17 @@ export default {
         return true
       }
       return false
+    },
+    disabledTime(date) { // 禁用的时间
+      let hours = date.getHours()
+      let minute = date.getMinutes()
+      let hoursNow = new Date().getHours()
+      let minuteNow = new Date().getMinutes()
+
+      if (hours < hoursNow || (hours === hoursNow && minute < minuteNow)) {
+        return true
+      }
+      return false
     }
   }
 }
