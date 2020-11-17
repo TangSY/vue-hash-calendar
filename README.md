@@ -4,7 +4,7 @@
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 
-English | [简体中文（更详细）](https://www.hxkj.vip/demo/calendar/blob/master/README-zh_CN.md)
+English | [简体中文](https://www.hxkj.vip/demo/calendar/blob/master/README-zh_CN.md)
 
 ## Using Effects
 
