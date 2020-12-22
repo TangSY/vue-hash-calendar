@@ -629,10 +629,18 @@ export default {
       let firstDayOfCurrentWeek = currentWeek[0]
       let lastDayOfCurrentWeek = currentWeek[6]
       if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month === checkedDate.month) {
-        this.lastWeek = this.calendarOfMonth[0].slice(21, 28)
+        if (this.calendarOfMonth[0].slice(28, 35)[6].month !== checkedDate.month) {
+          this.lastWeek = this.calendarOfMonth[0].slice(28, 35)
+        } else {
+          this.lastWeek = this.calendarOfMonth[0].slice(21, 28)
+        }
       } else {
         if (firstDayOfCurrentWeek.day === 1) {
-          this.lastWeek = this.calendarOfMonth[0].slice(28, 35)
+          if (this.calendarOfMonth[0].slice(28, 35)[6].month === checkedDate.month) {
+            this.lastWeek = this.calendarOfMonth[0].slice(21, 28)
+          } else {
+            this.lastWeek = this.calendarOfMonth[0].slice(28, 35)
+          }
         } else {
           this.lastWeek = this.calendarOfMonth[1].slice(sliceStart - 7, sliceEnd - 7)
           if (this.lastWeek[this.selectedDayIndex] && this.lastWeek[this.selectedDayIndex].month === checkedDate.month) {
