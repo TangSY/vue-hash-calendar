@@ -31,6 +31,8 @@ The same calendar for React：[https://github.com/TangSY/react-hash-calendar](ht
 ## Usage
 
 ```
+npm i -S vue-hash-calendar
+
 // entry （main.js）
 import vueHashCalendar from 'vue-hash-calendar'
 // import CSS styles
@@ -84,6 +86,7 @@ online demo：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/ca
 | isShowWeekView              | --                                                                                                                                                                                                                          | Boolean           | false          |  false  |
 | isShowArrow                 | --                                                                                                                                                                                                                          | Boolean           | false          |  false  |
 | isShowAction                | --                                                                                                                                                                                                                          | Boolean           | true           |  false  |
+| isShowNotCurrentMonthDay    | --                                                                                                                                                                                                                          | Boolean           | true           |  false  |
 | disabledWeekView            | --                                                                                                                                                                                                                          | Boolean           | false          |  false  |
 | disabledDate                | Set the disabled status of the date (returned true to disabled)                                                                                                                                                             | (date) => Boolean | ---            |  false  |
 | disabledTime                | Set the disabled status of the time (returned true to disabled)                                                                                                                                                             | (date) => Boolean | ---            |  false  |
