@@ -28,6 +28,8 @@ react 版本同款日历：[https://github.com/TangSY/react-hash-calendar](https
 [![vue-hash-calendar](https://nodei.co/npm/vue-hash-calendar.png)](https://npmjs.org/package/vue-hash-calendar)
 
 ```
+npm i -S vue-hash-calendar
+
 // 在入口文件中（main.js），导入组件库
 import vueHashCalendar from 'vue-hash-calendar'
 // 引入组件CSS样式
@@ -81,6 +83,7 @@ externals: {
 | isShowWeekView              | 是否以周视图展示组件                                                                                                                                                          |     Boolean     |     false      |    否    |
 | isShowArrow                 | 是否显示周月切换时的指示箭头（日历下方的小箭头），当 model 等于 inline 时生效                                                                                                 |     Boolean     |     false      |    否    |
 | isShowAction                | 是否显示日历组件操作栏（标题栏）                                                                                                                                              |     Boolean     |      true      |    否    |
+| isShowNotCurrentMonthDay    | 是否展示日历中的非本月日期（灰色部分日期）                                                                                                                                    |     Boolean     |      true      |    否    |
 | disabledWeekView            | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                                                                                                                       |     Boolean     |     false      |    否    |
 | disabledDate                | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean （禁用该日期需返回 true）                                                                                                |    Function     |      ---       |    否    |
 | disabledTime                | 设置时间的禁用状态，参数为当前日期，要求返回 Boolean （禁用该时间需返回 true）                                                                                                |    Function     |      ---       |    否    |
