@@ -137,6 +137,11 @@ export default {
       type: String,
       default: 'Sunday'
     },
+    // 是否展示非本月日期
+    isShowNotCurrentMonthDay: {
+      type: Boolean,
+      default: true
+    },
     // 是否展示周视图
     isShowWeekView: {
       type: Boolean,
@@ -423,7 +428,7 @@ export default {
         calendarOfCurrentMonth.push({
           year: lastMonthYear,
           month: lastMonth,
-          day: lastMonthDays - (dayOfWeek - 1 - i)
+          day: this.isShowNotCurrentMonthDay ? lastMonthDays - (dayOfWeek - 1 - i) : ''
         })
       }
 
@@ -442,7 +447,7 @@ export default {
         calendarOfCurrentMonth.push({
           year: nextMonthYear,
           month: nextMonth,
-          day: i + 1
+          day: this.isShowNotCurrentMonthDay ? i + 1 : ''
         })
       }
 
@@ -463,7 +468,7 @@ export default {
     },
     // 点击日历上的日期
     clickCalendarDay(date) {
-      if (!date) return
+      if (!date || !date.day) return
 
       if (this.formatDisabledDate(date)) return
 
@@ -628,24 +633,17 @@ export default {
 
       let firstDayOfCurrentWeek = currentWeek[0]
       let lastDayOfCurrentWeek = currentWeek[6]
-      if (lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day && lastDayOfCurrentWeek.month === checkedDate.month) {
+
+      if (firstDayOfCurrentWeek.month !== checkedDate.month || firstDayOfCurrentWeek.day === 1) {
         if (this.calendarOfMonth[0].slice(28, 35)[6].month !== checkedDate.month) {
           this.lastWeek = this.calendarOfMonth[0].slice(28, 35)
         } else {
           this.lastWeek = this.calendarOfMonth[0].slice(21, 28)
         }
       } else {
-        if (firstDayOfCurrentWeek.day === 1) {
-          if (this.calendarOfMonth[0].slice(28, 35)[6].month === checkedDate.month) {
-            this.lastWeek = this.calendarOfMonth[0].slice(21, 28)
-          } else {
-            this.lastWeek = this.calendarOfMonth[0].slice(28, 35)
-          }
-        } else {
-          this.lastWeek = this.calendarOfMonth[1].slice(sliceStart - 7, sliceEnd - 7)
-          if (this.lastWeek[this.selectedDayIndex] && this.lastWeek[this.selectedDayIndex].month === checkedDate.month) {
-            this.isLastWeekInCurrentMonth = true
-          }
+        this.lastWeek = this.calendarOfMonth[1].slice(sliceStart - 7, sliceEnd - 7)
+        if (this.lastWeek[this.selectedDayIndex] && this.lastWeek[this.selectedDayIndex].month === checkedDate.month) {
+          this.isLastWeekInCurrentMonth = true
         }
       }
 
@@ -723,6 +721,8 @@ export default {
       return this.markDateColorObj[dateString]
     },
     formatDisabledDate(date) {
+      if (!date.day) return
+
       let fDate = new Date(`${date.year}/${date.month + 1}/${date.day}`)
 
       return this.disabledDate(fDate) || !this.isDateInRange(fDate)
