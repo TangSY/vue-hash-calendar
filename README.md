@@ -12,7 +12,16 @@
 ![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif)
 ![week.gif](https://www.hxkj.vip/demo/calendar/week.gif)
 
-react 版本同款日历：[https://github.com/TangSY/react-hash-calendar](https://github.com/TangSY/react-hash-calendar)
+# Demo
+
+![demo_qrcode.png](https://www.hxkj.vip/demo/calendar/demo.webp)
+
+或者请用浏览器的手机模式查看：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/calendar/)
+
+- 🎉 觉得好用可以给一个 star 哦~~ 🎉
+
+## github 地址：[https://github.com/TangSY/vue-hash-calendar](https://github.com/TangSY/vue-hash-calendar)
+## 码云 gitee 地址：[https://gitee.com/HashTang/vue-hash-calendar](https://gitee.com/HashTang/vue-hash-calendar)
 
 # vue-hash-calendar
 
@@ -55,16 +64,6 @@ externals: {
 'vue-hash-calendar': 'VueHashCalendar'
 },
 ```
-
-# Demo
-
-![demo_qrcode.png](https://www.hxkj.vip/demo/calendar/demo.webp)
-
-或者请用浏览器的手机模式查看：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/calendar/)
-
-- 🎉 觉得好用可以给一个 star 哦~~ 🎉
-
-## github 地址：[https://github.com/TangSY/vue-hash-calendar](https://github.com/TangSY/vue-hash-calendar)
 
 # API
 
@@ -121,9 +120,9 @@ externals: {
 | confirm | 自定义 "确定" 按钮文字内容以及样式                                                                                                                                                                                                                                                                                                                                                        |
 | action  | 自定义操作栏（标题栏）内容以及样式                                                                                                                                                                                                                                                                                                                                                        |
 
-## 版本记录
+## 其他版本
 
-[changelog](https://github.com/TangSY/vue-hash-calendar/blob/travis_build/CHANGELOG.md)
+react 版本：[https://github.com/TangSY/react-hash-calendar](https://github.com/TangSY/react-hash-calendar)
 
 ## Other
 
