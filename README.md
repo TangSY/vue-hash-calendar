@@ -1,16 +1,16 @@
-[![Build Status](https://travis-ci.org/TangSY/vue-hash-calendar.svg?branch=master)](https://travis-ci.org/TangSY/vue-hash-calendar)
-[![version](https://img.shields.io/npm/v/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
-[![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
-[![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
+[![Build Status](https://travis-ci.org/TangSY/vue-hash-calendar.svg?branch=master&from=hxkj)](https://travis-ci.org/TangSY/vue-hash-calendar)
+[![version](https://img.shields.io/npm/v/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
+[![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
+![license](https://img.shields.io/badge/license-MIT-blue.svg?from=hxkj)
+[![author](https://img.shields.io/badge/author-HashTang-orange.svg?from=hxkj)](https://www.hxkj.vip)
 
 简体中文 | [English](https://github.com/TangSY/vue-hash-calendar/blob/master/README-en_US.md)
 
 # 按照惯例，先上效果图
 
-![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif)
-![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif)
-![week.gif](https://www.hxkj.vip/demo/calendar/week.gif)
+![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif?from=hxkj)
+![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif?from=hxkj)
+![week.gif](https://www.hxkj.vip/demo/calendar/week.gif?from=hxkj)
 
 # Demo
 
@@ -34,7 +34,7 @@
 
 # 安装使用说明
 
-[![vue-hash-calendar](https://nodei.co/npm/vue-hash-calendar.png)](https://npmjs.org/package/vue-hash-calendar)
+[![vue-hash-calendar](https://nodei.co/npm/vue-hash-calendar.png?from=hxkj)](https://npmjs.org/package/vue-hash-calendar)
 
 ```
 npm i -S vue-hash-calendar

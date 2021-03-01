@@ -403,6 +403,9 @@ export default {
 
       if (this.formatDisabledDate(tempDate)) return
 
+      // fix: change 事件会触发两次 https://github.com/TangSY/vue-hash-calendar/issues/47
+      if (this.isShowWeek) return
+
       this.$set(this.checkedDate, 'day', tempDate.day)
       this.$set(this.checkedDate, 'year', year)
       this.$set(this.checkedDate, 'month', month)
