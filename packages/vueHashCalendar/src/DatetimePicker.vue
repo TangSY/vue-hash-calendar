@@ -60,26 +60,31 @@
                 @click="dateClick">
         <template v-if="hasSlot('week')"
                   slot="week"
-                  scope="scope">
+                  slot-scope="scope">
           <slot name="week"
                 :week="scope.week">
           </slot>
         </template>
         <template v-if="hasSlot('day')"
                   slot="day"
-                  scope="scope">
+                  slot-scope="scope">
           <slot name="day"
                 :date="scope.date"
                 :extendAttr="scope.extendAttr">
           </slot>
         </template>
       </calendar>
+
       <time-picker v-if="pickerType !== 'date'"
                    :show="!isShowCalendar"
                    :default-time="defaultDatetime"
                    :calendarDate="checkedDate"
                    v-bind="{...$props, ...$attrs}"
                    @change="timeChange"></time-picker>
+
+      <year-month-picker v-if="changeYearFast"
+                         :calendarTitleHeight="calendarTitleHeight"
+                         :type="yearMonthType"></year-month-picker>
 
     </div>
     <div class="ctrl-img"
@@ -97,12 +102,18 @@
 <script>
 import Calendar from './Calendar.vue'
 import TimePicker from './TimePicker.vue'
+import YearMonthPicker from './YearMonthPicker.vue'
 import { formatDate } from '../utils/util'
 import { ARROW_DOWN_IMG, ARROW_UP_IMG } from '../constant/img'
 import languageUtil from '../language'
 
 export default {
   props: {
+    // 是否支持点击日期区域快速切换年份
+    changeYearFast: {
+      type: Boolean,
+      default: false
+    },
     // 是否显示 周月视图切换指示箭头，model 等于 inline 时生效
     isShowArrow: {
       type: Boolean,
@@ -161,6 +172,7 @@ export default {
     }
   },
   components: {
+    YearMonthPicker,
     TimePicker,
     Calendar
   },
@@ -181,7 +193,8 @@ export default {
       isShowCalendar: false, // 是否显示日历选择控件
       calendarBodyHeight: 0, // 日历内容的高度
       calendarTitleHeight: 0, // 日历组件标题高度
-      firstTimes: true// 第一次触发
+      firstTimes: true, // 第一次触发
+      yearMonthType: "", // 年月选择面板默认展示类型
     }
   },
   mounted() {
@@ -330,11 +343,30 @@ export default {
     },
     // 显示日历控件
     showCalendar() {
+      if (this.isShowCalendar) {
+        this.showYearMonthPicker()
+      }
       this.isShowCalendar = true
     },
     // 显示时间选择控件
     showTime() {
       this.isShowCalendar = false
+
+      // 重置年月选择面板
+      this.yearMonthType = ""
+    },
+    // 显示年月选择面板
+    showYearMonthPicker() {
+      console.log(this.changeYearFast);
+      if (!this.changeYearFast) return
+
+      if (!this.yearMonthType) {
+        this.yearMonthType = "month"
+      } else if (this.yearMonthType === "month") {
+        this.yearMonthType = "year"
+      } else {
+        this.yearMonthType = ""
+      }
     },
     // 高度变化
     heightChange(height) {

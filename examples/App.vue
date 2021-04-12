@@ -25,6 +25,7 @@
                        picker-type="datetime"
                        :show-today-button="true"
                        :disabled-week-view="false"
+                       :change-year-fast="true"
                        format="YY/MM/DD hh:mm"
                        lang="CN"
                        @confirm="dateConfirm"
