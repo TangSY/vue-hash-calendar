@@ -84,6 +84,8 @@
 
       <year-month-picker v-if="changeYearFast"
                          :calendarTitleHeight="calendarTitleHeight"
+                         :calendarContentHeight="calendarContentHeight"
+                         :calendarDate="checkedDate"
                          :type="yearMonthType"></year-month-picker>
 
     </div>
@@ -194,7 +196,7 @@ export default {
       calendarBodyHeight: 0, // 日历内容的高度
       calendarTitleHeight: 0, // 日历组件标题高度
       firstTimes: true, // 第一次触发
-      yearMonthType: "", // 年月选择面板默认展示类型
+      yearMonthType: '' // 年月选择面板默认展示类型
     }
   },
   mounted() {
@@ -353,19 +355,19 @@ export default {
       this.isShowCalendar = false
 
       // 重置年月选择面板
-      this.yearMonthType = ""
+      this.yearMonthType = ''
     },
     // 显示年月选择面板
     showYearMonthPicker() {
-      console.log(this.changeYearFast);
+      console.log(this.changeYearFast)
       if (!this.changeYearFast) return
 
       if (!this.yearMonthType) {
-        this.yearMonthType = "month"
-      } else if (this.yearMonthType === "month") {
-        this.yearMonthType = "year"
+        this.yearMonthType = 'month'
+      } else if (this.yearMonthType === 'month') {
+        this.yearMonthType = 'year'
       } else {
-        this.yearMonthType = ""
+        this.yearMonthType = ''
       }
     },
     // 高度变化
