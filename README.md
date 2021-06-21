@@ -27,7 +27,7 @@ react 版本同款日历：[https://github.com/TangSY/react-hash-calendar](https
 
 [![vue-hash-calendar](https://nodei.co/npm/vue-hash-calendar.png?from=hxkj)](https://npmjs.org/package/vue-hash-calendar)
 
-```
+```js
 npm i -S vue-hash-calendar
 
 // 在入口文件中（main.js），导入组件库
@@ -38,14 +38,14 @@ import 'vue-hash-calendar/lib/vue-hash-calendar.css'
 Vue.use(vueHashCalendar)
 ```
 
-```
+```js
 // 在VUE文件中引入组件
  <vue-hash-calendar></vue-hash-calendar>
 ```
 
-### CDN 方式引入
+## CDN 方式引入
 
-```
+```js
 //在 index.html 加入以下两个 CDN 链接：
 js CDN：https://cdn.jsdelivr.net/npm/vue-hash-calendar@{version}/lib/vue-hash-calendar.umd.min.js
 css CDN: https://cdn.jsdelivr.net/npm/vue-hash-calendar@{version}/lib/vue-hash-calendar.css
@@ -129,44 +129,50 @@ externals: {
 
 - 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
 
-```
+```js
 <vue-hash-calendar :visible.sync="isShowCalendar"></vue-hash-calendar>
 
 //设置为true
 this.isShowCalendar = true;
 ```
 
+- cdn 方式引入的组件，为什么有些属性不起作用？
+
+```js
+在非 webpack 开发模式下，属性名称不能使用驼峰命名。例如：isShowAction 需要写成 is-show-action.
+```
+
 - 想要返回标准的英文格式日期，format 属性应该怎样写？ `MM DD,YY at hh:mm F`
 
-```
+```js
 <vue-hash-calendar format="MM DD,YY at hh:mm F"></vue-hash-calendar>
 
 ```
 
 - 想要返回 12 小时制的日期，format 属性应该怎样写？ 在格式化字符串后面加上大写 `F`
 
-```
+```js
 <vue-hash-calendar format="YY/MM/DD hh:mm F"></vue-hash-calendar>
 
 ```
 
 - day slot 的基本用法
 
-```
+```js
 https://github.com/TangSY/vue-hash-calendar/blob/dev/examples/FirstDayDemo.vue
 
 ```
 
 - 能否通过外部的某个按钮来触发日历的展开和收起
 
-```
+```js
 可以在外部通过修改 isShowWeekView 的值来控制日历的收起与展开
 
 ```
 
 - 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
 
-```
+```js
 // 例如禁用今日之前的所有日期
 
 /** vue模板文件 **/
@@ -185,7 +191,7 @@ disabledDate(date) {
 
 - 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
 
-```
+```js
 // 例如禁用现在之前的时间
 
 /** vue模板文件 **/
