@@ -366,6 +366,8 @@ export default {
         this.yearMonthType = 'month'
       } else if (this.yearMonthType === 'month') {
         this.yearMonthType = 'year'
+      } else if (this.yearMonthType === 'year') {
+        this.yearMonthType = 'yearRange'
       } else {
         this.yearMonthType = ''
       }
