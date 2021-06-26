@@ -35,7 +35,7 @@
           <div class="calendar_item"
                ref="calendarItem"
                v-for="(date, j) in item"
-               :class="[formatDisabledDate(date) && (disabledClassName || 'calendar_item_disable')]"
+               :class="formatDisabledDate(date) && (disabledClassName || 'calendar_item_disable')"
                :key="i + j"
                @click="clickCalendarDay(date)">
             <div class="calendar_day"
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import { formatDate } from '../utils/util'
+import { formatDate, isDateInRange } from '../utils/util'
 import languageUtil from '../language'
 
 export default {
@@ -728,19 +728,7 @@ export default {
 
       let fDate = new Date(`${date.year}/${date.month + 1}/${date.day}`)
 
-      return this.disabledDate(fDate) || !this.isDateInRange(fDate)
-    },
-    // 当前日期是否在两个日期范围之间
-    isDateInRange(curr, min = this.minDate, max = this.maxDate) {
-      let minDate = min && min.getTime() - 24 * 60 * 60 * 1000
-      let maxDate = max && max.getTime()
-      let currentDate = curr && curr.getTime()
-
-      if (minDate && maxDate) return currentDate > minDate && currentDate < maxDate
-      if (minDate) return currentDate > minDate
-      if (maxDate) return currentDate < maxDate
-
-      return true
+      return this.disabledDate(fDate) || !isDateInRange(fDate, this.minDate, this.maxDate)
     },
     // 禁止继续往横向的当前方向滑动 （当设置 minDate 或 maxDate 时生效）
     isDisabledHorizontalScroll(direc) {

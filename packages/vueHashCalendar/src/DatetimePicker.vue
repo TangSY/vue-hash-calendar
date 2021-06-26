@@ -51,7 +51,7 @@
                 v-bind="{...$props, ...$attrs}"
                 :calendarTitleHeight="calendarTitleHeight"
                 @height="heightChange"
-                :default-date="defaultDatetime"
+                :default-date="currDateTime"
                 @touchstart="touchStart"
                 @touchmove="touchMove"
                 @touchend="touchEnd"
@@ -77,7 +77,7 @@
 
       <time-picker v-if="pickerType !== 'date'"
                    :show="!isShowCalendar"
-                   :default-time="defaultDatetime"
+                   :default-time="currDateTime"
                    :calendarDate="checkedDate"
                    v-bind="{...$props, ...$attrs}"
                    @change="timeChange"></time-picker>
@@ -86,6 +86,8 @@
                          :calendarTitleHeight="calendarTitleHeight"
                          :calendarContentHeight="calendarContentHeight"
                          :calendarDate="checkedDate"
+                         v-bind="{...$props, ...$attrs}"
+                         @click="dateClick"
                          :type="yearMonthType"></year-month-picker>
 
     </div>
@@ -108,6 +110,14 @@ import YearMonthPicker from './YearMonthPicker.vue'
 import { formatDate } from '../utils/util'
 import { ARROW_DOWN_IMG, ARROW_UP_IMG } from '../constant/img'
 import languageUtil from '../language'
+
+const defaultDate = {
+  year: new Date().getFullYear(),
+  month: new Date().getMonth(),
+  day: new Date().getDate(),
+  hours: new Date().getHours(),
+  minutes: new Date().getMinutes()
+}
 
 export default {
   props: {
@@ -184,18 +194,13 @@ export default {
       arrowDownImg: ARROW_DOWN_IMG,
       arrowUpImg: ARROW_UP_IMG,
       language: {}, // 使用的语言包
-      checkedDate: {
-        year: new Date().getFullYear(),
-        month: new Date().getMonth(),
-        day: new Date().getDate(),
-        hours: new Date().getHours(),
-        minutes: new Date().getMinutes()
-      }, // 被选中的日期
+      checkedDate: defaultDate, // 被选中的日期
       isShowWeek: false,
       isShowCalendar: false, // 是否显示日历选择控件
       calendarBodyHeight: 0, // 日历内容的高度
       calendarTitleHeight: 0, // 日历组件标题高度
       firstTimes: true, // 第一次触发
+      currDateTime: new Date(), // 当前日期
       yearMonthType: '' // 年月选择面板默认展示类型
     }
   },
@@ -211,6 +216,8 @@ export default {
       if (!(val instanceof Date)) {
         throw new Error('The calendar component\'s defaultDate must be date type!')
       }
+
+      this.currDateTime = val;
     },
     pickerType: {
       handler(val) {
@@ -311,6 +318,23 @@ export default {
       if (this.format) {
         fDate = formatDate(fDate, this.format, this.lang)
       }
+
+      // 控制点击之后进入下一选择面板
+      if (date.type) {
+        switch (date.type) {
+          case 'yearRange':
+            this.yearMonthType = 'year'
+            break
+          case 'year':
+            this.yearMonthType = 'month'
+            break
+          case 'month':
+            this.currDateTime = new Date(fDate);
+            this.yearMonthType = ''
+            break
+        }
+      }
+
       this.$emit('click', fDate)
     },
     timeChange(date) {
@@ -359,7 +383,6 @@ export default {
     },
     // 显示年月选择面板
     showYearMonthPicker() {
-      console.log(this.changeYearFast)
       if (!this.changeYearFast) return
 
       if (!this.yearMonthType) {
