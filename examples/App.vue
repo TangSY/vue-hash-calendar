@@ -25,8 +25,10 @@
                        picker-type="datetime"
                        :show-today-button="true"
                        :disabled-week-view="false"
+                       :change-year-fast="true"
                        format="YY/MM/DD hh:mm"
-                       lang="CN"
+                       lang="cn"
+                       @calendarTypeChange="calendarTypeChange"
                        @confirm="dateConfirm"
                        @click="dateClick"
                        @change="dateChange">
@@ -71,6 +73,9 @@ export default {
     },
     dateClick(date) { // 点击日期时按钮触发
       console.log(date, 'click')
+    },
+    calendarTypeChange(type) { // 日历展示类型切换时触发
+      console.log(type, 'calendarType')
     },
     disabledDate(date) { // 禁用的日期
       let timestamp = date.getTime()

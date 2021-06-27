@@ -36,7 +36,7 @@
 
 [![vue-hash-calendar](https://nodei.co/npm/vue-hash-calendar.png?from=hxkj)](https://npmjs.org/package/vue-hash-calendar)
 
-```
+```js
 npm i -S vue-hash-calendar
 
 // 在入口文件中（main.js），导入组件库
@@ -47,14 +47,14 @@ import 'vue-hash-calendar/lib/vue-hash-calendar.css'
 Vue.use(vueHashCalendar)
 ```
 
-```
+```js
 // 在VUE文件中引入组件
  <vue-hash-calendar></vue-hash-calendar>
 ```
 
-### CDN 方式引入
+## CDN 方式引入
 
-```
+```js
 //在 index.html 加入以下两个 CDN 链接：
 js CDN：https://cdn.jsdelivr.net/npm/vue-hash-calendar@{version}/lib/vue-hash-calendar.umd.min.js
 css CDN: https://cdn.jsdelivr.net/npm/vue-hash-calendar@{version}/lib/vue-hash-calendar.css
@@ -91,6 +91,7 @@ externals: {
 | markType                    | 标记图案类型 dot：小圆点（日期下方小圆点标记） circle：小圆圈（日期被小圆圈包围） dot+circle：同时使用小圆点与圆圈标记                                                        |     String      |      dot       |    否    |
 | minuteStep                  | 间隔时间。（分钟的步长）                                                                                                                                                      |     Number      |       1        |    否    |
 | lang                        | 选择的语言版本。可选值:['CN', 'EN']                                                                                                                                           |     String      |       CN       |    否    |
+| changeYearFast              | 是否支持点击操作栏（标题栏）的日期区域快速切换年份                                                                                                                            |     Boolean     |     false      |    否    |
 | disabledClassName           | 日期被禁用时的 className。用于修改日期被禁用时的默认样式                                                                                                                      |     String      |      ---       |    否    |
 | notCurrentMonthDayClassName | 非当前展示月份日期的 className(例如日历前面几天与后面几天灰色部分)。用于修改非当前展示月份日期的默认样式                                                                      |     String      |      ---       |    否    |
 | checkedDayClassName         | 日期被选中时的 className。用于修改日期被选中时的默认样式                                                                                                                      |     String      |      ---       |    否    |
@@ -99,15 +100,16 @@ externals: {
 
 # 事件
 
-| 事件名称    | 说明                                                                                      | 参数                               |
-| :---------- | :---------------------------------------------------------------------------------------- | :--------------------------------- |
-| change      | 日期改变时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 日期改变时，选中的日期)     |
-| confirm     | 点击确认按钮时，触发该事件，dialog 模式中才有该按钮。（返回的日期格式取决于 format 属性） | (date: 点击确认按钮时，选中的日期) |
-| click       | 点击日期时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 当前点击的日期)             |
-| touchstart  | 日历滑动 start 事件，同于原生该事件。                                                     | （event: touch 事件）              |
-| touchmove   | 日历滑动 move 事件，同于原生该事件。                                                      | （event: touch 事件）              |
-| touchend    | 日历滑动 end 事件，同于原生该事件。                                                       | （event: touch 事件）              |
-| slidechange | 日历滑动的方向。返回值：right、left、up、down 。                                          | （direction: 滑动的方向）          |
+| 事件名称           | 说明                                                                                      | 参数                               |
+| :----------------- | :---------------------------------------------------------------------------------------- | :--------------------------------- |
+| change             | 日期改变时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 日期改变时，选中的日期)     |
+| confirm            | 点击确认按钮时，触发该事件，dialog 模式中才有该按钮。（返回的日期格式取决于 format 属性） | (date: 点击确认按钮时，选中的日期) |
+| click              | 点击日期时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 当前点击的日期)             |
+| touchstart         | 日历滑动 start 事件，同于原生该事件。                                                     | （event: touch 事件）              |
+| touchmove          | 日历滑动 move 事件，同于原生该事件。                                                      | （event: touch 事件）              |
+| touchend           | 日历滑动 end 事件，同于原生该事件。                                                       | （event: touch 事件）              |
+| slidechange        | 日历滑动的方向。返回值：right、left、up、down 。                                          | （direction: 滑动的方向）          |
+| calendarTypeChange | 日历展示类型切换时触发。返回值：date、month、year、yearRange 。                           | （type: 日历展示面板类型）         |
 
 # 插槽 Slot
 
@@ -128,44 +130,50 @@ react 版本：[https://github.com/TangSY/react-hash-calendar](https://github.co
 
 - 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
 
-```
+```js
 <vue-hash-calendar :visible.sync="isShowCalendar"></vue-hash-calendar>
 
 //设置为true
 this.isShowCalendar = true;
 ```
 
+- cdn 方式引入的组件，为什么有些属性不起作用？
+
+```js
+在非 webpack 开发模式下，属性名称不能使用驼峰命名。例如：isShowAction 需要写成 is-show-action.
+```
+
 - 想要返回标准的英文格式日期，format 属性应该怎样写？ `MM DD,YY at hh:mm F`
 
-```
+```js
 <vue-hash-calendar format="MM DD,YY at hh:mm F"></vue-hash-calendar>
 
 ```
 
 - 想要返回 12 小时制的日期，format 属性应该怎样写？ 在格式化字符串后面加上大写 `F`
 
-```
+```js
 <vue-hash-calendar format="YY/MM/DD hh:mm F"></vue-hash-calendar>
 
 ```
 
 - day slot 的基本用法
 
-```
+```js
 https://github.com/TangSY/vue-hash-calendar/blob/dev/examples/FirstDayDemo.vue
 
 ```
 
 - 能否通过外部的某个按钮来触发日历的展开和收起
 
-```
+```js
 可以在外部通过修改 isShowWeekView 的值来控制日历的收起与展开
 
 ```
 
 - 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
 
-```
+```js
 // 例如禁用今日之前的所有日期
 
 /** vue模板文件 **/
@@ -184,7 +192,7 @@ disabledDate(date) {
 
 - 如何设置禁用日期？ 可参考源码中 `App.vue` 文件
 
-```
+```js
 // 例如禁用现在之前的时间
 
 /** vue模板文件 **/
