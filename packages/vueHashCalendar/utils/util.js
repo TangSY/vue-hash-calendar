@@ -48,3 +48,22 @@ export let formatDate = function(time, format, lang = 'CN') {
 
   return newTime
 }
+
+/**
+ * 当前日期是否在两个日期范围之间
+ * @param {*} curr 
+ * @param {*} min 
+ * @param {*} max 
+ * @returns 
+ */
+export const isDateInRange = (curr, min, max) => {
+  let minDate = min && min.getTime() - 24 * 60 * 60 * 1000
+  let maxDate = max && max.getTime()
+  let currentDate = curr && curr.getTime()
+
+  if (minDate && maxDate) return currentDate > minDate && currentDate < maxDate
+  if (minDate) return currentDate > minDate
+  if (maxDate) return currentDate < maxDate
+
+  return true
+}

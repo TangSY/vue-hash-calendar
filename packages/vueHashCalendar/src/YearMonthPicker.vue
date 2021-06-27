@@ -2,28 +2,50 @@
   <div class="year-body"
        :style="{'top': calendarTitleHeight + 'px'}"
        v-show="type">
-    <div 
-      class="year-body-item" 
-      :style="{'height': itemHeight + 'px'}"
-      v-for="(item, index) in currArr" 
-      :key="index"
-      @click="dateClick(item, index)"
-      >
-        <p class="year-body-item-content"
-           :style="{'width': type === 'yearRange' ? '92px' : '60px'}"
-           :class="[isChecked(item, index) && (checkedDayClassName || 'is_checked'),
-           isNotCurrent(index) && (notCurrentMonthDayClassName || 'is_not_current'),
-           isDisabled(item) && (disabledClassName || 'is_disabled')]">
-           {{type === 'yearRange' ? `${item.s}-${item.e}` : item}}
-        </p>
+    <div class="year-body-item"
+         :style="{'height': itemHeight + 'px'}"
+         v-for="(item, index) in currArr"
+         :key="index"
+         :class="[isDisabled(item, index) && (disabledClassName || 'is_disabled')]"
+         @click="dateClick(item, index)">
+      <p class="year-body-item-content"
+         :style="{'width': type === 'yearRange' ? '92px' : '60px'}"
+         :class="[isChecked(item, index) && (checkedDayClassName || 'is_checked'),
+          isNotCurrent(index) && (notCurrentMonthDayClassName || 'is_not_current')]">
+        {{type === 'yearRange' ? `${item.s}-${item.e}` : item}}
+      </p>
     </div>
   </div>
 </template>
 
 <script>
+import { isDateInRange } from '../utils/util'
+
 export default {
   name: 'YearMonthPicker',
   props: {
+    // 最小可选日期
+    minDate: {
+      type: Date,
+      default: null
+    },
+    // 最大可选日期
+    maxDate: {
+      type: Date,
+      default: null
+    },
+    // 禁用的日期
+    disabledDate: {
+      type: Function,
+      default: () => {
+        return false
+      }
+    },
+    // 滑动的时候，是否触发改变日期
+    scrollChangeDate: {
+      type: Boolean,
+      default: true
+    },
     // 日期被选中时的 className
     checkedDayClassName: {
       type: String,
@@ -50,8 +72,18 @@ export default {
       type: Number,
       default: 0
     },
+    // 禁止滑动，可选值【left, right, up, down, horizontal, vertical, true, false】
+    disabledScroll: {
+      type: [Boolean, String],
+      default: false
+    },
     // 日历选中的日期 {year, month, day}
-    calendarDate: null
+    calendarDate: null,
+    // 使用的语言包
+    lang: {
+      type: String,
+      default: 'CN'
+    }
   },
   data() {
     return {
@@ -73,6 +105,7 @@ export default {
       if (val === 'month') {
         this.currArr = this.monthArr
       } else if (val === 'year') {
+        this.initYear(this.calendarDate.year)
         this.currArr = this.yearArr
       } else if (val === 'yearRange') {
         this.currArr = this.yearRangeArr
@@ -81,7 +114,6 @@ export default {
   },
   computed: {
     itemHeight() {
-      console.log(this.calendarContentHeight)
       return (this.calendarContentHeight - this.calendarTitleHeight) / 4
     }
   },
@@ -100,20 +132,36 @@ export default {
       const currYear = `${year || new Date().getFullYear()}`
       const yearStart = parseInt(currYear.substring(0, 2) + '00')
       for (let i = 0; i <= this.yearRange; i++) {
-        this.yearRangeArr.push({s: yearStart + i * 10, e: yearStart + i * 10 + 9})
+        this.yearRangeArr.push({ s: yearStart + i * 10, e: yearStart + i * 10 + 9 })
       }
-      this.yearRangeArr.unshift({s: yearStart - 10, e: yearStart - 1})
+      this.yearRangeArr.unshift({ s: yearStart - 10, e: yearStart - 1 })
     },
     dateClick(date, index) {
+      if (!index || !date) return
+      if (this.isDisabled(date, index)) return
+
+      let checkedDate = { ...this.calendarDate, type: this.type }
       if (this.type === 'month') {
-        this.$emit()
+        checkedDate = {
+          ...checkedDate,
+          month: index
+        }
       }
       if (this.type === 'year') {
-        this.$emit()
+        checkedDate = {
+          ...checkedDate,
+          year: date
+        }
       }
       if (this.type === 'yearRange') {
-        this.$emit()
+        const yearArr = this.getRangeYear(date)
+        checkedDate = {
+          ...checkedDate,
+          year: yearArr.includes(checkedDate.year) ? checkedDate.year : date.s
+        }
       }
+
+      this.$emit('click', checkedDate)
     },
     isChecked(date, index) {
       if (this.type === 'month') {
@@ -130,7 +178,32 @@ export default {
       return (index === 0 || index === 11) && (this.type === 'year' || this.type === 'yearRange')
     },
     isDisabled(date, index) {
-      return false
+      let fDate = new Date()
+
+      if (this.type === 'month') {
+        fDate = new Date(`${this.calendarDate.year}/${parseInt(index) + 1}/${this.calendarDate.day}`)
+      } else if (this.type === 'year') {
+        fDate = new Date(`${date}/${parseInt(this.calendarDate.month) + 1}/${this.calendarDate.day}`)
+      } else if (this.type === 'yearRange') {
+        const yearArr = this.getRangeYear(date)
+        return yearArr.every(year => {
+          fDate = new Date(`${year}/${parseInt(this.calendarDate.month) + 1}/${this.calendarDate.day}`)
+          return this.disabledDate(fDate) || !isDateInRange(fDate, this.minDate, this.maxDate)
+        })
+      }
+
+      return this.disabledDate(fDate) || !isDateInRange(fDate, this.minDate, this.maxDate)
+    },
+    getRangeYear(date) {
+      const yearStart = date.s
+      const yearEnd = date.e
+      const yearArr = []
+
+      for (let i = yearStart; i <= yearEnd; i++) {
+        yearArr.push(i)
+      }
+
+      return yearArr
     }
   }
 }
@@ -140,41 +213,36 @@ export default {
 @import '../style/common.styl';
 
 .year-body {
-  display flex;
-  align-items center
-  flex-wrap wrap
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   position: absolute;
   width: 100%;
   top: 0;
   left: 0;
   z-index: 3;
   background: #fff;
-
   &-item {
     width: 33%;
-    display flex
-    align-items center
-    justify-content center
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    &.is_disabled {
+      background-color: disabled-bg-color;
+      opacity: 1;
+      cursor: not-allowed;
+      color: disabled-font-color;
+    }
     &-content {
       width: 60px;
-      padding 3px 0;
-      border-radius 3px
-      text-align center
-
+      padding: 3px 0;
+      border-radius: 3px;
+      text-align: center;
       &.is_checked {
         background: main-color;
         color: white;
       }
-
       &.is_not_current {
-        color: disabled-font-color;
-      }
-
-      &.is_disabled {
-        background-color: disabled-bg-color;
-        opacity: 1;
-        cursor: not-allowed;
         color: disabled-font-color;
       }
     }
