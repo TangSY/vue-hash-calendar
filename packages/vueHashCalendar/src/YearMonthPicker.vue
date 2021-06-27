@@ -8,20 +8,22 @@
   <div class="year-body"
        :style="{'top': calendarTitleHeight + 'px', 'height': itemHeight * 4 + 'px'}"
        v-show="['year', 'yearRange', 'month'].includes(type)">
-    <ScrollContainer 
-      :calendarData="yearMonthShow"
-      :disabledScroll="disabledScrollDirec"
-      @slidechange="slideChange">
+    <ScrollContainer :calendarData="yearMonthShow"
+                     :disabledScroll="disabledScrollDirec"
+                     @touchstart="touchStart"
+                     @touchmove="touchMove"
+                     @touchend="touchEnd"
+                     @slidechange="slideChange">
       <template slot-scope="scope">
         <div class="year-body-item"
-          :style="{'height': itemHeight + 'px'}"
-          v-for="(item, index) in scope.currArr"
-          :key="index"
-          :class="[isDisabled(item, index) && (disabledClassName || 'is_disabled')]"
-          @click="dateClick(item, index)">
+             :style="{'height': itemHeight + 'px'}"
+             v-for="(item, index) in scope.currArr"
+             :key="index"
+             :class="[isDisabled(item, index) && (disabledClassName || 'is_disabled')]"
+             @click="dateClick(item, index)">
           <p class="year-body-item-content"
-            :style="{'width': type === 'yearRange' ? '92px' : '60px'}"
-            :class="[isChecked(item, index) && (checkedDayClassName || 'is_checked'),
+             :style="{'width': type === 'yearRange' ? '92px' : '60px'}"
+             :class="[isChecked(item, index) && (checkedDayClassName || 'is_checked'),
               isNotCurrent(index) && (notCurrentMonthDayClassName || 'is_not_current')]">
             {{type === 'yearRange' ? `${item.s}-${item.e}` : type === 'month' ? language.MONTH[index] : item}}
           </p>
@@ -287,6 +289,18 @@ export default {
       }
 
       return yearArr
+    },
+    // 监听手指开始滑动事件
+    touchStart(event) {
+      this.$emit('touchstart', event)
+    },
+    // 监听手指开始滑动事件
+    touchMove(event) {
+      this.$emit('touchmove', event)
+    },
+    // 监听手指开始滑动事件
+    touchEnd(event) {
+      this.$emit('touchend', event)
     }
   }
 }

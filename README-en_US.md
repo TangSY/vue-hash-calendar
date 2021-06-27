@@ -95,6 +95,7 @@ online demo：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/ca
 | markType                    | Mark pattern type. choose: 'dot', 'circle', 'dot+circle'                                                                                                                                                                    | String            | dot            |  false  |
 | minuteStep                  | --                                                                                                                                                                                                                          | Number            | 1              |  false  |
 | lang                        | Language. choose: 'CN', 'EN'                                                                                                                                                                                                | String            | CN             |  false  |
+| changeYearFast              | Set is can fast change year                                                                                                                                                                                                 | Boolean           | false          |   否    |
 | disabledClassName           | --                                                                                                                                                                                                                          | String            | ---            |  false  |
 | notCurrentMonthDayClassName | --                                                                                                                                                                                                                          | String            | ---            |  false  |
 | checkedDayClassName         | --                                                                                                                                                                                                                          | String            | ---            |  false  |
@@ -103,15 +104,16 @@ online demo：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/ca
 
 ## Events
 
-| name        | describle                                                                 | params        |
-| :---------- | :------------------------------------------------------------------------ | :------------ |
-| change      | --                                                                        | { date }      |
-| confirm     | --                                                                        | { date }      |
-| click       | --                                                                        | { date }      |
-| touchstart  | --                                                                        | { event }     |
-| touchmove   | --                                                                        | { event }     |
-| touchend    | --                                                                        | { event }     |
-| slidechange | This event is triggered when the direction of the calendar slide changes. | { direction } |
+| name               | describle                                                                 | params        |
+| :----------------- | :------------------------------------------------------------------------ | :------------ |
+| change             | --                                                                        | { date }      |
+| confirm            | --                                                                        | { date }      |
+| click              | --                                                                        | { date }      |
+| touchstart         | --                                                                        | { event }     |
+| touchmove          | --                                                                        | { event }     |
+| touchend           | --                                                                        | { event }     |
+| slidechange        | This event is triggered when the direction of the calendar slide changes. | { direction } |
+| calendarTypeChange | --                                                                        | { type }      |
 
 ## Slots
 

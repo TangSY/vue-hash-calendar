@@ -86,6 +86,10 @@
                          :calendarTitleHeight="calendarTitleHeight"
                          :calendarContentHeight="calendarContentHeight"
                          :calendarDate="checkedDate"
+                         @touchstart="touchStart"
+                         @touchmove="touchMove"
+                         @touchend="touchEnd"
+                         @slidechange="slideChange"
                          v-bind="{...$props, ...$attrs}"
                          @click="dateClick"
                          :type="yearMonthType"></year-month-picker>
@@ -201,7 +205,7 @@ export default {
       calendarTitleHeight: 0, // 日历组件标题高度
       firstTimes: true, // 第一次触发
       currDateTime: new Date(), // 当前日期
-      yearMonthType: '' // 年月选择面板默认展示类型
+      yearMonthType: 'date' // 年月选择面板默认展示类型
     }
   },
   mounted() {
@@ -333,9 +337,11 @@ export default {
             break
           case 'month':
             this.currDateTime = new Date(fDate)
-            this.yearMonthType = ''
+            this.yearMonthType = 'date'
             break
         }
+
+        this.$emit('calendarTypeChange', this.yearMonthType)
       }
 
       this.$emit('click', fDate)
@@ -382,21 +388,23 @@ export default {
       this.isShowCalendar = false
 
       // 重置年月选择面板
-      this.yearMonthType = ''
+      this.yearMonthType = 'date'
     },
     // 显示年月选择面板
     showYearMonthPicker() {
       if (!this.changeYearFast) return
 
-      if (!this.yearMonthType) {
+      if (this.yearMonthType === 'date') {
         this.yearMonthType = 'month'
       } else if (this.yearMonthType === 'month') {
         this.yearMonthType = 'year'
       } else if (this.yearMonthType === 'year') {
         this.yearMonthType = 'yearRange'
       } else {
-        this.yearMonthType = ''
+        this.yearMonthType = 'date'
       }
+
+      this.$emit('calendarTypeChange', this.yearMonthType)
     },
     // 高度变化
     heightChange(height) {

@@ -92,6 +92,7 @@ externals: {
 | markType                    | 标记图案类型 dot：小圆点（日期下方小圆点标记） circle：小圆圈（日期被小圆圈包围） dot+circle：同时使用小圆点与圆圈标记                                                        |     String      |      dot       |    否    |
 | minuteStep                  | 间隔时间。（分钟的步长）                                                                                                                                                      |     Number      |       1        |    否    |
 | lang                        | 选择的语言版本。可选值:['CN', 'EN']                                                                                                                                           |     String      |       CN       |    否    |
+| changeYearFast              | 是否支持点击操作栏（标题栏）的日期区域快速切换年份                                                                                                                            |     Boolean     |     false      |    否    |
 | disabledClassName           | 日期被禁用时的 className。用于修改日期被禁用时的默认样式                                                                                                                      |     String      |      ---       |    否    |
 | notCurrentMonthDayClassName | 非当前展示月份日期的 className(例如日历前面几天与后面几天灰色部分)。用于修改非当前展示月份日期的默认样式                                                                      |     String      |      ---       |    否    |
 | checkedDayClassName         | 日期被选中时的 className。用于修改日期被选中时的默认样式                                                                                                                      |     String      |      ---       |    否    |
@@ -100,15 +101,16 @@ externals: {
 
 # 事件
 
-| 事件名称    | 说明                                                                                      | 参数                               |
-| :---------- | :---------------------------------------------------------------------------------------- | :--------------------------------- |
-| change      | 日期改变时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 日期改变时，选中的日期)     |
-| confirm     | 点击确认按钮时，触发该事件，dialog 模式中才有该按钮。（返回的日期格式取决于 format 属性） | (date: 点击确认按钮时，选中的日期) |
-| click       | 点击日期时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 当前点击的日期)             |
-| touchstart  | 日历滑动 start 事件，同于原生该事件。                                                     | （event: touch 事件）              |
-| touchmove   | 日历滑动 move 事件，同于原生该事件。                                                      | （event: touch 事件）              |
-| touchend    | 日历滑动 end 事件，同于原生该事件。                                                       | （event: touch 事件）              |
-| slidechange | 日历滑动的方向。返回值：right、left、up、down 。                                          | （direction: 滑动的方向）          |
+| 事件名称           | 说明                                                                                      | 参数                               |
+| :----------------- | :---------------------------------------------------------------------------------------- | :--------------------------------- |
+| change             | 日期改变时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 日期改变时，选中的日期)     |
+| confirm            | 点击确认按钮时，触发该事件，dialog 模式中才有该按钮。（返回的日期格式取决于 format 属性） | (date: 点击确认按钮时，选中的日期) |
+| click              | 点击日期时，触发该事件。（返回的日期格式取决于 format 属性）                              | (date: 当前点击的日期)             |
+| touchstart         | 日历滑动 start 事件，同于原生该事件。                                                     | （event: touch 事件）              |
+| touchmove          | 日历滑动 move 事件，同于原生该事件。                                                      | （event: touch 事件）              |
+| touchend           | 日历滑动 end 事件，同于原生该事件。                                                       | （event: touch 事件）              |
+| slidechange        | 日历滑动的方向。返回值：right、left、up、down 。                                          | （direction: 滑动的方向）          |
+| calendarTypeChange | 日历展示类型切换时触发。返回值：date、month、year、yearRange 。                           | （type: 日历展示面板类型）         |
 
 # 插槽 Slot
 

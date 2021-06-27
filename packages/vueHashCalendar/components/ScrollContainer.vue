@@ -5,19 +5,19 @@
 * @CreateDate:     2021/6/27 16:53
 */
 <template>
-    <ul class="calendar_group_ul"
-        ref="container"
-        :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}"
-        @touchstart="touchStart"
-        @touchmove.stop.prevent="touchMove"
-        @touchend="touchEnd">
-        <li class="calendar_group_li"
-            v-for="(item, i) in calendarData"
-            :key="i"
-            :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
-            <slot :currArr="item"></slot>
-        </li>
-    </ul>
+  <ul class="calendar_group_ul"
+      ref="container"
+      :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}"
+      @touchstart="touchStart"
+      @touchmove.stop.prevent="touchMove"
+      @touchend="touchEnd">
+    <li class="calendar_group_li"
+        v-for="(item, i) in calendarData"
+        :key="i"
+        :style="{transform: `translate3d(${(i-1+translateIndex + (isTouching ? touch.x : 0))*100}%, ${calendarY}px, 0)`,transitionDuration: `${isTouching ? 0 : transitionDuration}s`,}">
+      <slot :currArr="item"></slot>
+    </li>
+  </ul>
 </template>
 
 <script>
@@ -67,8 +67,6 @@ export default {
       let moveX = event.touches[0].clientX - this.touchStartPositionX
       let moveY = event.touches[0].clientY - this.touchStartPositionY
       if (Math.abs(moveX) > Math.abs(moveY)) {
-        // if (this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right')) return
-
         this.touch = {
           x: moveX / this.$refs.container.offsetWidth,
           y: 0
@@ -88,42 +86,21 @@ export default {
 
       this.isTouching = false
       if (Math.abs(this.touch.x) > Math.abs(this.touch.y) && Math.abs(this.touch.x) > 0.2) {
-        // this.currentChangeIsScroll = true
         if (this.touch.x > 0) {
           this.$emit('slidechange', 'right')
 
           this.translateIndex += 1
-          // this.getLastMonth()
-          // if (this.isShowWeek) {
-          //     setTimeout(() => {
-          //     this.isTouching = true
-          //     this.currentChangeIsScroll = true
-          //     this.getLastWeek()
-          //     }, this.transitionDuration * 1000)
-          // }
         } else if (this.touch.x < 0) {
           this.$emit('slidechange', 'left')
 
           this.translateIndex -= 1
-          // this.getNextMonth()
-          // if (this.isShowWeek) {
-          //     setTimeout(() => {
-          //     this.isTouching = true
-          // this.currentChangeIsScroll = true
-          //     this.getNextWeek()
-          //     }, this.transitionDuration * 1000)
-          // }
         }
       }
       if (Math.abs(this.touch.y) > Math.abs(this.touch.x) && Math.abs(this.touch.y * this.$refs.container.offsetHeight) > 50) {
         if (this.touch.y > 0 && this.isShowWeek) {
           this.$emit('slidechange', 'down')
-
-          // this.showMonth()
         } else if (this.touch.y < 0 && !this.isShowWeek) {
           this.$emit('slidechange', 'up')
-
-          // this.showWeek()
         }
       } else {
         this.touch = {
@@ -160,8 +137,8 @@ export default {
 
 .calendar_group_ul {
   height: 100%;
-  width 100%
-  background white
+  width: 100%;
+  background: white;
 }
 .calendar_group_li {
   position: absolute;
