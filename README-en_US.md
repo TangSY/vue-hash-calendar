@@ -8,9 +8,10 @@
 
 ## Using Effects
 
-![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif)
-![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif)
-![week.gif](https://www.hxkj.vip/demo/calendar/week.gif)
+![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif?from=hxkj)
+![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif?from=hxkj)
+![week.gif](https://www.hxkj.vip/demo/calendar/week.gif?from=hxkj)
+![yearmonth.gif](https://www.hxkj.vip/demo/calendar/yearmonth.gif?from=hxkj)
 
 The same calendar for React：[https://github.com/TangSY/react-hash-calendar](https://github.com/TangSY/react-hash-calendar)
 
