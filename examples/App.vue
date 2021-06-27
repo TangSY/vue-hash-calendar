@@ -27,7 +27,7 @@
                        :disabled-week-view="false"
                        :change-year-fast="true"
                        format="YY/MM/DD hh:mm"
-                       lang="CN"
+                       lang="cn"
                        @confirm="dateConfirm"
                        @click="dateClick"
                        @change="dateChange">

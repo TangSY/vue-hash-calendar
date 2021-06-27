@@ -1,27 +1,43 @@
+/**
+* @Description:    年月选择组件（年范围/年/月）
+* @Author:         TSY
+* @Email:          t@tsy6.com
+* @CreateDate:     2021/5/26 22:53
+*/
 <template>
   <div class="year-body"
-       :style="{'top': calendarTitleHeight + 'px'}"
-       v-show="type">
-    <div class="year-body-item"
-         :style="{'height': itemHeight + 'px'}"
-         v-for="(item, index) in currArr"
-         :key="index"
-         :class="[isDisabled(item, index) && (disabledClassName || 'is_disabled')]"
-         @click="dateClick(item, index)">
-      <p class="year-body-item-content"
-         :style="{'width': type === 'yearRange' ? '92px' : '60px'}"
-         :class="[isChecked(item, index) && (checkedDayClassName || 'is_checked'),
-          isNotCurrent(index) && (notCurrentMonthDayClassName || 'is_not_current')]">
-        {{type === 'yearRange' ? `${item.s}-${item.e}` : item}}
-      </p>
-    </div>
+       :style="{'top': calendarTitleHeight + 'px', 'height': itemHeight * 4 + 'px'}"
+       v-show="['year', 'yearRange', 'month'].includes(type)">
+    <ScrollContainer 
+      :calendarData="yearMonthShow"
+      :disabledScroll="disabledScrollDirec"
+      @slidechange="slideChange">
+      <template slot-scope="scope">
+        <div class="year-body-item"
+          :style="{'height': itemHeight + 'px'}"
+          v-for="(item, index) in scope.currArr"
+          :key="index"
+          :class="[isDisabled(item, index) && (disabledClassName || 'is_disabled')]"
+          @click="dateClick(item, index)">
+          <p class="year-body-item-content"
+            :style="{'width': type === 'yearRange' ? '92px' : '60px'}"
+            :class="[isChecked(item, index) && (checkedDayClassName || 'is_checked'),
+              isNotCurrent(index) && (notCurrentMonthDayClassName || 'is_not_current')]">
+            {{type === 'yearRange' ? `${item.s}-${item.e}` : type === 'month' ? language.MONTH[index] : item}}
+          </p>
+        </div>
+      </template>
+    </ScrollContainer>
   </div>
 </template>
 
 <script>
+import ScrollContainer from '../components/ScrollContainer.vue'
 import { isDateInRange } from '../utils/util'
+import languageUtil from '../language'
 
 export default {
+  components: { ScrollContainer },
   name: 'YearMonthPicker',
   props: {
     // 最小可选日期
@@ -78,7 +94,16 @@ export default {
       default: false
     },
     // 日历选中的日期 {year, month, day}
-    calendarDate: null,
+    calendarDate: {
+      type: Object,
+      default: () => {
+        return {
+          year: new Date().getFullYear,
+          month: new Date().getMonth,
+          day: new Date().getDate
+        }
+      }
+    },
     // 使用的语言包
     lang: {
       type: String,
@@ -87,28 +112,31 @@ export default {
   },
   data() {
     return {
-      monthArr: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
-      yearArr: [],
-      yearRangeArr: [],
+      language: {}, // 使用的语言包
       yearRange: 10,
-      currArr: [],
+      disabledScrollDirec: false,
+      yearMonthShow: [],
       selectType: ['single', 'mutiple', 'range'],
       calendarType: ['week', 'date', 'month', 'year', 'yearRange', 'datetime']
     }
   },
   mounted() {
-    this.initYear()
-    this.initYearRange()
+    this.language = languageUtil[this.lang.toUpperCase()]
   },
   watch: {
     type(val) {
+      this.disabledScrollDirec = this.disabledScroll
       if (val === 'month') {
-        this.currArr = this.monthArr
+        this.disabledScrollDirec = true
+        this.yearMonthShow = [
+          this.language.MONTH,
+          this.language.MONTH,
+          this.language.MONTH
+        ]
       } else if (val === 'year') {
-        this.initYear(this.calendarDate.year)
-        this.currArr = this.yearArr
+        this.yearMonthShow = this.getThreeYearArr()
       } else if (val === 'yearRange') {
-        this.currArr = this.yearRangeArr
+        this.yearMonthShow = this.getThreeYearRangeArr()
       }
     }
   },
@@ -119,22 +147,77 @@ export default {
   },
   methods: {
     initYear(year) {
-      this.yearArr = []
-      const currYear = `${year || new Date().getFullYear()}`
+      const yearArr = []
+      const currYear = `${year || this.calendarDate.year}`
       const yearStart = parseInt(currYear.substring(0, 3) + '0')
       for (let i = 0; i <= this.yearRange; i++) {
-        this.yearArr.push(yearStart + i)
+        yearArr.push(yearStart + i)
       }
-      this.yearArr.unshift(yearStart - 1)
+      yearArr.unshift(yearStart - 1)
+
+      return yearArr
     },
     initYearRange(year) {
-      this.yearRangeArr = []
-      const currYear = `${year || new Date().getFullYear()}`
+      const yearRangeArr = []
+      const currYear = `${year || this.calendarDate.year}`
       const yearStart = parseInt(currYear.substring(0, 2) + '00')
       for (let i = 0; i <= this.yearRange; i++) {
-        this.yearRangeArr.push({ s: yearStart + i * 10, e: yearStart + i * 10 + 9 })
+        yearRangeArr.push({ s: yearStart + i * 10, e: yearStart + i * 10 + 9 })
       }
-      this.yearRangeArr.unshift({ s: yearStart - 10, e: yearStart - 1 })
+      yearRangeArr.unshift({ s: yearStart - 10, e: yearStart - 1 })
+
+      return yearRangeArr
+    },
+    slideChange(direc) {
+      if (direc === 'left') {
+        this.getNextOpitonData()
+      } else if (direc === 'right') {
+        this.getLastOptionData()
+      }
+
+      this.$emit('slidechange', direc)
+    },
+    getNextOpitonData() {
+      if (this.type === 'year') {
+        const year = this.yearMonthShow[2][1]
+        this.yearMonthShow = this.getThreeYearArr(year)
+      } else if (this.type === 'yearRange') {
+        const year = this.yearMonthShow[2][1].s
+        this.yearMonthShow = this.getThreeYearRangeArr(year)
+      }
+    },
+    getLastOptionData() {
+      if (this.type === 'year') {
+        const year = this.yearMonthShow[0][1]
+        this.yearMonthShow = this.getThreeYearArr(year)
+      } else if (this.type === 'yearRange') {
+        const year = this.yearMonthShow[0][1].s
+        this.yearMonthShow = this.getThreeYearRangeArr(year)
+      }
+    },
+    getThreeYearArr(year = this.calendarDate.year) {
+      year = year + ''
+      const yearStartLast = parseInt(parseInt(year.substring(0, 3)) - 1 + '0')
+      const yearStartCurr = parseInt(year.substring(0, 3) + '0')
+      const yearStartNext = parseInt(parseInt(year.substring(0, 3)) + 1 + '0')
+
+      return [
+        this.initYear(yearStartLast),
+        this.initYear(yearStartCurr),
+        this.initYear(yearStartNext)
+      ]
+    },
+    getThreeYearRangeArr(year = this.calendarDate.year) {
+      year = year + ''
+      const yearStartLast = parseInt(parseInt(year.substring(0, 2)) - 1 + '00')
+      const yearStartCurr = parseInt(year.substring(0, 2) + '00')
+      const yearStartNext = parseInt(parseInt(year.substring(0, 2)) + 1 + '00')
+
+      return [
+        this.initYearRange(yearStartLast),
+        this.initYearRange(yearStartCurr),
+        this.initYearRange(yearStartNext)
+      ]
     },
     dateClick(date, index) {
       if (!index || !date) return

@@ -212,12 +212,15 @@ export default {
     this.language = languageUtil[this.lang.toUpperCase()]
   },
   watch: {
-    defaultDatetime(val) {
-      if (!(val instanceof Date)) {
-        throw new Error('The calendar component\'s defaultDate must be date type!')
-      }
+    defaultDatetime: {
+      handler(val) {
+        if (!(val instanceof Date)) {
+          throw new Error('The calendar component\'s defaultDate must be date type!')
+        }
 
-      this.currDateTime = val
+        this.currDateTime = val
+      },
+      immediate: true
     },
     pickerType: {
       handler(val) {
