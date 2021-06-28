@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/TangSY/vue-hash-calendar.svg?branch=master&from=hxkj)](https://travis-ci.org/TangSY/vue-hash-calendar)
+[![Build Status](https://travis-ci.com/TangSY/vue-hash-calendar.svg?branch=master&from=hxkj)](https://travis-ci.org/TangSY/vue-hash-calendar)
 [![version](https://img.shields.io/npm/v/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
 [![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg?from=hxkj)
@@ -11,6 +11,7 @@
 ![calendar.gif](https://www.hxkj.vip/demo/calendar/calendar.gif?from=hxkj)
 ![dot.gif](https://www.hxkj.vip/demo/calendar/dot.gif?from=hxkj)
 ![week.gif](https://www.hxkj.vip/demo/calendar/week.gif?from=hxkj)
+![yearmonth.gif](https://www.hxkj.vip/demo/calendar/yearmonth.gif?from=hxkj)
 
 # Demo
 
@@ -49,7 +50,7 @@ Vue.use(vueHashCalendar)
 
 ```js
 // 在VUE文件中引入组件
- <vue-hash-calendar></vue-hash-calendar>
+<vue-hash-calendar />
 ```
 
 ## CDN 方式引入
@@ -146,15 +147,13 @@ this.isShowCalendar = true;
 - 想要返回标准的英文格式日期，format 属性应该怎样写？ `MM DD,YY at hh:mm F`
 
 ```js
-<vue-hash-calendar format="MM DD,YY at hh:mm F"></vue-hash-calendar>
-
+<vue-hash-calendar format="MM DD,YY at hh:mm F" />
 ```
 
 - 想要返回 12 小时制的日期，format 属性应该怎样写？ 在格式化字符串后面加上大写 `F`
 
 ```js
-<vue-hash-calendar format="YY/MM/DD hh:mm F"></vue-hash-calendar>
-
+<vue-hash-calendar format="YY/MM/DD hh:mm F" />
 ```
 
 - day slot 的基本用法
