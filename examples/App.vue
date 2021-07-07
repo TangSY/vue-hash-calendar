@@ -8,8 +8,8 @@
   <div class="body">
     <button @click="showCalendarDialog">显示</button>
     <vue-hash-calendar ref="picker"
-                       model="dialog"
-                       :is-show-arrow="false"
+                       model="inline"
+                       :is-show-arrow="true"
                        :is-show-not-current-month-day="true"
                        :scroll-change-date="true"
                        :visible.sync="isShowCalendar"
@@ -30,6 +30,7 @@
                        lang="cn"
                        @calendarTypeChange="calendarTypeChange"
                        @confirm="dateConfirm"
+                       @slidechange="slidechange"
                        @click="dateClick"
                        @change="dateChange">
     </vue-hash-calendar>
@@ -67,6 +68,9 @@ export default {
     },
     dateChange(date) { // 日期改变触发
       console.log(date, 'change')
+    },
+    slidechange(direction) { // 滑动方向
+      console.log(direction, 'direction')
     },
     dateConfirm(date) { // 点击确认按钮触发
       console.log(date, 'confirm')
