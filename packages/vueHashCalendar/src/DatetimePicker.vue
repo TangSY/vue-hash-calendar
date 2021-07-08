@@ -305,6 +305,9 @@ export default {
     // 周视图开关
     toggleWeek() {
       this.isShowWeek = !this.isShowWeek
+
+      if (this.isShowWeek) this.slideChange('up')
+      else this.slideChange('down')
     },
     today() {
       if (this.disabledDate(new Date())) return

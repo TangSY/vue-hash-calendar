@@ -30,6 +30,7 @@
                        lang="cn"
                        @calendarTypeChange="calendarTypeChange"
                        @confirm="dateConfirm"
+                       @slidechange="slidechange"
                        @click="dateClick"
                        @change="dateChange">
     </vue-hash-calendar>
@@ -70,6 +71,9 @@ export default {
     },
     dateConfirm(date) { // 点击确认按钮触发
       console.log(date, 'confirm')
+    },
+    slidechange(direction) { // 滑动方向
+      console.log(direction, 'direction')
     },
     dateClick(date) { // 点击日期时按钮触发
       console.log(date, 'click')
