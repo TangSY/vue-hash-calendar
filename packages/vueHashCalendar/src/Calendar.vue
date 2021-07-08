@@ -25,7 +25,7 @@
          :style="{'height': `${calendarGroupHeight}px`}"
          ref="calendar"
          @touchstart="touchStart"
-         @touchmove.stop.prevent="touchMove"
+         @touchmove="touchMove"
          @touchend="touchEnd">
       <ul :style="{'transform': `translate3d(${-translateIndex*100}%, 0, 0)`}">
         <li class="calendar_group_li"
@@ -521,6 +521,12 @@ export default {
     // 监听手指移动事件
     touchMove(event) {
       this.$emit('touchmove', event)
+
+      // fix: 禁止切换周模式显示后，日历区域上下滑动，页面不能触发上下滑动了 #62
+      if (!this.disabledWeekView) {
+        event.stopPropagation()
+        event.preventDefault()
+      }
 
       let moveX = event.touches[0].clientX - this.touchStartPositionX
       let moveY = event.touches[0].clientY - this.touchStartPositionY
