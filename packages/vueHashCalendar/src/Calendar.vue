@@ -805,7 +805,7 @@ export default {
   top: 0;
   flexAlign();
   background: white;
-  color: vice-font-color;
+  viceFontColor(color);
   z-index: 2;
 }
 .calendar_group {
@@ -840,10 +840,10 @@ export default {
   flex-direction: column;
 }
 .calendar_item_disable {
-  background-color: disabled-bg-color;
+  disabledBgColor(background-color);
   opacity: 1;
   cursor: not-allowed;
-  color: disabled-font-color;
+  disabledFontColor(color);
 }
 .calendar_day {
   width: px2vw(60px);
@@ -854,23 +854,23 @@ export default {
   margin-bottom: px2vw(8px);
 }
 .calendar_first_today {
-  color: main-color;
+  mainColor(color);
 }
 .calendar_first_today span {
   fontSize(20px);
   margin-top: px2vw(3px);
 }
 .calendar_day_today {
-  background: bg-color;
+  bgColor(background);
 }
 .calendar_mark_circle {
-  border: 1px solid main-color;
+  mainColor(border);
 }
 .calendar_day_not {
-  color: disabled-font-color;
+  disabledFontColor(color);
 }
 .calendar_day_checked {
-  background: main-color;
+  mainColor(background);
   color: white;
 }
 .calendar_dot {

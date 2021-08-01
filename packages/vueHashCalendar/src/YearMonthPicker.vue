@@ -325,10 +325,10 @@ export default {
     align-items: center;
     justify-content: center;
     &.is_disabled {
-      background-color: disabled-bg-color;
+      disabledBgColor(background-color);
       opacity: 1;
       cursor: not-allowed;
-      color: disabled-font-color;
+      disabledFontColor(color);
     }
     &-content {
       width: 60px;
@@ -336,11 +336,11 @@ export default {
       border-radius: 3px;
       text-align: center;
       &.is_checked {
-        background: main-color;
+        mainColor(background);
         color: white;
       }
       &.is_not_current {
-        color: disabled-font-color;
+        disabledFontColor(color);
       }
     }
   }
