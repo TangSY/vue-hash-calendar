@@ -125,6 +125,11 @@ const defaultDate = {
 
 export default {
   props: {
+    // 主题颜色
+    themeColor: {
+      type: Object,
+      default: () => {}
+    },
     // 是否支持点击日期区域快速切换年份
     changeYearFast: {
       type: Boolean,
@@ -216,6 +221,12 @@ export default {
     this.language = languageUtil[this.lang.toUpperCase()]
   },
   watch: {
+    themeColor: {
+      handler(val) {
+        this.changeThemeColor()
+      },
+      immediate: true
+    },
     defaultDatetime: {
       handler(val) {
         if (!(val instanceof Date)) {
@@ -416,6 +427,22 @@ export default {
       this.calendarBodyHeight = height
       this.firstTimes = false
     },
+    // 切换主题颜色
+    changeThemeColor() {
+      const themeColorKeys = Object.keys(this.themeColor)
+
+      if (themeColorKeys.length) {
+        let cssText = ''
+
+        themeColorKeys.forEach(k => {
+          cssText += `--hash-calendar-${k}: ${this.themeColor[k]};`
+        })
+
+        this.$nextTick(() => {
+          document.querySelector('.hash-calendar').style.cssText = cssText
+        })
+      }
+    },
     // 监听手指开始滑动事件
     touchStart(event) {
       this.$emit('touchstart', event)
@@ -473,7 +500,7 @@ export default {
   width: 100%;
   left: 0;
   top: 0;
-  background: bg-color;
+  bgColor(background);
   borderBottom();
   display: flex;
   align-items: center;
@@ -481,23 +508,23 @@ export default {
   z-index: 1;
 }
 .calendar_title_date {
-  color: vice-font-color;
+  viceFontColor(color);
   background: white;
   padding: px2vw(30px) px2vw(15px);
 }
 .calendar_title_date_active {
-  color: main-font-color;
+  mainFontColor(color);
   font-weight: bold;
 }
 .calendar_title_date_time {
   margin-left: px2vw(20px);
 }
 .calendar_confirm {
-  color: main-color;
+  mainColor(color);
   margin-right: px2vw(34px);
 }
 .today_disable {
-  color: disabled-font-color;
+  disabledFontColor(color);
 }
 .ctrl-img {
   width: 100%;

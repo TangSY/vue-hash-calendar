@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/TangSY/vue-hash-calendar.svg?branch=master&from=hxkj)](https://travis-ci.org/TangSY/vue-hash-calendar)
+[![Build Status](https://travis-ci.com/TangSY/vue-hash-calendar.svg?branch=master&from=hxkj)](https://travis-ci.com/TangSY/vue-hash-calendar)
 [![version](https://img.shields.io/npm/v/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
 [![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg?from=hxkj)
@@ -94,6 +94,7 @@ externals: {
 | minuteStep                  | 间隔时间。（分钟的步长）                                                                                                                                                      |     Number      |       1        |    否    |
 | lang                        | 选择的语言版本。可选值:['CN', 'EN']                                                                                                                                           |     String      |       CN       |    否    |
 | changeYearFast              | 是否支持点击操作栏（标题栏）的日期区域快速切换年份                                                                                                                            |     Boolean     |     false      |    否    |
+| themeColor              | 用于修改日历主题色 |     { 'main-color': string; 'bg-color': string; 'main-font-color': string; 'vice-font-color': string; 'disabled-bg-color': string; 'disabled-font-color': string;}     |     ---      |    否    |
 | disabledClassName           | 日期被禁用时的 className。用于修改日期被禁用时的默认样式                                                                                                                      |     String      |      ---       |    否    |
 | notCurrentMonthDayClassName | 非当前展示月份日期的 className(例如日历前面几天与后面几天灰色部分)。用于修改非当前展示月份日期的默认样式                                                                      |     String      |      ---       |    否    |
 | checkedDayClassName         | 日期被选中时的 className。用于修改日期被选中时的默认样式                                                                                                                      |     String      |      ---       |    否    |
