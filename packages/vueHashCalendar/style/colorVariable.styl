@@ -1,0 +1,60 @@
+// 页面主色
+main-color = var(--hash-calendar-main-color)
+//页面背景色
+bg-color = var(--hash-calendar-bg-color)
+//主文字颜色
+main-font-color = var(--hash-calendar-main-font-color)
+//副文字颜色
+vice-font-color = var(--hash-calendar-vice-font-color)
+//禁用背景颜色
+disabled-bg-color = var(--hash-calendar-disabled-bg-color)
+//禁用文字颜色
+disabled-font-color = var(--hash-calendar-disabled-font-color)
+
+// 定义一套默认颜色配置，用于适配不兼容 css 变量的浏览器
+default-main-color = #1c71fb;
+default-bg-color = #f4f4f4;
+default-main-font-color = #4c4c4c;
+default-vice-font-color = #898989;
+default-disabled-bg-color = #f5f7fa;
+default-disabled-font-color = #c0c4cc;
+
+// 根据属性生成不同的样式表达式
+genColor(prop, gen-color, gen-default-color) {
+    if prop == border {
+        {prop} 1px solid gen-default-color
+        {prop} 1px solid gen-color
+    } else {
+        {prop} gen-default-color
+        {prop} gen-color
+    }
+}
+
+// 定义一系列颜色变量适配函数
+mainColor(prop) {
+    genColor(prop, main-color, default-main-color)
+}
+bgColor(prop) {
+    genColor(prop, bg-color, default-bg-color)
+}
+mainFontColor(prop) {
+    genColor(prop, main-font-color, default-main-font-color)
+}
+viceFontColor(prop) {
+    genColor(prop, vice-font-color, default-vice-font-color)
+}
+disabledBgColor(prop) {
+    genColor(prop, disabled-bg-color, default-disabled-bg-color)
+}
+disabledFontColor(prop) {
+    genColor(prop, disabled-font-color, default-disabled-font-color)
+}
+
+.hash-calendar {
+    --hash-calendar-main-color: default-main-color;
+    --hash-calendar-bg-color: default-bg-color;
+    --hash-calendar-main-font-color: default-main-font-color;
+    --hash-calendar-vice-font-color: default-vice-font-color;
+    --hash-calendar-disabled-bg-color: default-disabled-bg-color;
+    --hash-calendar-disabled-font-color: default-disabled-font-color;
+}

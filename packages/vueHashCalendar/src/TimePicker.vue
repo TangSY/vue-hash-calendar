@@ -307,10 +307,10 @@ export default {
 }
 .time_item {
   padding: px2vw(20px) 0;
-  color: vice-font-color;
+  viceFontColor(color);
 }
 .time_item_show {
-  color: main-font-color;
+  mainFontColor(color);
 }
 .time-disabled {
   background-color: #f5f7fa;
