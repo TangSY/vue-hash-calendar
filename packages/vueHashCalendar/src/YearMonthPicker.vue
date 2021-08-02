@@ -222,7 +222,8 @@ export default {
       ]
     },
     dateClick(date, index) {
-      if (!index || !date) return
+      // if (!index || !date) return
+      if (!date) return // 1月无法选中
       if (this.isDisabled(date, index)) return
 
       let checkedDate = { ...this.calendarDate, type: this.type }
