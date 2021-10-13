@@ -126,6 +126,15 @@ externals: {
 | confirm | 自定义 "确定" 按钮文字内容以及样式                                                                                                                                                                                                                                                                                                                                                        |
 | action  | 自定义操作栏（标题栏）内容以及样式                                                                                                                                                                                                                                                                                                                                                        |
 
+# 方法 Method
+| 方法名称           | 说明                                       | 版本                              |
+| :---------------- | :---------------------------------------- | :--------------------------------- |
+| lastMonth | 切换日历到上一月 ｜ 1.3.18
+| nextMonth | 切换日历到下一月 ｜ 1.3.18
+| lastWeek | 切换日历到上一周 ｜ 1.3.18
+| nextWeek | 切换日历到下一周 ｜ 1.3.18
+| today | 返回今日。当今日被禁用时，不生效 ｜ 1.3.18
+
 ## 版本记录
 
 [changelog](https://github.com/TangSY/vue-hash-calendar/blob/travis_build/CHANGELOG.md)

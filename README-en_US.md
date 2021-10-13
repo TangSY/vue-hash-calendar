@@ -128,6 +128,15 @@ online demo：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/ca
 | confirm | Customize dconfirmate button content and style | --                                                                                                           |
 | action  | Customize action content and style             | --                                                                                                           |
 
+# Methods
+| name           | desc                                       | version                              |
+| :---------------- | :---------------------------------------- | :--------------------------------- |
+| lastMonth | -- ｜ 1.3.18
+| nextMonth | -- ｜ 1.3.18
+| lastWeek | -- ｜ 1.3.18
+| nextWeek | -- ｜ 1.3.18
+| today | -- ｜ 1.3.18
+
 ### Changelog
 
 [changelog](https://github.com/TangSY/vue-hash-calendar/blob/travis_build/CHANGELOG.md)

@@ -70,6 +70,8 @@
 import { formatDate, isDateInRange } from '../utils/util'
 import languageUtil from '../language'
 
+let timer = null
+
 export default {
   name: 'Calendar',
   props: {
@@ -561,22 +563,14 @@ export default {
 
           this.getLastMonth()
           if (this.isShowWeek) {
-            setTimeout(() => {
-              this.isTouching = true
-              this.currentChangeIsScroll = true
-              this.getLastWeek()
-            }, this.transitionDuration * 1000)
+            this.changeWeekView({isNext: false})
           }
         } else if (this.touch.x < 0) {
           this.$emit('slidechange', 'left')
 
           this.getNextMonth()
           if (this.isShowWeek) {
-            setTimeout(() => {
-              this.isTouching = true
-              this.currentChangeIsScroll = true
-              this.getNextWeek()
-            }, this.transitionDuration * 1000)
+            this.changeWeekView({isNext: true})
           }
         }
       }
@@ -671,6 +665,16 @@ export default {
       }
       this.calendarOfMonthShow[0].splice(sliceStart, 7, ...this.lastWeek)
       this.calendarOfMonthShow[2].splice(sliceStart, 7, ...this.nextWeek)
+    },
+    // 切换展示的星期
+    changeWeekView({isNext}) {
+      if (timer) timer = null
+      
+      timer = setTimeout(() => {
+        this.isTouching = true
+        this.currentChangeIsScroll = true
+        isNext ? this.getNextWeek() : this.getLastWeek()
+      }, this.transitionDuration * 1000)
     },
     // 显示上一周
     getLastWeek() {

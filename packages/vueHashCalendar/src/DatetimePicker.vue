@@ -325,6 +325,20 @@ export default {
 
       this.$refs.calendar.today()
     },
+    lastMonth() {
+      this.$refs.calendar.getLastMonth()
+    },
+    nextMonth() {
+      this.$refs.calendar.getNextMonth()
+    },
+    lastWeek() {
+      this.$refs.calendar.getLastMonth()
+      this.$refs.calendar.changeWeekView({isNext: false})
+    },
+    nextWeek() {
+      this.$refs.calendar.getNextMonth()
+      this.$refs.calendar.changeWeekView({isNext: true})
+    },
     dateChange(date) {
       date.hours = this.checkedDate.hours
       date.minutes = this.checkedDate.minutes
