@@ -129,13 +129,14 @@ online demo：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/ca
 | action  | Customize action content and style             | --                                                                                                           |
 
 # Methods
+
 | name           | desc                                       | version                              |
 | :---------------- | :---------------------------------------- | :--------------------------------- |
-| lastMonth | -- | 1.3.18
-| nextMonth | -- | 1.3.18
-| lastWeek | -- | 1.3.18
-| nextWeek | -- | 1.3.18
-| today | -- | 1.3.18
+| lastMonth | -- | 1.3.20
+| nextMonth | -- | 1.3.20
+| lastWeek | -- | 1.3.20
+| nextWeek | -- | 1.3.20
+| today | -- | 1.3.20
 
 ### Changelog
 
