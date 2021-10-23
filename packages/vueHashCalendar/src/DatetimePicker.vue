@@ -21,11 +21,11 @@
             <span v-if="pickerType !== 'time'"
                   class="calendar_title_date_year"
                   :class="{'calendar_title_date_active': isShowCalendar}"
-                  @click="showCalendar">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
+                  @click="showCalendar">{{ formatDate(`${checkedDate.year}/${checkedDate.month + 1}/${checkedDate.day}`, language.DEFAULT_DATE_FORMAT) }}</span>
             <span v-if="pickerType !== 'date'"
                   class="calendar_title_date_time"
                   :class="{'calendar_title_date_active': !isShowCalendar}"
-                  @click="showTime">{{ formatDate(`${checkedDate.year}/${this.checkedDate.month + 1}/${this.checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
+                  @click="showTime">{{ formatDate(`${checkedDate.year}/${checkedDate.month + 1}/${checkedDate.day} ${fillNumber(checkedDate.hours)}:${fillNumber(checkedDate.minutes)}`, language.DEFAULT_TIME_FORMAT)}}</span>
           </div>
           <div v-if="showTodayButton"
                class="calendar_confirm"
@@ -223,7 +223,7 @@ export default {
   watch: {
     themeColor: {
       handler(val) {
-        this.changeThemeColor()
+        val && this.changeThemeColor()
       },
       immediate: true
     },
