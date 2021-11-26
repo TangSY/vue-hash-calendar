@@ -443,7 +443,7 @@ export default {
     },
     // 切换主题颜色
     changeThemeColor() {
-      const themeColorKeys = Object.keys(this.themeColor)
+      const themeColorKeys = Object.keys(this.themeColor || {})
 
       if (themeColorKeys.length) {
         let cssText = ''
