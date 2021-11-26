@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.com/TangSY/vue-hash-calendar.svg?branch=master&from=hxkj)](https://travis-ci.com/TangSY/vue-hash-calendar)
 [![version](https://img.shields.io/npm/v/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
 [![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg?from=hxkj)](https://www.npmjs.com/package/vue-hash-calendar)
+![visitors](https://visitor-badge.glitch.me/badge?page_id=vue-hash-calendar)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg?from=hxkj)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg?from=hxkj)](https://www.hxkj.vip)
 
@@ -129,11 +130,11 @@ externals: {
 
 | 方法名称           | 说明                                       | 版本                              |
 | :---------------- | :---------------------------------------- | :--------------------------------- |
-| lastMonth | 切换日历到上一月 | 1.3.18
-| nextMonth | 切换日历到下一月 | 1.3.18
-| lastWeek | 切换日历到上一周 | 1.3.18
-| nextWeek | 切换日历到下一周 | 1.3.18
-| today | 返回今日。当今日被禁用时，不生效 | 1.3.18
+| lastMonth | 切换日历到上一月 | 1.3.20
+| nextMonth | 切换日历到下一月 | 1.3.20
+| lastWeek | 切换日历到上一周 | 1.3.20
+| nextWeek | 切换日历到下一周 | 1.3.20
+| today | 返回今日。当今日被禁用时，不生效 | 1.3.20
 
 ## 其他版本
 
