@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.com/TangSY/vue-hash-calendar.svg?branch=master)](https://travis-ci.com/TangSY/vue-hash-calendar)
 [![version](https://img.shields.io/npm/v/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
 [![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
+![visitors](https://visitor-badge.glitch.me/badge?page_id=vue-hash-calendar)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 
