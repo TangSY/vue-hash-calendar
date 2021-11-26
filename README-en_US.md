@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.com/TangSY/vue-hash-calendar.svg?branch=master)](https://travis-ci.com/TangSY/vue-hash-calendar)
 [![version](https://img.shields.io/npm/v/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
 [![download](https://img.shields.io/npm/dt/vue-hash-calendar.svg)](https://www.npmjs.com/package/vue-hash-calendar)
+![visitors](https://visitor-badge.glitch.me/badge?page_id=vue-hash-calendar)
 ![license](https://img.shields.io/badge/license-MIT-blue.svg)
 [![author](https://img.shields.io/badge/author-HashTang-orange.svg)](https://www.hxkj.vip)
 
@@ -129,13 +130,14 @@ online demo：[https://www.hxkj.vip/demo/calendar/](https://www.hxkj.vip/demo/ca
 | action  | Customize action content and style             | --                                                                                                           |
 
 # Methods
+
 | name           | desc                                       | version                              |
 | :---------------- | :---------------------------------------- | :--------------------------------- |
-| lastMonth | -- | 1.3.18
-| nextMonth | -- | 1.3.18
-| lastWeek | -- | 1.3.18
-| nextWeek | -- | 1.3.18
-| today | -- | 1.3.18
+| lastMonth | -- | 1.3.20
+| nextMonth | -- | 1.3.20
+| lastWeek | -- | 1.3.20
+| nextWeek | -- | 1.3.20
+| today | -- | 1.3.20
 
 ### Changelog
 
