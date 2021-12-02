@@ -842,6 +842,7 @@ export default {
   width: 14.13333335%;
   flexContent();
   flex-direction: column;
+  padding: 2px 0;
 }
 .calendar_item_disable {
   disabledBgColor(background-color);
@@ -855,7 +856,7 @@ export default {
   border-radius: 50%;
   fontSize(28px);
   flexContent();
-  margin-bottom: px2vw(8px);
+  margin-bottom: px2vw(5px);
 }
 .calendar_first_today {
   mainColor(color);
