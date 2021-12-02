@@ -43,6 +43,8 @@
 <script>
 import Github from './Github.vue'
 
+const currentYear = new Date().getFullYear()
+
 export default {
   name: 'demo',
   components: { Github },
@@ -53,11 +55,11 @@ export default {
       isShowTips: false, // 是否显示下载提示
       defaultDatetime: new Date(),
       markDate: [
-        ' 2021/11/24', ' 2021/11/22',
-        { color: 'red', type: 'dot', date: ['0', ' 2021/02/25', ' 2021/03/25', ' 2021/04/01', ' 2021/05/25', ' 2021/06/25', ' 2021/07/25', ' 2021/08/25', ' 2021/09/25', ' 2021/10/25', ' 2021/11/25', ' 2021/12/25'] },
-        { color: 'blue', type: 'circle', date: [' 2021/01/20', ' 2021/02/20', ' 2021/03/20', ' 2021/04/20', ' 2021/05/20', ' 2021/06/20', ' 2021/07/20', ' 2021/08/20', ' 2021/09/20', ' 2021/10/20', ' 2021/11/20', ' 2021/12/20'] },
-        { color: 'pink', date: [' 2021/01/12', ' 2021/02/12', ' 2021/03/12', ' 2021/04/12', ' 2021/05/12', ' 2021/06/12', ' 2021/07/12', ' 2021/08/12', ' 2021/09/12', ' 2021/10/12', ' 2021/11/12', ' 2021/12/12'] },
-        { color: '#000000', date: [' 2021/01/29', ' 2021/02/29', ' 2021/03/29', ' 2021/04/29', ' 2021/05/29', ' 2021/06/29', ' 2021/07/29', ' 2021/08/29', ' 2021/09/29', ' 2021/10/29', ' 2021/11/29', ' 2021/12/29'] }
+        `${currentYear}/11/24`, `${currentYear}/11/22`,
+        { color: 'red', type: 'dot', date: ['0', `${currentYear}/02/25`, `${currentYear}/03/25`, `${currentYear}/04/01`, `${currentYear}/05/25`, `${currentYear}/06/25`, `${currentYear}/07/25`, `${currentYear}/08/25`, `${currentYear}/09/25`, `${currentYear}/10/25`, `${currentYear}/11/25`, `${currentYear}/12/25`] },
+        { color: 'blue', type: 'circle', date: [`${currentYear}/01/20`, `${currentYear}/02/20`, `${currentYear}/03/20`, `${currentYear}/04/20`, `${currentYear}/05/20`, `${currentYear}/06/20`, `${currentYear}/07/20`, `${currentYear}/08/20`, `${currentYear}/09/20`, `${currentYear}/10/20`, `${currentYear}/11/20`, `${currentYear}/12/20`] },
+        { color: 'pink', date: [`${currentYear}/01/12`, `${currentYear}/02/12`, `${currentYear}/03/12`, `${currentYear}/04/12`, `${currentYear}/05/12`, `${currentYear}/06/12`, `${currentYear}/07/12`, `${currentYear}/08/12`, `${currentYear}/09/12`, `${currentYear}/10/12`, `${currentYear}/11/12`, `${currentYear}/12/12`] },
+        { color: '#000000', date: [`${currentYear}/01/29`, `${currentYear}/02/29`, `${currentYear}/03/29`, `${currentYear}/04/29`, `${currentYear}/05/29`, `${currentYear}/06/29`, `${currentYear}/07/29`, `${currentYear}/08/29`, `${currentYear}/09/29`, `${currentYear}/10/29`, `${currentYear}/11/29`, `${currentYear}/12/29`] }
       ] // 对象数组形式的标记日期，可以自定义标记颜色
     }
   },
