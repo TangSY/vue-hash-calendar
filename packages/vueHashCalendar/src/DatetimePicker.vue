@@ -8,10 +8,10 @@
   <div class="hash-calendar"
        :class="{'calendar_inline': model === 'inline'}"
        v-show="isShowDatetimePicker"
-       :style="{'height': `${model === 'inline' ? calendarContentHeight + (isShowArrowImg ? 30 : 0) : undefined}px`}"
+       :style="{'height': `${model === 'inline' ? calendarContentHeight + calArrowHeight() : undefined}px`}"
        @click="close">
     <div class="calendar_content"
-         :style="{'height': `${calendarContentHeight}px`, 'bottom': `${isShowArrowImg ? 30 : 0}px`}"
+         :style="{'height': `${calendarContentHeight}px`, 'bottom': `${calArrowHeight()}px`}"
          @click.stop>
       <div class="calendar_title"
            v-if="isShowAction"
@@ -96,12 +96,13 @@
 
     </div>
     <div class="ctrl-img"
+         ref="arrow"
          v-if="isShowArrowImg"
          @click.stop="toggleWeek"
          :style="{'margin-top': `${calendarContentHeight}px`}">
       <slot name="arrow"
             :show="isShowWeek">
-        <img :src="isShowWeek ? arrowDownImg : arrowUpImg">
+        <img class="ctrl-img-handler" :src="isShowWeek ? arrowDownImg : arrowUpImg">
       </slot>
     </div>
   </div>
@@ -441,6 +442,11 @@ export default {
       this.calendarBodyHeight = height
       this.firstTimes = false
     },
+    // 根据传入的 arrow slot 计算高度
+    calArrowHeight() {
+      const height = (this.isShowArrowImg && this.$refs.arrow && this.$refs.arrow.offsetHeight) || 0
+      return height
+    },
     // 切换主题颜色
     changeThemeColor() {
       const themeColorKeys = Object.keys(this.themeColor || {})
@@ -543,7 +549,7 @@ export default {
 .ctrl-img {
   width: 100%;
   text-align: center;
-  img {
+  .ctrl-img-handler {
     width: 28px;
   }
 }
