@@ -22,8 +22,15 @@
 
 - 🎉 觉得好用可以给一个 star 哦~~ 🎉
 
-## github 地址：[https://github.com/TangSY/vue-hash-calendar](https://github.com/TangSY/vue-hash-calendar)
-## 码云 gitee 地址：[https://gitee.com/HashTang/vue-hash-calendar](https://gitee.com/HashTang/vue-hash-calendar)
+## 仓库地址
+
+- github：[https://github.com/TangSY/vue-hash-calendar](https://github.com/TangSY/vue-hash-calendar)
+- 码云 gitee：[https://gitee.com/HashTang/vue-hash-calendar](https://gitee.com/HashTang/vue-hash-calendar)
+
+## 其他版本
+
+- vue 3.x 版本：[https://github.com/TangSY/vue3-hash-calendar](https://github.com/TangSY/vue3-hash-calendar)
+- react 版本：[https://github.com/TangSY/react-hash-calendar](https://github.com/TangSY/react-hash-calendar)
 
 # vue-hash-calendar
 
@@ -135,10 +142,6 @@ externals: {
 | lastWeek | 切换日历到上一周 | 1.3.20
 | nextWeek | 切换日历到下一周 | 1.3.20
 | today | 返回今日。当今日被禁用时，不生效 | 1.3.20
-
-## 其他版本
-
-react 版本：[https://github.com/TangSY/react-hash-calendar](https://github.com/TangSY/react-hash-calendar)
 
 ## Other
 
