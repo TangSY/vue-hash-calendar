@@ -145,6 +145,13 @@ externals: {
 
 ## Other
 
+- 如何添加农历/节假日？
+
+```js
+https://github.com/TangSY/vue3-hash-calendar/blob/main/examples/lunar/LunarDemo.vue
+
+```
+
 - 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
 
 ```js
