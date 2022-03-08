@@ -99,13 +99,13 @@
 </template>
 
 <script>
-import { formatDate, isDateInRange } from "../utils/util";
-import languageUtil from "../language";
+import { formatDate, isDateInRange } from '../utils/util';
+import languageUtil from '../language';
 
 let timer = null;
 
 export default {
-  name: "Calendar",
+  name: 'Calendar',
   props: {
     // 最小可选日期
     minDate: {
@@ -120,7 +120,7 @@ export default {
     // 每月第一天的 className
     firstDayOfMonthClassName: {
       type: String,
-      default: "",
+      default: '',
     },
     // 操作栏高度
     calendarTitleHeight: {
@@ -130,22 +130,22 @@ export default {
     // 当天日期的 className
     todayClassName: {
       type: String,
-      default: "",
+      default: '',
     },
     // 日期被选中时的 className
     checkedDayClassName: {
       type: String,
-      default: "",
+      default: '',
     },
     // 不是当前展示月份日期的 className(例如日历前面几天与后面几天灰色部分)
     notCurrentMonthDayClassName: {
       type: String,
-      default: "",
+      default: '',
     },
     // 日期被禁用时的 className
     disabledClassName: {
       type: String,
-      default: "",
+      default: '',
     },
     // 滑动的时候，是否触发改变日期
     scrollChangeDate: {
@@ -169,7 +169,7 @@ export default {
     },
     weekStart: {
       type: String,
-      default: "Sunday",
+      default: 'Sunday',
     },
     // 是否展示非本月日期
     isShowNotCurrentMonthDay: {
@@ -189,7 +189,7 @@ export default {
     // 日期标记类型
     markType: {
       type: String,
-      default: "dot",
+      default: 'dot',
     },
     // 禁用的日期
     disabledDate: {
@@ -206,7 +206,7 @@ export default {
     // 使用的语言包
     lang: {
       type: String,
-      default: "CN",
+      default: 'CN',
     },
   },
   data() {
@@ -219,15 +219,15 @@ export default {
       monthOfToday: new Date().getMonth(), // 今天所在的月份
       dayOfToday: new Date().getDate(), // 今天所在的日期
       weekArray: [
-        "sunday",
-        "monday",
-        "tuesday",
-        "wednesday",
-        "thursday",
-        "friday",
-        "saturday",
+        'sunday',
+        'monday',
+        'tuesday',
+        'wednesday',
+        'thursday',
+        'friday',
+        'saturday',
       ], // 星期数组
-      calendarWeek: ["日", "一", "二", "三", "四", "五", "六"], // 日历对应的星期
+      calendarWeek: ['日', '一', '二', '三', '四', '五', '六'], // 日历对应的星期
       calendarOfMonth: [], // 月份对应的日历表
       calendarOfMonthShow: [], // 月份对应的日历表
       calendarDaysTotalLength: 42, // 日历表展示的总天数  6行7列
@@ -274,14 +274,14 @@ export default {
         val.forEach((item, index) => {
           if (!item.color) {
             let obj = {};
-            obj.color = "#1c71fb";
-            if (typeof item === "string" || typeof item === "number") {
+            obj.color = '#1c71fb';
+            if (typeof item === 'string' || typeof item === 'number') {
               item = [item];
             }
             obj.date = item || [];
             val[index] = obj;
           }
-          val[index].type = item.type || this.markType || "";
+          val[index].type = item.type || this.markType || '';
 
           val[index].date = this.dateFormat(val[index].date);
         });
@@ -308,13 +308,13 @@ export default {
       handler(val) {
         if (!(val instanceof Date)) {
           throw new Error(
-            "The calendar component's defaultDate must be date type!"
+            'The calendar component\'s defaultDate must be date type!'
           );
         }
 
-        this.$set(this.checkedDate, "year", val.getFullYear());
-        this.$set(this.checkedDate, "month", val.getMonth());
-        this.$set(this.checkedDate, "day", val.getDate());
+        this.$set(this.checkedDate, 'year', val.getFullYear());
+        this.$set(this.checkedDate, 'month', val.getMonth());
+        this.$set(this.checkedDate, 'day', val.getDate());
         this.calculateCalendarOfThreeMonth(val.getFullYear(), val.getMonth());
 
         if (this.isShowWeek) {
@@ -325,7 +325,7 @@ export default {
     },
     checkedDate: {
       handler(val) {
-        this.$emit("change", val);
+        this.$emit('change', val);
       },
       deep: true,
       immediate: true,
@@ -357,13 +357,13 @@ export default {
       immediate: true,
     },
     calendarGroupHeight(val) {
-      this.$emit("height", val + this.calendarWeekTitleHeight);
+      this.$emit('height', val + this.calendarWeekTitleHeight);
     },
     isShowWeekView: {
       handler(val) {
         if (val && this.disabledWeekView) {
           throw new Error(
-            "'isShowWeekView' and 'disabledWeekView' can't be used at the same time"
+            '\'isShowWeekView\' and \'disabledWeekView\' can\'t be used at the same time'
           );
         }
       },
@@ -373,7 +373,7 @@ export default {
       handler(val) {
         if (val && this.isShowWeekView) {
           throw new Error(
-            "'isShowWeekView' and 'disabledWeekView' can't be used at the same time"
+            '\'isShowWeekView\' and \'disabledWeekView\' can\'t be used at the same time'
           );
         }
       },
@@ -387,7 +387,7 @@ export default {
         return this.isShowWeekView;
       },
       set(val) {
-        this.$emit("update:isShowWeekView", val);
+        this.$emit('update:isShowWeekView', val);
       },
     },
   },
@@ -410,7 +410,7 @@ export default {
     },
     // 今天
     today() {
-      this.$set(this.checkedDate, "day", new Date().getDate());
+      this.$set(this.checkedDate, 'day', new Date().getDate());
 
       this.yearOfCurrentShow = new Date().getFullYear(); // 当前日历展示的年份
       this.monthOfCurrentShow = new Date().getMonth(); // 当前日历展示的月份
@@ -422,8 +422,8 @@ export default {
           this.isTouching = true;
 
           // fix: 周视图无法通过点击今天按钮返回  https://github.com/TangSY/vue-hash-calendar/issues/87
-          this.$set(this.checkedDate, "year", new Date().getFullYear());
-          this.$set(this.checkedDate, "month", new Date().getMonth());
+          this.$set(this.checkedDate, 'year', new Date().getFullYear());
+          this.$set(this.checkedDate, 'month', new Date().getMonth());
 
           this.showWeek();
         }, this.transitionDuration * 1000);
@@ -477,9 +477,9 @@ export default {
       // fix: change 事件会触发两次 https://github.com/TangSY/vue-hash-calendar/issues/47
       if (this.isShowWeek) return;
 
-      this.$set(this.checkedDate, "day", tempDate.day);
-      this.$set(this.checkedDate, "year", year);
-      this.$set(this.checkedDate, "month", month);
+      this.$set(this.checkedDate, 'day', tempDate.day);
+      this.$set(this.checkedDate, 'year', year);
+      this.$set(this.checkedDate, 'month', month);
     },
     // 计算每个月的日历
     calculateCalendarOfMonth(
@@ -507,7 +507,7 @@ export default {
           month: lastMonth,
           day: this.isShowNotCurrentMonthDay
             ? lastMonthDays - (dayOfWeek - 1 - i)
-            : "",
+            : '',
         });
       }
 
@@ -527,7 +527,7 @@ export default {
         calendarOfCurrentMonth.push({
           year: nextMonthYear,
           month: nextMonth,
-          day: this.isShowNotCurrentMonthDay ? i + 1 : "",
+          day: this.isShowNotCurrentMonthDay ? i + 1 : '',
         });
       }
 
@@ -575,9 +575,9 @@ export default {
 
       if (this.formatDisabledDate(date)) return;
 
-      this.$set(this.checkedDate, "year", date.year);
-      this.$set(this.checkedDate, "month", date.month);
-      this.$set(this.checkedDate, "day", date.day);
+      this.$set(this.checkedDate, 'year', date.year);
+      this.$set(this.checkedDate, 'month', date.month);
+      this.$set(this.checkedDate, 'day', date.day);
 
       if (date.month === this.lastMonth && date.year === this.lastMonthYear) {
         this.getLastMonth();
@@ -590,7 +590,7 @@ export default {
         this.showWeek();
       }
 
-      this.$emit("click", this.checkedDate);
+      this.$emit('click', this.checkedDate);
     },
     // 该日期是否为今天
     isToday(date) {
@@ -620,7 +620,7 @@ export default {
     },
     // 监听手指开始滑动事件
     touchStart(event) {
-      this.$emit("touchstart", event);
+      this.$emit('touchstart', event);
 
       this.touchStartPositionX = event.touches[0].clientX;
       this.touchStartPositionY = event.touches[0].clientY;
@@ -631,7 +631,7 @@ export default {
     },
     // 监听手指移动事件
     touchMove(event) {
-      this.$emit("touchmove", event);
+      this.$emit('touchmove', event);
 
       // fix: 禁止切换周模式显示后，日历区域上下滑动，页面不能触发上下滑动了 #62
       if (!this.disabledWeekView) {
@@ -642,7 +642,7 @@ export default {
       let moveX = event.touches[0].clientX - this.touchStartPositionX;
       let moveY = event.touches[0].clientY - this.touchStartPositionY;
       if (Math.abs(moveX) > Math.abs(moveY)) {
-        if (this.isDisabledHorizontalScroll(moveX < 0 ? "left" : "right"))
+        if (this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right'))
           return;
 
         this.touch = {
@@ -663,7 +663,7 @@ export default {
     },
     // 监听touch结束事件
     touchEnd(e) {
-      this.$emit("touchend", e);
+      this.$emit('touchend', e);
 
       this.isTouching = false;
       if (
@@ -672,14 +672,14 @@ export default {
       ) {
         this.currentChangeIsScroll = true;
         if (this.touch.x > 0) {
-          this.$emit("slidechange", "right");
+          this.$emit('slidechange', 'right');
 
           this.getLastMonth();
           if (this.isShowWeek) {
             this.changeWeekView({ isNext: false });
           }
         } else if (this.touch.x < 0) {
-          this.$emit("slidechange", "left");
+          this.$emit('slidechange', 'left');
 
           this.getNextMonth();
           if (this.isShowWeek) {
@@ -692,11 +692,11 @@ export default {
         Math.abs(this.touch.y * this.$refs.calendar.offsetHeight) > 50
       ) {
         if (this.touch.y > 0 && this.isShowWeek) {
-          this.$emit("slidechange", "down");
+          this.$emit('slidechange', 'down');
 
           this.showMonth();
         } else if (this.touch.y < 0 && !this.isShowWeek) {
-          this.$emit("slidechange", "up");
+          this.$emit('slidechange', 'up');
 
           this.showWeek();
         }
@@ -878,7 +878,7 @@ export default {
       let dateString = `${date.year}/${this.fillNumber(
         date.month + 1
       )}/${this.fillNumber(date.day)}`;
-      let markDateTypeString = this.markDateTypeObj[dateString] || "";
+      let markDateTypeString = this.markDateTypeObj[dateString] || '';
 
       if (markDateTypeString.indexOf(type) === -1) return;
 
@@ -911,8 +911,8 @@ export default {
             this.nextWeek[0].day
           }`
         ).getTime();
-        if (direc === "left" && maxDate) return nextWeekFirstDay >= maxDate;
-        if (direc === "right" && minDate) return lastWeekLastedDay <= minDate;
+        if (direc === 'left' && maxDate) return nextWeekFirstDay >= maxDate;
+        if (direc === 'right' && minDate) return lastWeekLastedDay <= minDate;
       } else {
         let lastMonthLastedDay = new Date(
           `${this.lastMonthYear}/${this.lastMonth + 1}/${
@@ -922,20 +922,20 @@ export default {
         let nextMonthFirstDay = new Date(
           `${this.nextMonthYear}/${this.nextMonth + 1}/1`
         ).getTime();
-        if (direc === "left" && maxDate) return nextMonthFirstDay >= maxDate;
-        if (direc === "right" && minDate) return lastMonthLastedDay <= minDate;
+        if (direc === 'left' && maxDate) return nextMonthFirstDay >= maxDate;
+        if (direc === 'right' && minDate) return lastMonthLastedDay <= minDate;
       }
 
       return false;
     },
     // 小于10，在前面补0
     fillNumber(val) {
-      return val > 9 ? val : "0" + val;
+      return val > 9 ? val : '0' + val;
     },
     // 日期格式转换
     dateFormat(dateArr) {
       dateArr.forEach((date, index) => {
-        dateArr[index] = formatDate(date, "YY/MM/DD");
+        dateArr[index] = formatDate(date, 'YY/MM/DD');
       });
 
       return dateArr;
@@ -943,10 +943,10 @@ export default {
     // 是否可以滑动
     isCanScroll(dire) {
       const scrollObj = {
-        up: [true, "up", "vertical"],
-        down: [true, "down", "vertical"],
-        left: [true, "left", "horizontal"],
-        right: [true, "right", "horizontal"],
+        up: [true, 'up', 'vertical'],
+        down: [true, 'down', 'vertical'],
+        left: [true, 'left', 'horizontal'],
+        right: [true, 'right', 'horizontal'],
       };
 
       let checkedScrollArr = scrollObj[dire];
@@ -954,10 +954,10 @@ export default {
     },
     // 设置禁止滑动的方向
     setDisabledScrollDirection() {
-      this.touch.x < 0 && !this.isCanScroll("left") && (this.touch.x = 0);
-      this.touch.x > 0 && !this.isCanScroll("right") && (this.touch.x = 0);
-      this.touch.y < 0 && !this.isCanScroll("up") && (this.touch.y = 0);
-      this.touch.y > 0 && !this.isCanScroll("down") && (this.touch.y = 0);
+      this.touch.x < 0 && !this.isCanScroll('left') && (this.touch.x = 0);
+      this.touch.x > 0 && !this.isCanScroll('right') && (this.touch.x = 0);
+      this.touch.y < 0 && !this.isCanScroll('up') && (this.touch.y = 0);
+      this.touch.y > 0 && !this.isCanScroll('down') && (this.touch.y = 0);
     },
   },
 };
