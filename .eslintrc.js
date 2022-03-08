@@ -3,52 +3,51 @@
 module.exports = {
   root: true,
   parserOptions: {
-    parser: 'babel-eslint'
+    parser: "babel-eslint",
   },
   env: {
     browser: true,
   },
-  "globals": {
-    "Vue": true,
-    "VueRouter": true,
-    "Vuex": true,
-    "axios": true,
-    "ELEMENT": true,
-    "THEME": true,
-    "RootApp": true,
-    "BMAP_NORMAL_MAP": true,
-    "BMAP_HYBRID_MAP": true,
-    "BMap": true,
-    "BaiduMap": true
-
+  globals: {
+    Vue: true,
+    VueRouter: true,
+    Vuex: true,
+    axios: true,
+    ELEMENT: true,
+    THEME: true,
+    RootApp: true,
+    BMAP_NORMAL_MAP: true,
+    BMAP_HYBRID_MAP: true,
+    BMap: true,
+    BaiduMap: true,
   },
   extends: [
     // https://github.com/vuejs/eslint-plugin-vue#priority-a-essential-error-prevention
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
-    'plugin:vue/essential',
+    "plugin:vue/essential",
     // https://github.com/standard/standard/blob/master/docs/RULES-en.md
-    'standard'
+    // 'standard'
   ],
   // required to lint *.vue files
-  plugins: [
-    'vue',
-    'promise'
-  ],
+  plugins: ["vue", "promise"],
   // add your custom rules here
   rules: {
     //禁止注册模板中未使用的组件
-    "vue/no-unused-components": ["warn", {
-      "ignoreWhenBindingPresent": true
-    }],
+    "vue/no-unused-components": [
+      "warn",
+      {
+        ignoreWhenBindingPresent: true,
+      },
+    ],
     // allow async-await
-    'generator-star-spacing': 'off',
+    "generator-star-spacing": "off",
     // allow debugger during development
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    "no-debugger": process.env.NODE_ENV === "production" ? "error" : "off",
     "no-extra-parens": 0, //不允许出现不必要的圆括号
     "no-new": 0, //不允许new一个实例后不赋值或者不比较
     "no-new-func": 0, //不允许使用new Function
-    "eqeqeq": ["off", "always"], //不可采用== 
-    "camelcase": "off", //关闭不可采用驼峰
+    eqeqeq: ["off", "always"], //不可采用==
+    camelcase: "off", //关闭不可采用驼峰
     "no-useless-escape": "warn", //正则表达式转义问题
     "one-var": [0, "always"],
     "prefer-const": 0, // 如果一个变量只有在声明时才被赋值一次，那么应该使用'const'
@@ -58,7 +57,7 @@ module.exports = {
     "object-curly-spacing": 0,
     "dot-notation": 0,
     "keyword-spacing": 0,
-    "quotes": ["error", "single"],
+    quotes: ["error", "single"],
 
     "no-empty-character-class": 2, //正则表达式中不允许出现空的字符组
     "no-extra-boolean-cast": 2, //不允许出现不必要的布尔值转换
@@ -67,7 +66,7 @@ module.exports = {
     "no-func-assign": 2, //不允许重新分配函数声明
     "no-dupe-args": 2, // 函数参数不能重复
     "no-dupe-args": 2, // 函数参数不能重复no-duplicate-case": 2, // switch中的case标签不能重复
-    "space-before-function-paren": [2, { "anonymous": "never", "named": "never" }],
+    "space-before-function-paren": [2, { anonymous: "never", named: "never" }],
     "no-unreachable": 2, // 不能有无法执行的代码
     "no-empty": 2, //不允许出现空的代码块
     "no-var": 1, //禁用var，用let和const代替
@@ -80,15 +79,21 @@ module.exports = {
     // 代码风格
     "no-else-return": 2, // 如果if语句里面有return,后面不能跟else语句
     "no-multi-spaces": 2, // 不能用多余的空格
-    "no-redeclare": [2, { // 禁止重复声明变量
-      "builtinGlobals": true
-    }],
-    "no-multiple-empty-lines": [1, {
-      "max": 2
-    }], //空行最多不能超过2行
+    "no-redeclare": [
+      2,
+      {
+        // 禁止重复声明变量
+        builtinGlobals: true,
+      },
+    ],
+    "no-multiple-empty-lines": [
+      1,
+      {
+        max: 2,
+      },
+    ], //空行最多不能超过2行
     "no-multi-str": 2, //字符串不能用\换行
-    'no-useless-escape': 0, //禁用不必要的转义字符;
-
+    "no-useless-escape": 0, //禁用不必要的转义字符;
 
     /*
     https://www.npmjs.com/package/eslint-plugin-promise
@@ -106,9 +111,6 @@ module.exports = {
     "promise/avoid-new": 0,
     "promise/no-new-statics": 0,
     "promise/no-return-in-finally": 0,
-    "promise/valid-params": 0
-
-
-
-  }
-}
+    "promise/valid-params": 0,
+  },
+};
