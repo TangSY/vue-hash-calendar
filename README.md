@@ -137,11 +137,14 @@ externals: {
 | nextWeek | 切换日历到下一周 | 1.3.20
 | today | 返回今日。当今日被禁用时，不生效 | 1.3.20
 
-## 版本记录
-
-[changelog](https://github.com/TangSY/vue-hash-calendar/blob/travis_build/CHANGELOG.md)
-
 ## Other
+
+- 如何添加农历/节假日？
+
+```js
+https://github.com/TangSY/vue-hash-calendar/blob/master/examples/lunar/LunarDemo.vue
+
+```
 
 - 在 dialog 模式中，如何显示日历组件？注意使用 `.sync` 修饰符
 
