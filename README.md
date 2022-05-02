@@ -148,7 +148,7 @@ externals: {
 - 如何添加农历/节假日？
 
 ```js
-https://github.com/TangSY/vue3-hash-calendar/blob/main/examples/lunar/LunarDemo.vue
+https://github.com/TangSY/vue-hash-calendar/blob/master/examples/lunar/LunarDemo.vue
 
 ```
 
