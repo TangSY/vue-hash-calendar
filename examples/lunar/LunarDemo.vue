@@ -13,30 +13,30 @@
 </template>
 
 <script>
-import { lunar } from "./lunar";
+import { lunar } from './lunar'
 
 export default {
-  name: "lunarDemo",
+  name: 'lunarDemo',
   data() {
     return {
-      isShowCalendar: true, // 是否显示弹窗
-    };
+      isShowCalendar: true // 是否显示弹窗
+    }
   },
   mounted() {},
   methods: {
     showCalendarDialog() {
       // 显示日历
-      this.isShowCalendar = true;
+      this.isShowCalendar = true
     },
     showLunar(date) {
-      if (!date || !date.day) return;
+      if (!date || !date.day) return
 
-      const lunarObj = lunar.solar2lunar(date.year, date.month + 1, date.day);
+      const lunarObj = lunar.solar2lunar(date.year, date.month + 1, date.day)
 
-      return lunarObj.festival || lunarObj.lunarFestival || lunarObj.IDayCn;
-    },
-  },
-};
+      return lunarObj.festival || lunarObj.lunarFestival || lunarObj.IDayCn
+    }
+  }
+}
 </script>
 
 <style lang="stylus" scoped>
