@@ -43,12 +43,12 @@
 </template>
 
 <script>
-import Github from "./Github.vue";
+import Github from './Github.vue'
 
-const currentYear = new Date().getFullYear();
+const currentYear = new Date().getFullYear()
 
 export default {
-  name: "demo",
+  name: 'demo',
   components: { Github },
   data() {
     return {
@@ -60,10 +60,10 @@ export default {
         `${currentYear}/11/24`,
         `${currentYear}/11/22`,
         {
-          color: "red",
-          type: "dot",
+          color: 'red',
+          type: 'dot',
           date: [
-            "0",
+            '0',
             `${currentYear}/02/25`,
             `${currentYear}/03/25`,
             `${currentYear}/04/01`,
@@ -74,12 +74,12 @@ export default {
             `${currentYear}/09/25`,
             `${currentYear}/10/25`,
             `${currentYear}/11/25`,
-            `${currentYear}/12/25`,
-          ],
+            `${currentYear}/12/25`
+          ]
         },
         {
-          color: "blue",
-          type: "circle",
+          color: 'blue',
+          type: 'circle',
           date: [
             `${currentYear}/01/20`,
             `${currentYear}/02/20`,
@@ -92,11 +92,11 @@ export default {
             `${currentYear}/09/20`,
             `${currentYear}/10/20`,
             `${currentYear}/11/20`,
-            `${currentYear}/12/20`,
-          ],
+            `${currentYear}/12/20`
+          ]
         },
         {
-          color: "pink",
+          color: 'pink',
           date: [
             `${currentYear}/01/12`,
             `${currentYear}/02/12`,
@@ -109,11 +109,11 @@ export default {
             `${currentYear}/09/12`,
             `${currentYear}/10/12`,
             `${currentYear}/11/12`,
-            `${currentYear}/12/12`,
-          ],
+            `${currentYear}/12/12`
+          ]
         },
         {
-          color: "#000000",
+          color: '#000000',
           date: [
             `${currentYear}/01/29`,
             `${currentYear}/02/29`,
@@ -126,11 +126,11 @@ export default {
             `${currentYear}/09/29`,
             `${currentYear}/10/29`,
             `${currentYear}/11/29`,
-            `${currentYear}/12/29`,
-          ],
-        },
-      ], // 对象数组形式的标记日期，可以自定义标记颜色
-    };
+            `${currentYear}/12/29`
+          ]
+        }
+      ] // 对象数组形式的标记日期，可以自定义标记颜色
+    }
   },
   mounted() {
     // this.defaultDatetime = new Date('2019-06-01 19:04');
@@ -138,52 +138,52 @@ export default {
   methods: {
     showCalendarDialog() {
       // 显示日历
-      this.isShowCalendar = true;
+      this.isShowCalendar = true
     },
     dateChange(date) {
       // 日期改变触发
-      console.log(date, "change");
+      console.log(date, 'change')
     },
     dateConfirm(date) {
       // 点击确认按钮触发
-      console.log(date, "confirm");
+      console.log(date, 'confirm')
     },
     slidechange(direction) {
       // 滑动方向
-      console.log(direction, "direction");
+      console.log(direction, 'direction')
     },
     dateClick(date) {
       // 点击日期时按钮触发
-      console.log(date, "click");
+      console.log(date, 'click')
     },
     calendarTypeChange(type) {
       // 日历展示类型切换时触发
-      console.log(type, "calendarType");
+      console.log(type, 'calendarType')
     },
     disabledDate(date) {
       // 禁用的日期
-      let timestamp = date.getTime();
-      let oneDay = 24 * 60 * 60 * 1000;
+      let timestamp = date.getTime()
+      let oneDay = 24 * 60 * 60 * 1000
 
       if (timestamp < new Date().getTime() - oneDay) {
-        return true;
+        return true
       }
-      return false;
+      return false
     },
     disabledTime(date) {
       // 禁用的时间
-      let hours = date.getHours();
-      let minute = date.getMinutes();
-      let hoursNow = new Date().getHours();
-      let minuteNow = new Date().getMinutes();
+      let hours = date.getHours()
+      let minute = date.getMinutes()
+      let hoursNow = new Date().getHours()
+      let minuteNow = new Date().getMinutes()
 
       if (hours < hoursNow || (hours === hoursNow && minute < minuteNow)) {
-        return true;
+        return true
       }
-      return false;
-    },
-  },
-};
+      return false
+    }
+  }
+}
 </script>
 <style lang="stylus">
 .hhhh {
