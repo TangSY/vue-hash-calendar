@@ -120,7 +120,7 @@ externals: {
 | touchmove          | 日历滑动 move 事件，同于原生该事件。                                                      | （event: touch 事件）              |
 | touchend           | 日历滑动 end 事件，同于原生该事件。                                                       | （event: touch 事件）              |
 | slidechange        | 日历滑动的方向。返回值：right、left、up、down 。                                          | （direction: 滑动的方向）          |
-| calendarTypeChange | 日历展示类型切换时触发。返回值：date、month、year、yearRange 。                           | （type: 日历展示面板类型）         |
+| calendarTypeChange | 日历展示类型切换时触发。返回值：time、week、date、month、year、yearRange 。                           | （type: 日历展示面板类型）         |
 
 # 插槽 Slot
 
