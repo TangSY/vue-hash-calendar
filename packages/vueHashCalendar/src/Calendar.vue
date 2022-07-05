@@ -350,7 +350,12 @@ export default {
           item.style.height = `${this.calendarItemHeight}px`
         })
 
-        this.showMonth()
+       if (this.isShowWeek) {
+          this.showWeek();
+        } else {
+          this.showMonth();
+        }
+        
         this.calendarGroupHeight = this.calendarItemHeight * 6
       })
     },
