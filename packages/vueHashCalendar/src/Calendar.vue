@@ -404,9 +404,14 @@ export default {
           item.style.height = `${this.calendarItemHeight}px`;
         });
 
-        this.showMonth();
-        this.calendarGroupHeight = this.calendarItemHeight * 6;
-      });
+       if (this.isShowWeek) {
+          this.showWeek();
+        } else {
+          this.showMonth();
+        }
+        
+        this.calendarGroupHeight = this.calendarItemHeight * 6
+      })
     },
     // 今天
     today() {
