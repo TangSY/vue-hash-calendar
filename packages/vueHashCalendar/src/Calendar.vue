@@ -627,8 +627,14 @@ export default {
     touchStart(event) {
       this.$emit('touchstart', event);
 
-      this.touchStartPositionX = event.touches[0].clientX;
-      this.touchStartPositionY = event.touches[0].clientY;
+      // fix: 禁止切换周模式显示后，日历区域上下滑动，页面不能触发上下滑动了 #62
+      if (!this.disabledWeekView) {
+        event.stopPropagation()
+        event.preventDefault()
+      }
+
+      this.touchStartPositionX = event.touches[0].clientX
+      this.touchStartPositionY = event.touches[0].clientY
       this.touch = {
         x: 0,
       };
@@ -638,14 +644,8 @@ export default {
     touchMove(event) {
       this.$emit('touchmove', event);
 
-      // fix: 禁止切换周模式显示后，日历区域上下滑动，页面不能触发上下滑动了 #62
-      if (!this.disabledWeekView) {
-        event.stopPropagation();
-        event.preventDefault();
-      }
-
-      let moveX = event.touches[0].clientX - this.touchStartPositionX;
-      let moveY = event.touches[0].clientY - this.touchStartPositionY;
+      let moveX = event.touches[0].clientX - this.touchStartPositionX
+      let moveY = event.touches[0].clientY - this.touchStartPositionY
       if (Math.abs(moveX) > Math.abs(moveY)) {
         if (this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right'))
           return;
