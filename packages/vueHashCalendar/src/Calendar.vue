@@ -176,6 +176,11 @@ export default {
       type: Boolean,
       default: true,
     },
+    // 点击非本月日期是否自动切换月份
+    isAutoChangeMonth: {
+      type: Boolean,
+      default: true,
+    },
     // 是否展示周视图
     isShowWeekView: {
       type: Boolean,
@@ -404,14 +409,14 @@ export default {
           item.style.height = `${this.calendarItemHeight}px`;
         });
 
-       if (this.isShowWeek) {
+        if (this.isShowWeek) {
           this.showWeek();
         } else {
           this.showMonth();
         }
-        
-        this.calendarGroupHeight = this.calendarItemHeight * 6
-      })
+
+        this.calendarGroupHeight = this.calendarItemHeight * 6;
+      });
     },
     // 今天
     today() {
@@ -584,14 +589,22 @@ export default {
       this.$set(this.checkedDate, 'month', date.month);
       this.$set(this.checkedDate, 'day', date.day);
 
-      if (date.month === this.lastMonth && date.year === this.lastMonthYear) {
+      if (
+        this.isAutoChangeMonth &&
+        date.month === this.lastMonth &&
+        date.year === this.lastMonthYear
+      ) {
         this.getLastMonth();
       }
-      if (date.month === this.nextMonth && date.year === this.nextMonthYear) {
+      if (
+        this.isAutoChangeMonth &&
+        date.month === this.nextMonth &&
+        date.year === this.nextMonthYear
+      ) {
         this.getNextMonth();
       }
 
-      if (this.isShowWeek) {
+      if (this.isAutoChangeMonth && this.isShowWeek) {
         this.showWeek();
       }
 
@@ -627,8 +640,8 @@ export default {
     touchStart(event) {
       this.$emit('touchstart', event);
 
-      this.touchStartPositionX = event.touches[0].clientX
-      this.touchStartPositionY = event.touches[0].clientY
+      this.touchStartPositionX = event.touches[0].clientX;
+      this.touchStartPositionY = event.touches[0].clientY;
       this.touch = {
         x: 0,
       };
@@ -640,15 +653,16 @@ export default {
 
       // fix: 禁止切换周模式显示后，日历区域上下滑动，页面不能触发上下滑动了 #62
       if (!this.disabledWeekView) {
-        event.stopPropagation()
-        event.preventDefault()
+        event.stopPropagation();
+        event.preventDefault();
       }
 
-      let moveX = event.touches[0].clientX - this.touchStartPositionX
-      let moveY = event.touches[0].clientY - this.touchStartPositionY
+      let moveX = event.touches[0].clientX - this.touchStartPositionX;
+      let moveY = event.touches[0].clientY - this.touchStartPositionY;
       if (Math.abs(moveX) > Math.abs(moveY)) {
-        if (this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right'))
+        if (this.isDisabledHorizontalScroll(moveX < 0 ? 'left' : 'right')) {
           return;
+        }
 
         this.touch = {
           x: moveX / this.$refs.calendar.offsetWidth,
@@ -786,17 +800,16 @@ export default {
       }
 
       this.isNextWeekInCurrentMonth = false;
+      const cMonth = lastDayOfCurrentWeek.month;
       if (
         lastDayOfCurrentWeek.day < firstDayOfCurrentWeek.day &&
-        lastDayOfCurrentWeek.month !== checkedDate.month
+        cMonth !== checkedDate.month
       ) {
         this.nextWeek = this.calendarOfMonth[2].slice(7, 14);
       } else {
         if (
           lastDayOfCurrentWeek.day ===
-          this.daysOfMonth(lastDayOfCurrentWeek.year)[
-            lastDayOfCurrentWeek.month
-          ]
+          this.daysOfMonth(lastDayOfCurrentWeek.year)[cMonth]
         ) {
           this.nextWeek = this.calendarOfMonth[2].slice(0, 7);
         } else {
