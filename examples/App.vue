@@ -17,6 +17,7 @@
       :default-datetime="defaultDatetime"
       :is-show-week-view="false"
       :is-show-action="true"
+      :is-auto-change-month="true"
       :minute-step="1"
       :disabled-scroll="false"
       :mark-date="markDate"
