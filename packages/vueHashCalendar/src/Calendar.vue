@@ -50,7 +50,7 @@
               (disabledClassName || 'calendar_item_disable')
             "
             :key="i + j"
-            @click="clickCalendarDay(date)"
+            @click="clickCalendarDay(date, j)"
           >
             <div
               class="calendar_day"
@@ -580,7 +580,7 @@ export default {
       return dayOfWeek;
     },
     // 点击日历上的日期
-    clickCalendarDay(date) {
+    clickCalendarDay(date, index) {
       if (!date || !date.day) return;
 
       if (this.formatDisabledDate(date)) return;
@@ -604,8 +604,11 @@ export default {
         this.getNextMonth();
       }
 
-      if (this.isAutoChangeMonth && this.isShowWeek) {
-        this.showWeek();
+      if (this.isShowWeek) {
+        this.selectedDayIndex = index % 7;
+        if (this.isAutoChangeMonth) {
+          this.showWeek();
+        }
       }
 
       this.$emit('click', this.checkedDate);
