@@ -7,6 +7,10 @@
 <template>
   <div class="body">
     <button @click="showCalendarDialog">显示</button>
+    <button @click="lastWeek">上周</button>
+    <button @click="nextWeek">下周</button>
+    <button @click="lastMonth">上月</button>
+    <button @click="nextMonth">下月</button>
     <vue-hash-calendar
       ref="picker"
       model="dialog"
@@ -182,6 +186,18 @@ export default {
         return true
       }
       return false
+    },
+    lastMonth() {
+      this.$refs.picker.lastMonth()
+    },
+    nextMonth() {
+      this.$refs.picker.nextMonth()
+    },
+    lastWeek() {
+      this.$refs.picker.lastWeek()
+    },
+    nextWeek() {
+      this.$refs.picker.nextWeek()
     }
   }
 }

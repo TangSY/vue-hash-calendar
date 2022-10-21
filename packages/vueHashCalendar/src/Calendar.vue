@@ -217,7 +217,6 @@ export default {
   data() {
     return {
       language: {}, // 使用的语言包
-      currentChangeIsScroll: false, // 改变当前日期的方式是否为滑动事件
       yearOfCurrentShow: new Date().getFullYear(), // 当前日历展示的年份
       monthOfCurrentShow: new Date().getMonth(), // 当前日历展示的月份
       yearOfToday: new Date().getFullYear(), // 今天所在的年份
@@ -464,10 +463,7 @@ export default {
         JSON.stringify(this.calendarOfMonth)
       )
 
-      if (!this.scrollChangeDate && this.currentChangeIsScroll) {
-        this.currentChangeIsScroll = false
-        return
-      }
+      if (!this.scrollChangeDate) return
 
       // 改变日期选择的日期
       let tempDate = {}
@@ -687,7 +683,6 @@ export default {
         Math.abs(this.touch.x) > Math.abs(this.touch.y) &&
         Math.abs(this.touch.x) > 0.2
       ) {
-        this.currentChangeIsScroll = true
         if (this.touch.x > 0) {
           this.$emit('slidechange', 'right')
 
@@ -830,7 +825,6 @@ export default {
 
       timer = setTimeout(() => {
         this.isTouching = true
-        this.currentChangeIsScroll = true
         isNext ? this.getNextWeek() : this.getLastWeek()
       }, this.transitionDuration * 1000)
     },
@@ -841,10 +835,7 @@ export default {
 
       if (this.formatDisabledDate(checkedDate)) return
 
-      if (!this.scrollChangeDate && this.currentChangeIsScroll) {
-        this.currentChangeIsScroll = false
-        return
-      }
+      if (!this.scrollChangeDate) return
 
       this.checkedDate = checkedDate
     },
@@ -855,10 +846,7 @@ export default {
 
       if (this.formatDisabledDate(checkedDate)) return
 
-      if (!this.scrollChangeDate && this.currentChangeIsScroll) {
-        this.currentChangeIsScroll = false
-        return
-      }
+      if (!this.scrollChangeDate) return
 
       this.checkedDate = checkedDate
     },
@@ -870,6 +858,7 @@ export default {
         this.yearOfCurrentShow = this.lastMonthYear
         this.monthOfCurrentShow = this.lastMonth
       }
+
       this.calculateCalendarOfThreeMonth(
         this.yearOfCurrentShow,
         this.monthOfCurrentShow
@@ -883,6 +872,7 @@ export default {
         this.yearOfCurrentShow = this.nextMonthYear
         this.monthOfCurrentShow = this.nextMonth
       }
+
       this.calculateCalendarOfThreeMonth(
         this.yearOfCurrentShow,
         this.monthOfCurrentShow
