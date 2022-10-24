@@ -363,26 +363,6 @@ export default {
     calendarGroupHeight(val) {
       this.$emit('height', val + this.calendarWeekTitleHeight);
     },
-    isShowWeekView: {
-      handler(val) {
-        if (val && this.disabledWeekView) {
-          throw new Error(
-            '\'isShowWeekView\' and \'disabledWeekView\' can\'t be used at the same time'
-          );
-        }
-      },
-      immediate: true,
-    },
-    disabledWeekView: {
-      handler(val) {
-        if (val && this.isShowWeekView) {
-          throw new Error(
-            '\'isShowWeekView\' and \'disabledWeekView\' can\'t be used at the same time'
-          );
-        }
-      },
-      immediate: true,
-    },
   },
   computed: {
     // 当前日历是否以星期方式展示

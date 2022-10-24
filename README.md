@@ -93,7 +93,7 @@ externals: {
 | isShowArrow                 | 是否显示周月切换时的指示箭头（日历下方的小箭头），当 model 等于 inline 时生效                                                                                                 |                                                                            Boolean                                                                             |     false      |    否    |
 | isShowAction                | 是否显示日历组件操作栏（标题栏）                                                                                                                                              |                                                                            Boolean                                                                             |      true      |    否    |
 | isShowNotCurrentMonthDay    | 是否展示日历中的非本月日期（灰色部分日期）                                                                                                                                    |                                                                            Boolean                                                                             |      true      |    否    |
-| isAutoChangeMonth    | 点击非本月日期是否自动切换月份                                                                                                                                                |                                                                            Boolean                                                                             |      true      |    否    |
+| isAutoChangeMonth           | 点击非本月日期是否自动切换月份                                                                                                                                                |                                                                            Boolean                                                                             |      true      |    否    |
 | disabledWeekView            | 禁用周视图（设置为 true 后，无法上下滑动进行周/月切换）                                                                                                                       |                                                                            Boolean                                                                             |     false      |    否    |
 | disabledDate                | 设置日期的禁用状态，参数为当前日期，要求返回 Boolean （禁用该日期需返回 true）                                                                                                |                                                                            Function                                                                            |      ---       |    否    |
 | disabledTime                | 设置时间的禁用状态，参数为当前日期，要求返回 Boolean （禁用该时间需返回 true）                                                                                                |                                                                            Function                                                                            |      ---       |    否    |
@@ -178,6 +178,12 @@ this.isShowCalendar = true;
 
 ```js
 <vue-hash-calendar format="YY/MM/DD hh:mm F" />
+```
+
+- 设置了 `disabledScroll="vertical"` 之后，滑动日历区域导致页面也无法滚动？使用 `disabledWeekView` 属性代替
+
+```js
+<vue-hash-calendar :disabled-week-view="true" />
 ```
 
 - day slot 的基本用法
